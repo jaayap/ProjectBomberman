@@ -10,6 +10,9 @@ extern Bomberman bomberman;
 
 // BOUH
 
+
+//TEIL
+
 Bombe::Bombe()
 {
 }
