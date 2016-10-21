@@ -8,6 +8,8 @@ using namespace std;
 extern Niveau niveau;
 extern Bomberman bomberman;
 
+// BOUH
+
 Bombe::Bombe()
 {
 }
