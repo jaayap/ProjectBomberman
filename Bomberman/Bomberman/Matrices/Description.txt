@@ -1,0 +1,11 @@
+0 = cases vides 
+1 = mur indestructible
+2 = mur destructible
+3 = mur destructible jaune ( explosion ) 
+
+//Bombes
+4 = Explosion bombe depart
+5 = Explosion bombe centre
+6 = Explosion bombe fin
+
+8 = bombe;
