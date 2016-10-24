@@ -1,9 +1,14 @@
 #pragma once
+#include <vector>
+#include <iostream>
+#include "Bonus.h"
 class Niveau
 {
 	char matrice[13][17];
 	int nbColonnes;
 	int nbLignes;
+	bool PlacerBonus = false;
+public:std::vector<Bonus> bonusTab;
 
 public:
 	Niveau();
@@ -14,4 +19,5 @@ public:
 	bool caseMurDestructible(int x, int y);
 	void modifierCase(int x, int y, char valeur);
 	char getCase(int x, int y);
+	void definirBonus(int i, int j);
 };

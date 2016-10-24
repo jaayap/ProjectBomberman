@@ -7,7 +7,7 @@
 #include "Niveau.h"
 #include <vector>
 #include "Animation.h"
-
+#include "Bonus.h"
 
 using namespace std;
 
@@ -16,6 +16,7 @@ float coord[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0
 extern vector<GLuint> texture;
 
 extern int valueBombe, valueExplo;
+
 
 
 Niveau::Niveau()
@@ -71,6 +72,9 @@ void Niveau::dessinerNiveau() {
 				glTexCoord2f(0.25f, 0.5f); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
+
+		
+				if(!PlacerBonus) definirBonus(i, j); //on place les bonus derriere les mur destructible
 			}
 
 			if (matrice[i][j] == '3') {
@@ -115,10 +119,20 @@ void Niveau::dessinerNiveau() {
 				glDisable(GL_TEXTURE_2D);
 			}
 
-			
+			for (int k = 0; k < size(bonusTab); k++) {
+				if (!caseMurDestructible(j, i) && bonusTab[k].getX() == i && bonusTab[k].getY() == j) {
+					bonusTab[k].setVisible(true); // si le mur est detruit on affiche le bonus
+				}
+
+				if (bonusTab[k].getVisible()) {
+					bonusTab[k].dessiner();
+				}
+			}
 
 		}
+		
 	}
+	PlacerBonus = true;
 }
 
 bool Niveau::caseLibre(int x,int y) { // penser a inverser quand on appelle la fonction : caseLibre(y,x)
@@ -138,4 +152,25 @@ void Niveau::modifierCase(int x, int y, char valeur) {
 
 char Niveau::getCase(int x, int y) {
 	return matrice[x][y];
+}
+
+void Niveau::definirBonus(int i, int j) {
+	//Definition des bonus
+	cout << "BONUS";
+
+	int nbAleatoire = rand() % 4 + 1;    //entre 1-4
+	if (nbAleatoire == 1) {
+		Bonus bonusNbNombre(j, i, 1);
+		bonusTab.push_back(bonusNbNombre);
+	}
+	else if (nbAleatoire == 2) {
+		Bonus bonusPortee(j, i, 2);
+		bonusTab.push_back(bonusPortee);
+	}
+	else if (nbAleatoire == 3) {
+		Bonus bonusVitesse(j, i, 3);
+		bonusTab.push_back(bonusVitesse);
+	}
+	//Si le nombre est égal a 4 on ne place pas de bonus
+
 }
