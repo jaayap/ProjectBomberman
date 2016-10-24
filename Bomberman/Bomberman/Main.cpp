@@ -41,10 +41,18 @@ void LabyAffichage()
 	//glLoadIdentity();
 
 	niveau.dessinerNiveau();
+
 	if (bomberman.vivant) bomberman.dessiner();
 	if (ennemi1.vivant) ennemi1.dessiner();
 	if (ennemi2.vivant) ennemi2.dessiner();
 	if (ennemi3.vivant) ennemi3.dessiner();
+
+	for (int i = 0; i < size(bomberman.bombes); i++) {
+		if (bomberman.bombes[i].explosion) {
+			bomberman.bombes[i].dessinerExplosion();
+		}
+	}
+
 	glFlush();
 }
 

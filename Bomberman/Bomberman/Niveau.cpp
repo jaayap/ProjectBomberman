@@ -115,46 +115,7 @@ void Niveau::dessinerNiveau() {
 				glDisable(GL_TEXTURE_2D);
 			}
 
-			//Affichage Explosion.
-			if (matrice[i][j] == '4') {
-				glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, texture[2]);
-				glBegin(GL_QUADS);
-				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(coord[2], coord[6 - valueExplo]); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(coord[2], coord[7 - valueExplo]); glVertex2d(j + 1, i);
-				glTexCoord2f(coord[0], coord[7 - valueExplo]); glVertex2d(j, i);
-				glTexCoord2f(coord[0], coord[6 - valueExplo]); glVertex2d(j, i + 1);
-				glEnd();
-				glDisable(GL_TEXTURE_2D);
-			}
-			
-			if (matrice[i][j] == '5') {
-				glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, texture[2]);
-				glBegin(GL_QUADS);
-				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(coord[4], coord[6 - valueExplo]); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(coord[4], coord[7 - valueExplo]); glVertex2d(j + 1, i);
-				glTexCoord2f(coord[2], coord[7 - valueExplo]); glVertex2d(j, i);
-				glTexCoord2f(coord[2], coord[6 - valueExplo]); glVertex2d(j, i + 1);
-				glEnd();
-				glDisable(GL_TEXTURE_2D);
-			}
-
-			if (matrice[i][j] == '6') {
-				glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, texture[2]);
-				glBegin(GL_QUADS);
-				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(coord[6], coord[6 - valueExplo]); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(coord[6], coord[7 - valueExplo]); glVertex2d(j + 1, i);
-				glTexCoord2f(coord[4], coord[7 - valueExplo]); glVertex2d(j, i);
-				glTexCoord2f(coord[4], coord[6 - valueExplo]); glVertex2d(j, i + 1);
-				glEnd();
-				glDisable(GL_TEXTURE_2D);
-			}
-			
+		
 
 		}
 	}
