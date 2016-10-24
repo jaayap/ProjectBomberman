@@ -41,7 +41,7 @@ void LabyAffichage()
 	//glLoadIdentity();
 
 	niveau.dessinerNiveau();
-
+	bomberman.collisionEnnemi();
 	if (bomberman.vivant) bomberman.dessiner();
 	if (ennemi1.vivant) ennemi1.dessiner();
 	if (ennemi2.vivant) ennemi2.dessiner();
