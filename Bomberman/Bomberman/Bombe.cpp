@@ -26,9 +26,10 @@ Bombe::Bombe()
 {
 }
 
-Bombe::Bombe(int x, int y) {
+Bombe::Bombe(int x, int y, int portee) {
 	this->x = x;
 	this->y = y;
+	this->portee = portee;
 	posee = false;
 	explosion = false;
 }

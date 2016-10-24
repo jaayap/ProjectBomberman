@@ -22,12 +22,13 @@ void Bonus::ramasser()
 {
 	switch (type) {
 		//type du bonus : 1 -> + bombes, 2 -> + portee, 3 -> + vitesse
-	case 1 : 
-		//bomberman.setNbBombe(bomberman.getNbBombe + 1)
+	case 1:
+		bomberman.setNbBombe(bomberman.getNbBombe() + 1);
 		break;
-	case 2 : 
+	case 2:
 		break;
-	case 3 : 
+	case 3:
+		bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() + 1);
 		break;
 	}
 }
