@@ -33,10 +33,10 @@ void EnnemiAleatoire::dessiner() {
 	glBindTexture(GL_TEXTURE_2D, texture[5]);
 	glBegin(GL_QUADS);
 	glColor3d(1.0, 1.0, 1.0);
-	glTexCoord2f(coordEnnemi2[0 + valueEnnemi2], 0.0f); glVertex2d(x + 1 + offsetX, y + 1 + offsetY);
-	glTexCoord2f(coordEnnemi2[1 + valueEnnemi2], 0.0f); glVertex2d(x + 1 + offsetX, y + offsetY);
-	glTexCoord2f(coordEnnemi2[1 + valueEnnemi2], 1.0f); glVertex2d(x + offsetX, y + offsetY);
-	glTexCoord2f(coordEnnemi2[0 + valueEnnemi2], 1.0f); glVertex2d(x + offsetX, y + 1 + offsetY);
+	glTexCoord2f(coordEnnemi2[1 + valueEnnemi2], 0.0f); glVertex2d(x + 1 + offsetX, y + 1 + offsetY);
+	glTexCoord2f(coordEnnemi2[1 + valueEnnemi2], 1.0f); glVertex2d(x + 1 + offsetX, y + offsetY);
+	glTexCoord2f(coordEnnemi2[0 + valueEnnemi2], 1.0f); glVertex2d(x + offsetX, y + offsetY);
+	glTexCoord2f(coordEnnemi2[0 + valueEnnemi2], 0.0f); glVertex2d(x + offsetX, y + 1 + offsetY);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);

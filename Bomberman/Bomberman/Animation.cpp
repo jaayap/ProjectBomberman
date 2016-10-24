@@ -195,7 +195,7 @@ void ennemi2Animation(int x) {
 		break;
 	}
 
-	glutTimerFunc(50, ennemi2Animation, 0);
+	glutTimerFunc(80, ennemi2Animation, 0);
 }
 
 
@@ -205,7 +205,7 @@ Animation::Animation()
 	glutTimerFunc(100, exploAnimation, 0);
 	glutTimerFunc(100, BombermanAnimation, 0);
 	glutTimerFunc(20, ennemi1Animation, 0);
-	glutTimerFunc(50, ennemi1Animation, 0);
+	glutTimerFunc(80, ennemi2Animation, 0);
 }
 
 
