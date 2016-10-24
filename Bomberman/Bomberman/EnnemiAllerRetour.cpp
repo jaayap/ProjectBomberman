@@ -8,7 +8,8 @@
 
 using namespace std;
 
-float coordEnnemi[11] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f, 0.33333f, 0.66666f };
+float coordEnnemi[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
+int rotationEnnemi1;
 
 extern int valueEnnemi1;
 
@@ -30,16 +31,32 @@ EnnemiAllerRetour::~EnnemiAllerRetour()
 
 
 void EnnemiAllerRetour::dessiner() {
+	switch (direction)
+	{
+	case(1):
+		rotationEnnemi1 = 2;
+		break;
+	case(2):
+		rotationEnnemi1 = 6;
+		break;
+	case(3):
+		rotationEnnemi1 = 0;
+		break;
+	case(4):
+		rotationEnnemi1 = 4;
+		break;
+	}
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture[4]);
 	glBegin(GL_QUADS);
 	glColor3d(1.0, 1.0, 1.0);
-	glTexCoord2f(coordEnnemi[2 + valueEnnemi1], coordEnnemi[0]); glVertex2d(x + 1 + offsetX, y + 1 + offsetY);
-	glTexCoord2f(coordEnnemi[2 + valueEnnemi1], coordEnnemi[9]); glVertex2d(x + 1 + offsetX, y + offsetY - 0.5);
-	glTexCoord2f(coordEnnemi[0 + valueEnnemi1], coordEnnemi[9]); glVertex2d(x + offsetX, y + offsetY - 0.5);
-	glTexCoord2f(coordEnnemi[0 + valueEnnemi1], coordEnnemi[0]); glVertex2d(x + offsetX, y + 1 + offsetY);
+	glTexCoord2f(coordEnnemi[2 + valueEnnemi1], coordEnnemi[6 - rotationEnnemi1]); glVertex2d(x + 1 + offsetX, y + 1 + offsetY);
+	glTexCoord2f(coordEnnemi[2 + valueEnnemi1], coordEnnemi[8 - rotationEnnemi1]); glVertex2d(x + 1 + offsetX, y + offsetY - 0.5);
+	glTexCoord2f(coordEnnemi[0 + valueEnnemi1], coordEnnemi[8 - rotationEnnemi1]); glVertex2d(x + offsetX, y + offsetY - 0.5);
+	glTexCoord2f(coordEnnemi[0 + valueEnnemi1], coordEnnemi[6 - rotationEnnemi1]); glVertex2d(x + offsetX, y + 1 + offsetY);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);

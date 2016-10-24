@@ -98,7 +98,7 @@ void BombermanAnimation(int x) {
 		break;
 	}
 
-	glutTimerFunc(200, BombermanAnimation, 0);
+	glutTimerFunc(100, BombermanAnimation, 0);
 }
 
 void ennemi1Animation(int x) {
