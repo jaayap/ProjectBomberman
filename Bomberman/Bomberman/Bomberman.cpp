@@ -7,7 +7,8 @@
 #include "Niveau.h"
 #include "Animation.h"
 #include "Personnage.h"
-//#include "Main.cpp"
+#include "EnnemiAleatoire.h"
+#include "EnnemiAllerRetour.h"
 
 using namespace std;
 
@@ -19,6 +20,12 @@ extern int direction;
 
 extern vector<GLuint> texture;
 extern Niveau niveau;
+
+//pour gerer les collisions :
+extern EnnemiAleatoire ennemi1;
+extern EnnemiAllerRetour ennemi2;
+extern EnnemiAllerRetour ennemi3;
+
 
 Bomberman::Bomberman(int xDepart,int  yDepart) : Personnage(x,y)
 {
@@ -59,6 +66,14 @@ void Bomberman::eraseExplosion(int nb) {
 	bombes[nb].effacerExplosion();
 	bombes.erase(bombes.begin() + nb);
 }
+
+void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi
+	
+	if ((ennemi1.getX() == x && ennemi1.getY() == y) || (ennemi2.getX() == x && ennemi2.getY() == y) || (ennemi3.getX() == x && ennemi3.getY() == y)) {
+		vivant = false;
+	}	
+}
+
 
 void Bomberman::dessiner() {
 	switch (direction)

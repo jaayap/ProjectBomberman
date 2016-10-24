@@ -5,11 +5,16 @@
 #include "GL/glut.h"
 #include "SOIL/SOIL.h"
 #include <vector>
+#include "EnnemiAleatoire.h"
+#include "EnnemiAllerRetour.h"
 
 using namespace std; 
 
 extern Niveau niveau;
 extern Bomberman bomberman;
+extern EnnemiAleatoire ennemi1;
+extern EnnemiAllerRetour ennemi2;
+extern EnnemiAllerRetour ennemi3;
 extern vector<GLuint> texture;
 
 bool arretExplosionHaut = false;
@@ -94,6 +99,9 @@ void Bombe::dessinerExplosionHaut() {
 
 			//Test si il y a des mort
 			if (x == bomberman.getX() && y - i == bomberman.getY()) bomberman.setVivant(false);
+			if (x == ennemi1.getX() && y - i == ennemi1.getY()) ennemi1.setVivant(false);
+			if (x == ennemi2.getX() && y - i == ennemi2.getY()) ennemi2.setVivant(false);
+			if (x == ennemi3.getX() && y - i == ennemi3.getY()) ennemi3.setVivant(false);
 		}
 		else arretExplosionHaut = true;
 
@@ -122,6 +130,9 @@ void Bombe::dessinerExplosionHaut() {
 		}
 		//Test si il y a des mort
 		if (x == bomberman.getX() && y - portee + 1 == bomberman.getY()) bomberman.setVivant(false);
+		if (x == ennemi1.getX() && y - portee + 1 == ennemi1.getY()) ennemi1.setVivant(false);
+		if (x == ennemi2.getX() && y - portee + 1 == ennemi2.getY()) ennemi2.setVivant(false);
+		if (x == ennemi3.getX() && y - portee + 1 == ennemi3.getY()) ennemi3.setVivant(false);
 	}
 
 	
@@ -155,6 +166,9 @@ void Bombe::dessinerExplosionBas() {
 
 			//Test si il y a des mort
 			if (x == bomberman.getX() && y + i == bomberman.getY()) bomberman.setVivant(false);
+			if (x == ennemi1.getX() && y + i == ennemi1.getY()) ennemi1.setVivant(false);
+			if (x == ennemi2.getX() && y + i == ennemi2.getY()) ennemi2.setVivant(false);
+			if (x == ennemi3.getX() && y + i == ennemi3.getY()) ennemi3.setVivant(false);
 		}
 		else arretExplosionBas = true;
 	}
@@ -178,6 +192,9 @@ void Bombe::dessinerExplosionBas() {
 		else niveau.modifierCase(y + portee - 1, x, '3');
 		//Test si il y a des mort
 		if (x == bomberman.getX() && y + portee - 1 == bomberman.getY()) bomberman.setVivant(false);
+		if (x == ennemi1.getX() && y + portee - 1 == ennemi1.getY()) ennemi1.setVivant(false);
+		if (x == ennemi2.getX() && y + portee - 1 == ennemi2.getY()) ennemi2.setVivant(false);
+		if (x == ennemi3.getX() && y + portee - 1 == ennemi3.getY()) ennemi3.setVivant(false);
 
 	}
 }
@@ -210,6 +227,9 @@ void Bombe::dessinerExplosionGauche() {
 
 			//Test si il y a des mort
 			if ((x - i) == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+			if ((x - i) == ennemi1.getX() && y == ennemi1.getY()) ennemi1.setVivant(false);
+			if ((x - i) == ennemi2.getX() && y == ennemi2.getY()) ennemi2.setVivant(false);
+			if ((x - i) == ennemi3.getX() && y == ennemi3.getY()) ennemi3.setVivant(false);
 
 		}
 		else arretExplosionGauche = true;
@@ -235,6 +255,9 @@ void Bombe::dessinerExplosionGauche() {
 		else niveau.modifierCase(y, x - portee + 1, '3');
 		//Test si il y a des mort
 		if (x - portee + 1 == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+		if (x - portee + 1 == ennemi1.getX() && y == ennemi1.getY()) ennemi1.setVivant(false);
+		if (x - portee + 1 == ennemi2.getX() && y == ennemi2.getY()) ennemi2.setVivant(false);
+		if (x - portee + 1 == ennemi3.getX() && y == ennemi3.getY()) ennemi3.setVivant(false);
 	}
 
 }
@@ -266,6 +289,9 @@ void Bombe::dessinerExplosionDroite() {
 
 			//Test si il y a des mort
 			if (x + i == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+			if (x + i == ennemi1.getX() && y == ennemi1.getY()) ennemi1.setVivant(false);
+			if (x + i == ennemi2.getX() && y == ennemi2.getY()) ennemi2.setVivant(false);
+			if (x + i == ennemi3.getX() && y == ennemi3.getY()) ennemi3.setVivant(false);
 		}
 		else arretExplosionDroite = true;
 	}
@@ -289,5 +315,8 @@ void Bombe::dessinerExplosionDroite() {
 
 		//Test si il y a des mort
 		if (x + portee - 1 == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+		if (x + portee - 1 == ennemi1.getX() && y == ennemi1.getY()) ennemi1.setVivant(false);
+		if (x + portee - 1 == ennemi2.getX() && y == ennemi2.getY()) ennemi2.setVivant(false);
+		if (x + portee - 1 == ennemi3.getX() && y == ennemi3.getY()) ennemi3.setVivant(false);
 	}
 }

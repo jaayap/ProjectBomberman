@@ -18,6 +18,7 @@ public:
 	void lancerBombe();
 	void declancherExplosion(int);
 	void eraseExplosion(int);
+	void collisionEnnemi();
 	void dessiner();
 	
 };
