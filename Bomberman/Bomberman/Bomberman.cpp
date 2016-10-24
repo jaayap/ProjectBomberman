@@ -43,7 +43,7 @@ void Bomberman::setNbBombe(int nb) {
 	this->nb_bombes = nb;
 }
 
-
+//test
 void Bomberman::lancerBombe() {
 
 	if (nb_bombes > 0) {
