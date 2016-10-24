@@ -177,8 +177,6 @@ void main() {
 	glutTimerFunc(1000, LabyTimerExplosion, 0);
 	glutTimerFunc(500, LabyTimerEnnemi, 0);
 
-	glutTimerFunc(100, BombeAnimation, 0);
-
 	// Gestion des textures
 	/* 0 */ LoadGLTextures("images/Test.png");
 	/* 1 */ LoadGLTextures("images/Niveaux.png");

@@ -6,13 +6,17 @@
 #include "SOIL/SOIL.h"
 #include "Niveau.h"
 #include <vector>
+#include "Animation.h"
 
 
 using namespace std;
 
+float coord[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
+
 extern vector<GLuint> texture;
 
-extern float X1, X2, Y1, Y2;
+extern int valueBombe, valueExplo;
+
 
 Niveau::Niveau()
 {
@@ -33,6 +37,7 @@ void Niveau::initialiserMatrice() {
 			}
 		}
 	}
+	Animation anim;
 }
 
 void Niveau::dessinerNiveau() {
@@ -97,14 +102,15 @@ void Niveau::dessinerNiveau() {
 
 			//Affichage des bombes.
 			if (matrice[i][j] == '8') {
+				cout << coord[7] << endl;
 				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D, texture[2]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(X1, Y1); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(X1, Y2); glVertex2d(j + 1, i);
-				glTexCoord2f(X2, Y2); glVertex2d(j, i);
-				glTexCoord2f(X2, Y1); glVertex2d(j, i + 1);
+				glTexCoord2f(coord[2 + valueBombe], coord[7]); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(coord[2 + valueBombe], coord[8]); glVertex2d(j + 1, i);
+				glTexCoord2f(coord[0 + valueBombe], coord[8]); glVertex2d(j, i);
+				glTexCoord2f(coord[0 + valueBombe], coord[7]); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			}
@@ -115,10 +121,10 @@ void Niveau::dessinerNiveau() {
 				glBindTexture(GL_TEXTURE_2D, texture[2]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.25f, 0.75f); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(0.25f, 0.875f); glVertex2d(j + 1, i);
-				glTexCoord2f(0.0f, 0.875f); glVertex2d(j, i);
-				glTexCoord2f(0.0f, 0.75f); glVertex2d(j, i + 1);
+				glTexCoord2f(coord[2], coord[6 - valueExplo]); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(coord[2], coord[7 - valueExplo]); glVertex2d(j + 1, i);
+				glTexCoord2f(coord[0], coord[7 - valueExplo]); glVertex2d(j, i);
+				glTexCoord2f(coord[0], coord[6 - valueExplo]); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			}
@@ -128,10 +134,10 @@ void Niveau::dessinerNiveau() {
 				glBindTexture(GL_TEXTURE_2D, texture[2]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.5f, 0.75f); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(0.5f, 0.875f); glVertex2d(j + 1, i);
-				glTexCoord2f(0.25f, 0.875f); glVertex2d(j, i);
-				glTexCoord2f(0.25f, 0.75f); glVertex2d(j, i + 1);
+				glTexCoord2f(coord[4], coord[6 - valueExplo]); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(coord[4], coord[7 - valueExplo]); glVertex2d(j + 1, i);
+				glTexCoord2f(coord[2], coord[7 - valueExplo]); glVertex2d(j, i);
+				glTexCoord2f(coord[2], coord[6 - valueExplo]); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			}
@@ -141,10 +147,10 @@ void Niveau::dessinerNiveau() {
 				glBindTexture(GL_TEXTURE_2D, texture[2]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.75f, 0.75f); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(0.75f, 0.875f); glVertex2d(j + 1, i);
-				glTexCoord2f(0.5f, 0.875f); glVertex2d(j, i);
-				glTexCoord2f(0.5f, 0.75f); glVertex2d(j, i + 1);
+				glTexCoord2f(coord[6], coord[6 - valueExplo]); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(coord[6], coord[7 - valueExplo]); glVertex2d(j + 1, i);
+				glTexCoord2f(coord[4], coord[7 - valueExplo]); glVertex2d(j, i);
+				glTexCoord2f(coord[4], coord[6 - valueExplo]); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			}

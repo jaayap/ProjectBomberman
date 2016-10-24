@@ -113,6 +113,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Bombe.cpp" />
     <ClCompile Include="Bomberman.cpp" />
     <ClCompile Include="EnnemiAleatoire.cpp" />
@@ -122,6 +123,7 @@
     <ClCompile Include="Personnage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Bombe.h" />
     <ClInclude Include="Bomberman.h" />
     <ClInclude Include="EnnemiAleatoire.h" />

@@ -4,5 +4,4 @@ class Animation
 public:
 	Animation();
 	~Animation();
-	void bombeAnimation(int);
 };
