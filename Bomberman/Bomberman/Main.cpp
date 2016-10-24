@@ -108,6 +108,10 @@ void TraitementClavier(int key, int x, int y)
 	glFlush();
 }
 
+void TraitementAucuneTouche(unsigned char key, int x, int y) {
+	enMouvement = false;
+}
+
 void TraitementClavierASCII(unsigned char key, int x, int y)
 {
 	glutPostRedisplay();
@@ -207,6 +211,7 @@ void main() {
 	glutReshapeFunc(LabyRedim);
 	glutKeyboardFunc(TraitementClavierASCII);
 	glutSpecialFunc(TraitementClavier);
+	glutKeyboardUpFunc(TraitementAucuneTouche);
 	glutTimerFunc(1000, LabyTimerExplosion, 0);
 	glutTimerFunc(500, LabyTimerEnnemi, 0);
 
