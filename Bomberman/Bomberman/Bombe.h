@@ -12,7 +12,12 @@ public:
 	Bombe();
 	Bombe(int x,int y);
 	void exploser();
-	void effacerExplosion();
+	//void effacerExplosion();
+	void dessinerExplosion();
+	void dessinerExplosionHaut();
+	void dessinerExplosionBas();
+	void dessinerExplosionGauche();
+	void dessinerExplosionDroite();
 	~Bombe();
 };
 
