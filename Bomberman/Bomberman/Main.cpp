@@ -17,6 +17,7 @@ int HAUTEUR_FENETRE = 1046;
 int LARGEUR_FENETRE = 800;
 
 bool enMouvement = false;
+bool haut = false, bas = false, gauche = false, droite = false;
 
 vector<GLuint>	texture; // tableau qui contient nos textures
 
@@ -76,36 +77,66 @@ void TraitementClavier(int key, int x, int y)
 	glutPostRedisplay();
 
 	if (key == GLUT_KEY_UP) {
+		haut = true;
+	}
+	if (key == GLUT_KEY_DOWN) {	
+		bas = true;
+	}
+	if (key == GLUT_KEY_LEFT) {
+		gauche = true;
+	}
+	if (key == GLUT_KEY_RIGHT) {
+		droite = true;
+	}
+
+	glFlush();
+}
+
+
+void TestDirection(int z) {
+	if (haut) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
 			enMouvement = true;
 			bomberman.deplacementHaut();
 		}
 	}
-	if (key == GLUT_KEY_DOWN) {
+	else if (bas) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
 			enMouvement = true;
 			bomberman.deplacementBas();
 		}
 	}
-	if (key == GLUT_KEY_LEFT) {
+	else if (gauche) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
 			enMouvement = true;
 			bomberman.deplacementGauche();
 		}
 	}
-	if (key == GLUT_KEY_RIGHT) {
+	else if (droite) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
 			enMouvement = true;
 			bomberman.deplacementDroite();
 		}
 	}
-	glFlush();
+	glutTimerFunc(25, TestDirection, 0);
 }
 
 
-
 void TraitementAucuneTouche(int key, int x, int y) {
-	if (key == GLUT_KEY_RIGHT || key == GLUT_KEY_LEFT || key == GLUT_KEY_DOWN || key == GLUT_KEY_UP) {
+	if (key == GLUT_KEY_UP) {
+		haut = false;
+		enMouvement = false;
+	}
+	if (key == GLUT_KEY_DOWN) {
+		bas = false;
+		enMouvement = false;
+	}
+	if (key == GLUT_KEY_LEFT) {
+		gauche = false;
+		enMouvement = false;
+	}
+	if (key == GLUT_KEY_RIGHT) {
+		droite = false;
 		enMouvement = false;
 	}
 }
@@ -209,6 +240,7 @@ void main() {
 	glutKeyboardFunc(TraitementClavierASCII);
 	glutSpecialFunc(TraitementClavier);
 	glutSpecialUpFunc(TraitementAucuneTouche);
+	glutTimerFunc(50, TestDirection, 0);
 	glutTimerFunc(1000, LabyTimerExplosion, 0);
 	glutTimerFunc(500, LabyTimerEnnemi, 0);
 
