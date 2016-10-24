@@ -116,6 +116,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Bombe.cpp" />
     <ClCompile Include="Bomberman.cpp" />
+    <ClCompile Include="Bonus.cpp" />
     <ClCompile Include="EnnemiAleatoire.cpp" />
     <ClCompile Include="EnnemiAllerRetour.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Bombe.h" />
     <ClInclude Include="Bomberman.h" />
+    <ClInclude Include="Bonus.h" />
     <ClInclude Include="EnnemiAleatoire.h" />
     <ClInclude Include="EnnemiAllerRetour.h" />
     <ClInclude Include="Niveau.h" />
