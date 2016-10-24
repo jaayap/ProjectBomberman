@@ -11,7 +11,7 @@ public :bool posee; // true : la bombe est posée par terre, false : bomberman po
 public:
 	Bombe();
 	Bombe(int x,int y);
-	void exploser();
+	//void exploser();
 	void effacerExplosion();
 	void dessinerExplosion();
 	void dessinerExplosionHaut();

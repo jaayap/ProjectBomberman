@@ -32,105 +32,17 @@ Bombe::~Bombe()
 {
 }
 
-void Bombe::exploser() {
-
-
-
-	niveau.modifierCase(y, x, '4');
-
-		for (int i = 1; i < portee - 1; i++) {
-			//dessin de l'explosion : 4 milieu de la bombe, 5 suite, 6 fin explosion
-
-			if (niveau.caseLibre(y, x - i)) { //A gauche
-					
-				if (niveau.caseMurDestructible(y, x - i)) {
-					//niveau.modifierCase(y, x - i, '3');
-					arretExplosionGauche = true;
-				}
-				else {
-					//niveau.modifierCase(y, x - i, '5');
-				}
-
-				//Test si il y a des mort
-				if ((x - i) == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
-
-			}
-			else {
-				arretExplosionGauche = true;
-			}
-			if (niveau.caseLibre(y, x + i)) { //A droite
-				
-				if (niveau.caseMurDestructible(y, x + i)) {
-				//	niveau.modifierCase(y, x + i, '3');
-					arretExplosionDroite = true;
-				}
-				//else niveau.modifierCase(y, x + i, '5');
-
-				//Test si il y a des mort
-				if (x+i == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
-			}
-			else {
-				arretExplosionDroite = true;
-			}
-			if (niveau.caseLibre(y - i, x)) { //En haut
-			
-				if (niveau.caseMurDestructible(y - i, x)) {
-					//niveau.modifierCase(y - i, x, '3');
-					arretExplosionHaut = true;
-				}
-				//else 	niveau.modifierCase(y - i, x, '5');
-
-				//Test si il y a des mort
-				if (x == bomberman.getX() && y-i == bomberman.getY()) bomberman.setVivant(false);
-			}
-			else {
-				arretExplosionHaut = true;
-			}
-			if (niveau.caseLibre(y + i, x)) { //En bas
-				
-				if (niveau.caseMurDestructible(y + i, x)) {
-					//niveau.modifierCase(y + i, x, '3');
-					arretExplosionBas = true;
-				} //else niveau.modifierCase(y + i, x, '5');
-				//Test si il y a des mort
-				if (x == bomberman.getX() && y+i == bomberman.getY()) bomberman.setVivant(false);
-
-			}
-			else {
-				arretExplosionBas = true;
-			}
-
-			//Test si il y a des mort
-			if (x == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
-
-		}
-
-		//extremité de l'explosion
-		if (niveau.caseLibre(y, x - portee+1) && !arretExplosionGauche) { //A gauche
-			//niveau.modifierCase(y, x - portee+1, '6');
-
-			//Test si il y a des mort
-			if (x - portee + 1 == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
-		}
-		if (niveau.caseLibre(y, x + portee-1) && !arretExplosionDroite) { //A droite
-			//niveau.modifierCase(y, x + portee-1, '6');
-			if (x + portee - 1 == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
-		}
-		if (niveau.caseLibre(y - portee+1, x) && !arretExplosionHaut) { //En haut
-		//	niveau.modifierCase(y - portee+1, x, '6');
-			if (x == bomberman.getX() && y - portee + 1 == bomberman.getY()) bomberman.setVivant(false);
-		}
-		if (niveau.caseLibre(y + portee - 1, x) && !arretExplosionBas) { //En bas
-			//niveau.modifierCase(y + portee-1, x, '6');
-			if (x == bomberman.getX() && y + portee - 1 == bomberman.getY()) bomberman.setVivant(false);
-		}
-}
-
 
 void Bombe::effacerExplosion() {
+	// on efface la bombe
+	niveau.modifierCase(y, x, '0'); 
+	//on efface les murs detruits
 
-	niveau.modifierCase(y, x, '0');
-
+	//on remet les booleens a false
+	 arretExplosionHaut = false;
+	 arretExplosionBas = false;
+	 arretExplosionGauche = false;
+	 arretExplosionDroite = false;
 }
 
 void Bombe::dessinerExplosion() {
@@ -155,165 +67,196 @@ void Bombe::dessinerExplosion() {
 }
 
 void Bombe::dessinerExplosionHaut() {
-	if (arretExplosionHaut) {		
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glBegin(GL_QUADS);
-		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y);
-		glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y - 1);
-		glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y - 1);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
+	for (int i = 1; i < portee - 1; i++) {
+		if (niveau.caseLibre(y - i, x)) { //En haut
+
+			if (niveau.caseMurDestructible(y - i, x)) {
+				niveau.modifierCase(y - i, x, '3');
+				arretExplosionHaut = true;
+			}
+			else {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, texture[2]);
+				glBegin(GL_QUADS);
+				glColor3d(1.0, 1.0, 1.0);
+				glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y + 1 - i);
+				glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y - i);
+				glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y - i);
+				glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 1 - i);
+				glEnd();
+				glDisable(GL_TEXTURE_2D);
+			}
+
+			//Test si il y a des mort
+			if (x == bomberman.getX() && y - i == bomberman.getY()) bomberman.setVivant(false);
+		}
+		else arretExplosionHaut = true;
+
 	}
-	else {
-		
+
+	if (niveau.caseLibre(y - portee + 1, x) && !arretExplosionHaut) {
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texture[2]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y);
-		glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y - 1);
-		glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y - 1);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y);
+
+		glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1, y + 1 - portee + 1);
+		glTexCoord2f(0.75f, 0.875f); glVertex2d(x + 1, y - portee + 1);
+		glTexCoord2f(0.75f, 0.75f); glVertex2d(x, y - portee + 1);
+		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 1 - portee + 1);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
-		
-		
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glBegin(GL_QUADS);
-		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1, y - 1);
-		glTexCoord2f(0.75f, 0.875f); glVertex2d(x + 1, y - 2);
-		glTexCoord2f(0.75f, 0.75f); glVertex2d(x, y - 2);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y - 1);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
-		
+
+		//Test si il y a des mort
+		if (x == bomberman.getX() && y - portee + 1 == bomberman.getY()) bomberman.setVivant(false);
 	}
+	
 }
 
 void Bombe::dessinerExplosionBas() {
-	if (arretExplosionBas) {
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glBegin(GL_QUADS);
-		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y + 2);
-		glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y + 1);
-		glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y + 1);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 2);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
+
+	for (int i = 1; i < portee - 1; i++) {
+		if (niveau.caseLibre(y + i, x)) { //En bas
+			if (niveau.caseMurDestructible(y + i, x)) {
+				niveau.modifierCase(y + i, x, '3');
+				arretExplosionBas = true;
+			}
+			else {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, texture[2]);
+				glBegin(GL_QUADS);
+				glColor3d(1.0, 1.0, 1.0);
+				glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y + 1 + i);
+				glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y + i);
+				glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y + i);
+				glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 1 + i);
+				glEnd();
+				glDisable(GL_TEXTURE_2D);
+			}
+
+			//Test si il y a des mort
+			if (x == bomberman.getX() && y + i == bomberman.getY()) bomberman.setVivant(false);
+		}
+		else arretExplosionBas = true;
 	}
-	else {
 
+	if (niveau.caseLibre(y + portee - 1, x) && !arretExplosionBas) { //En bas
+																	
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texture[2]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y + 2);
-		glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y + 1 );
-		glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y + 1);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 2);
+		glTexCoord2f(0.75f, 0.875f); glVertex2d(x + 1, y + 1 + portee - 1);
+		glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1, y + portee - 1);
+		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + portee - 1);
+		glTexCoord2f(0.75f, 0.75f); glVertex2d(x, y + 1 + portee -1);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 
-
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glBegin(GL_QUADS);
-		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.75f, 0.875f); glVertex2d(x + 1, y + 3);
-		glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1, y + 2);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 2);
-		glTexCoord2f(0.75f, 0.75f); glVertex2d(x, y + 3);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
+		//Test si il y a des mort
+		if (x == bomberman.getX() && y + portee - 1 == bomberman.getY()) bomberman.setVivant(false);
 
 	}
 }
 
 void Bombe::dessinerExplosionGauche() {
-/*if (arretExplosionGauche) {
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glBegin(GL_QUADS);
-		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 1);
-		glTexCoord2f(0.5f, 0.875f); glVertex2d(x, y);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x - 1, y);
-		glTexCoord2f(0.25f, 0.75f); glVertex2d(x - 1, y + 1);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
+
+
+	for (int i = 1; i < portee - 1; i++) {
+		if (niveau.caseLibre(y, x - i)) { //A gauche
+
+			if (niveau.caseMurDestructible(y, x - i)) {
+				niveau.modifierCase(y, x - i, '3');
+				arretExplosionGauche = true;
+			}
+			else {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, texture[2]);
+				glBegin(GL_QUADS);
+				glColor3d(1.0, 1.0, 1.0);
+				glTexCoord2f(0.5f, 0.75f); glVertex2d(x + 1 - i, y + 1);
+				glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1 - i, y);
+				glTexCoord2f(0.25f, 0.875f); glVertex2d(x - i, y);
+				glTexCoord2f(0.25f, 0.75f); glVertex2d(x - i, y + 1);
+				glEnd();
+				glDisable(GL_TEXTURE_2D);
+			}
+
+			//Test si il y a des mort
+			if ((x - i) == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+
+		}
+		else arretExplosionGauche = true;
+
 	}
-	else {*/
-
+	//extremité de l'explosion
+	if (niveau.caseLibre(y, x - portee + 1) && !arretExplosionGauche) { //A gauche
+																		
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texture[2]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x , y + 1);
-		glTexCoord2f(0.5f, 0.875f); glVertex2d(x, y);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x - 1, y);
-		glTexCoord2f(0.25f, 0.75f); glVertex2d(x - 1, y + 1);
+		glTexCoord2f(0.5f, 0.75f);  glVertex2d(x + 1 - portee + 1, y + 1);
+		glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1 - portee + 1, y);
+		glTexCoord2f(0.75f, 0.875f); glVertex2d(x - portee + 1, y);
+		glTexCoord2f(0.75f, 0.75f); glVertex2d(x - portee + 1, y + 1);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
+		
+		//Test si il y a des mort
+		if (x - portee + 1 == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+	}
+		
 
-
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glBegin(GL_QUADS);
-		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.5f, 0.75f);  glVertex2d(x - 1, y + 1);
-		glTexCoord2f(0.5f, 0.875f); glVertex2d(x - 1, y);
-		glTexCoord2f(0.75f, 0.875f); glVertex2d(x - 2, y);
-		glTexCoord2f(0.75f, 0.75f); glVertex2d(x - 2, y + 1);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
-
-	//}
+	
 }
 
 void Bombe::dessinerExplosionDroite() {
-	/*if (arretExplosionDroite) {
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glBegin(GL_QUADS);
-		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x + 2, y + 1);
-		glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 2, y);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y);
-		glTexCoord2f(0.25f, 0.75f); glVertex2d(x + 1, y + 1);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
+
+	for (int i = 1; i < portee - 1; i++) {
+		if (niveau.caseLibre(y, x + i)) { //A droite
+
+			if (niveau.caseMurDestructible(y, x + i)) {
+				niveau.modifierCase(y, x + i, '3');
+				arretExplosionDroite = true;
+			}
+			else {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, texture[2]);
+				glBegin(GL_QUADS);
+				glColor3d(1.0, 1.0, 1.0);
+				glTexCoord2f(0.5f, 0.75f); glVertex2d(x + 1 + i, y + 1);
+				glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1 + i, y);
+				glTexCoord2f(0.25f, 0.875f); glVertex2d(x + i, y);
+				glTexCoord2f(0.25f, 0.75f); glVertex2d(x + i, y + 1);
+				glEnd();
+				glDisable(GL_TEXTURE_2D);
+
+			}
+
+			//Test si il y a des mort
+			if (x + i == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+		}
+		else arretExplosionDroite = true;
 	}
-	else {*/
 
+	if (niveau.caseLibre(y, x + portee - 1) && !arretExplosionDroite) { //A droite
+		
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texture[2]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x + 2, y + 1);
-		glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 2, y);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y);
-		glTexCoord2f(0.25f, 0.75f); glVertex2d(x + 1, y + 1);
+		glTexCoord2f(0.75f, 0.75f); glVertex2d(x + 1 + portee - 1, y + 1);
+		glTexCoord2f(0.75f, 0.875f); glVertex2d(x + 1 + portee - 1, y);
+		glTexCoord2f(0.5f, 0.875f); glVertex2d(x + portee - 1, y);
+		glTexCoord2f(0.5f, 0.75f); glVertex2d(x + portee - 1, y + 1);
 		glEnd();
-		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_TEXTURE_2D);	
+		
+		//Test si il y a des mort
+		if (x + portee - 1 == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+	}
+		
 
-
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glBegin(GL_QUADS);
-		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.75f, 0.75f); glVertex2d(x + 3, y + 1);
-		glTexCoord2f(0.75f, 0.875f); glVertex2d(x + 3, y);
-		glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 2, y);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x + 2, y + 1);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
-
-	//}
+	
 }

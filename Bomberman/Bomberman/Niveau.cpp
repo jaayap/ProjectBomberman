@@ -115,7 +115,7 @@ void Niveau::dessinerNiveau() {
 				glDisable(GL_TEXTURE_2D);
 			}
 
-		
+			
 
 		}
 	}
