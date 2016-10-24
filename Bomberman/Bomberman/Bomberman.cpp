@@ -27,7 +27,7 @@ extern EnnemiAllerRetour ennemi2;
 extern EnnemiAllerRetour ennemi3;
 
 
-Bomberman::Bomberman(int xDepart,int  yDepart) : Personnage(x,y)
+Bomberman::Bomberman(int xDepart, int  yDepart) : Personnage(x, y)
 {
 	this->x = xDepart;
 	this->y = yDepart;
@@ -38,28 +38,32 @@ Bomberman::Bomberman(int xDepart,int  yDepart) : Personnage(x,y)
 Bomberman::~Bomberman()
 {
 }
+int Bomberman::getNbBombe()
+{
+	return nb_bombes;
+}
 //Setter
 void Bomberman::setNbBombe(int nb) {
 	this->nb_bombes = nb;
 }
 
-//test
+
 void Bomberman::lancerBombe() {
 
 	if (nb_bombes > 0) {
 		niveau.modifierCase(y, x, '8');
-		
-		Bombe bombe = Bombe(x, y);
+
+		Bombe bombe = Bombe(x, y, portee_bombe);
 		bombe.posee = true;
 
 		bombes.push_back(bombe);
 		nb_bombes--;
-	}	
+	}
 }
 
 void Bomberman::declancherExplosion(int nb) {
 	//bombes[nb].exploser();
-	setNbBombe(1);
+	setNbBombe(nb_bombes + 1);
 }
 
 void Bomberman::eraseExplosion(int nb) {
@@ -68,10 +72,10 @@ void Bomberman::eraseExplosion(int nb) {
 }
 
 void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi
-	
+
 	if ((ennemi1.getX() == x && ennemi1.getY() == y) || (ennemi2.getX() == x && ennemi2.getY() == y) || (ennemi3.getX() == x && ennemi3.getY() == y)) {
 		vivant = false;
-	}	
+	}
 }
 
 
