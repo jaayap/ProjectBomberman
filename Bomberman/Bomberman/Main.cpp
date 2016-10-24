@@ -16,6 +16,7 @@ int HAUTEUR_FENETRE = 1046;
 int LARGEUR_FENETRE = 800;
 
 bool enMouvement = false;
+bool KeyDown[256]; // test si une touche est enfoncée
 
 vector<GLuint>	texture; // tableau qui contient nos textures
 
@@ -43,11 +44,8 @@ void LabyAffichage()
 	//glLoadIdentity();
 
 	niveau.dessinerNiveau();
-<<<<<<< HEAD
 //	bomberman.collisionEnnemi();
-=======
 	//bomberman.collisionEnnemi();
->>>>>>> origin/master
 	if (bomberman.vivant) bomberman.dessiner();
 	if (ennemi1.vivant) ennemi1.dessiner();
 	if (ennemi2.vivant) ennemi2.dessiner();
@@ -79,41 +77,48 @@ void TraitementClavier(int key, int x, int y)
 
 	if (key == GLUT_KEY_UP) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+			KeyDown[key] = true;
 			enMouvement = true;
 			bomberman.deplacementHaut();
 		}
 	}
 	if (key == GLUT_KEY_DOWN) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+			KeyDown[key] = true;
 			enMouvement = true;
 			bomberman.deplacementBas();
 		}
 	}
 	if (key == GLUT_KEY_LEFT) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+			KeyDown[key] = true;
 			enMouvement = true;
 			bomberman.deplacementGauche();
 		}
 	}
 	if (key == GLUT_KEY_RIGHT) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+			KeyDown[key] = true;
 			enMouvement = true;
 			bomberman.deplacementDroite();
 		}
 	}
-	if (key != GLUT_KEY_RIGHT && key != GLUT_KEY_LEFT && key != GLUT_KEY_DOWN && key != GLUT_KEY_UP) {
-		enMouvement = false;
-	}
-
 	glFlush();
 }
 
-void TraitementAucuneTouche(unsigned char key, int x, int y) {
-	
+
+
+void TraitementAucuneTouche(int z) {
+	for (int a = 0; a < 256; a++) {
+		if (KeyDown[a] == true) {
+			enMouvement = false;
+			break;
+		}
+	}
+	glutTimerFunc(200, TraitementAucuneTouche, 0);
 }
 
-void TraitementClavierASCII(unsigned char key, int x, int y)
-{
+void TraitementClavierASCII(unsigned char key, int x, int y) {
 	glutPostRedisplay();
 	if (key == 27) {// Escape key
 		glutDestroyWindow(1);
@@ -200,6 +205,12 @@ int LoadGLTextures(string name) //Charge l'image et la convertit en texture
 void main() {
 	srand((unsigned)time(0));
 
+	// Test touche clavier
+	for (int a = 0; a < 256; a++)
+	{
+		KeyDown[a] = false;
+	}
+
 	// Gestion de la fenêtre
 	glutInitWindowPosition(10, 10);
 	glutInitWindowSize(HAUTEUR_FENETRE, LARGEUR_FENETRE);
@@ -211,7 +222,7 @@ void main() {
 	glutReshapeFunc(LabyRedim);
 	glutKeyboardFunc(TraitementClavierASCII);
 	glutSpecialFunc(TraitementClavier);
-	glutKeyboardUpFunc(TraitementAucuneTouche);
+	glutTimerFunc(200, TraitementAucuneTouche, 0);
 	glutTimerFunc(1000, LabyTimerExplosion, 0);
 	glutTimerFunc(500, LabyTimerEnnemi, 0);
 
