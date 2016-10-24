@@ -9,6 +9,7 @@
 #include "Bomberman.h"
 #include "EnnemiAleatoire.h"
 #include "EnnemiAllerRetour.h"
+#include "Animation.h"
 
 using namespace std;
 
@@ -16,7 +17,6 @@ int HAUTEUR_FENETRE = 1046;
 int LARGEUR_FENETRE = 800;
 
 bool enMouvement = false;
-bool KeyDown[256]; // test si une touche est enfoncée
 
 vector<GLuint>	texture; // tableau qui contient nos textures
 
@@ -77,28 +77,24 @@ void TraitementClavier(int key, int x, int y)
 
 	if (key == GLUT_KEY_UP) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
-			KeyDown[key] = true;
 			enMouvement = true;
 			bomberman.deplacementHaut();
 		}
 	}
 	if (key == GLUT_KEY_DOWN) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
-			KeyDown[key] = true;
 			enMouvement = true;
 			bomberman.deplacementBas();
 		}
 	}
 	if (key == GLUT_KEY_LEFT) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
-			KeyDown[key] = true;
 			enMouvement = true;
 			bomberman.deplacementGauche();
 		}
 	}
 	if (key == GLUT_KEY_RIGHT) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
-			KeyDown[key] = true;
 			enMouvement = true;
 			bomberman.deplacementDroite();
 		}
@@ -108,14 +104,10 @@ void TraitementClavier(int key, int x, int y)
 
 
 
-void TraitementAucuneTouche(int z) {
-	for (int a = 0; a < 256; a++) {
-		if (KeyDown[a] == true) {
-			enMouvement = false;
-			break;
-		}
+void TraitementAucuneTouche(int key, int x, int y) {
+	if (key == GLUT_KEY_RIGHT || key == GLUT_KEY_LEFT || key == GLUT_KEY_DOWN || key == GLUT_KEY_UP) {
+		enMouvement = false;
 	}
-	glutTimerFunc(200, TraitementAucuneTouche, 0);
 }
 
 void TraitementClavierASCII(unsigned char key, int x, int y) {
@@ -205,12 +197,6 @@ int LoadGLTextures(string name) //Charge l'image et la convertit en texture
 void main() {
 	srand((unsigned)time(0));
 
-	// Test touche clavier
-	for (int a = 0; a < 256; a++)
-	{
-		KeyDown[a] = false;
-	}
-
 	// Gestion de la fenêtre
 	glutInitWindowPosition(10, 10);
 	glutInitWindowSize(HAUTEUR_FENETRE, LARGEUR_FENETRE);
@@ -222,7 +208,7 @@ void main() {
 	glutReshapeFunc(LabyRedim);
 	glutKeyboardFunc(TraitementClavierASCII);
 	glutSpecialFunc(TraitementClavier);
-	glutTimerFunc(200, TraitementAucuneTouche, 0);
+	glutSpecialUpFunc(TraitementAucuneTouche);
 	glutTimerFunc(1000, LabyTimerExplosion, 0);
 	glutTimerFunc(500, LabyTimerEnnemi, 0);
 
@@ -236,5 +222,3 @@ void main() {
 
 	glutMainLoop();
 }
-
-

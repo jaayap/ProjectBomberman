@@ -13,6 +13,8 @@ int spriteBomberman = 0, valueBomberman = 0;
 int spriteEnnemi1 = 0, valueEnnemi1 = 0;
 int spriteEnnemi2 = 0, valueEnnemi2 = 0;
 
+extern bool enMouvement;
+
 
 void bombeAnimation(int x) {
 	switch (spriteBombe)
@@ -63,40 +65,46 @@ void exploAnimation(int x) {
 }
 
 void BombermanAnimation(int x) {
-	switch (spriteBomberman)
-	{
-	case(0):
-		spriteBomberman = 1;
-		valueBomberman = 0;
-		break;
-	case(1):
-		spriteBomberman = 2;
-		valueBomberman = 1;
-		break;
-	case(2):
-		spriteBomberman = 3;
-		valueBomberman = 2;
-		break;
-	case(3):
-		spriteBomberman = 4;
-		valueBomberman = 3;
-		break;
-	case(4):
-		spriteBomberman = 5;
-		valueBomberman = 4;
-		break;
-	case(5):
-		spriteBomberman = 6;
-		valueBomberman = 5;
-		break;
-	case(6):
-		spriteBomberman = 7;
-		valueBomberman = 6;
-		break;
-	case(7):
+	if (!enMouvement) {
 		spriteBomberman = 0;
-		valueBomberman = 7;
-		break;
+		valueBomberman = 0;
+	}
+	else if(enMouvement) {
+		switch (spriteBomberman)
+		{
+		case(0):
+			spriteBomberman = 1;
+			valueBomberman = 0;
+			break;
+		case(1):
+			spriteBomberman = 2;
+			valueBomberman = 1;
+			break;
+		case(2):
+			spriteBomberman = 3;
+			valueBomberman = 2;
+			break;
+		case(3):
+			spriteBomberman = 4;
+			valueBomberman = 3;
+			break;
+		case(4):
+			spriteBomberman = 5;
+			valueBomberman = 4;
+			break;
+		case(5):
+			spriteBomberman = 6;
+			valueBomberman = 5;
+			break;
+		case(6):
+			spriteBomberman = 7;
+			valueBomberman = 6;
+			break;
+		case(7):
+			spriteBomberman = 0;
+			valueBomberman = 7;
+			break;
+		}
 	}
 
 	glutTimerFunc(100, BombermanAnimation, 0);
