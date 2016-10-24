@@ -109,7 +109,7 @@ void TraitementClavier(int key, int x, int y)
 }
 
 void TraitementAucuneTouche(unsigned char key, int x, int y) {
-	enMouvement = false;
+	
 }
 
 void TraitementClavierASCII(unsigned char key, int x, int y)
