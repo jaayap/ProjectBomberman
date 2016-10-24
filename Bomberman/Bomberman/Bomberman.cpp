@@ -5,9 +5,14 @@
 #include "SOIL/SOIL.h"
 #include "Bomberman.h"
 #include "Niveau.h"
+#include "Animation.h"
 //#include "Main.cpp"
 
 using namespace std;
+
+float coordBomb[11] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f, 0.33333f, 0.66666f };
+
+extern int valueBomberman;
 
 extern vector<GLuint> texture;
 extern Niveau niveau;
@@ -53,17 +58,16 @@ void Bomberman::eraseExplosion(int nb) {
 }
 
 void Bomberman::dessiner() {
-	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	glBindTexture(GL_TEXTURE_2D, texture[3]);
 	glBegin(GL_QUADS);
 	glColor3d(1.0, 1.0, 1.0);
-	glTexCoord2f(0.0f, 0.0f); glVertex2d(x + offsetX + 1, y + offsetY + 1);//top left
-	glTexCoord2f(1.0f, 0.0f); glVertex2d(x + offsetX, y + offsetY + 1);//bottom left	
-	glTexCoord2f(1.0f, 1.0f); glVertex2d(x + offsetX, y + offsetY);//bottom right	
-	glTexCoord2f(0.0f, 1.0f); glVertex2d(x + offsetX + 1, y + offsetY);	//top right	
+	glTexCoord2f(coordBomb[0 + valueBomberman], coordBomb[10]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
+	glTexCoord2f(coordBomb[1 + valueBomberman], coordBomb[10]); glVertex2d(x + offsetX, y + offsetY + 1);
+	glTexCoord2f(coordBomb[1 + valueBomberman], coordBomb[8]); glVertex2d(x + offsetX, y + offsetY - 0.5);
+	glTexCoord2f(coordBomb[0 + valueBomberman], coordBomb[8]); glVertex2d(x + offsetX + 1, y + offsetY - 0.5);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);

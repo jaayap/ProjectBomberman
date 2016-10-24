@@ -1,13 +1,19 @@
 #include "GL/glut.h"
 #include "SOIL/SOIL.h"
-#include<iostream>
+#include <iostream>
 #include "Niveau.h"
 #include "EnnemiAllerRetour.h"
-
+#include "Animation.h"
+#include <vector>
 
 using namespace std;
 
+float coordEnnemi[11] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f, 0.33333f, 0.66666f };
+
+extern int valueEnnemi1;
+
 extern Niveau niveau;
+extern vector<GLuint> texture;
 
 EnnemiAllerRetour::EnnemiAllerRetour(int x,int y,int direction, bool traverse) : Personnage(x, y)
 {
@@ -24,13 +30,19 @@ EnnemiAllerRetour::~EnnemiAllerRetour()
 
 
 void EnnemiAllerRetour::dessiner() {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
 	glBegin(GL_QUADS);
-	glColor3d(0, 0, 0.501961);
-	glTexCoord2f(0.0f, 0.0f); glVertex2d(x + 1 + offsetX, y + 1 + offsetY);//top left
-	glTexCoord2f(1.0f, 0.0f); glVertex2d(x + 1 + offsetX, y + offsetY);//bottom left	
-	glTexCoord2f(1.0f, 1.0f); glVertex2d(x + offsetX, y + offsetY);//bottom right	
-	glTexCoord2f(0.0f, 1.0f); glVertex2d(x + offsetX, y + 1 + offsetY);	//top right	
+	glColor3d(1.0, 1.0, 1.0);
+	glTexCoord2f(coordEnnemi[2 + valueEnnemi1], coordEnnemi[0]); glVertex2d(x + 1 + offsetX, y + 1 + offsetY);
+	glTexCoord2f(coordEnnemi[2 + valueEnnemi1], coordEnnemi[9]); glVertex2d(x + 1 + offsetX, y + offsetY - 0.5);
+	glTexCoord2f(coordEnnemi[0 + valueEnnemi1], coordEnnemi[9]); glVertex2d(x + offsetX, y + offsetY - 0.5);
+	glTexCoord2f(coordEnnemi[0 + valueEnnemi1], coordEnnemi[0]); glVertex2d(x + offsetX, y + 1 + offsetY);
 	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
 }
 
 

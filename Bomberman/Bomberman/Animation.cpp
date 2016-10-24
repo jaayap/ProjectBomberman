@@ -9,7 +9,8 @@ using namespace std;
 
 int spriteBombe = 0, valueBombe = 0;
 int spriteExplo = 0, valueExplo = 0;
-int spriteMur = 0, valueMur = 0;
+int spriteBomberman = 0, valueBomberman = 0;
+int spriteEnnemi1 = 0, valueEnnemi1 = 0;
 
 
 void bombeAnimation(int x) {
@@ -60,16 +61,77 @@ void exploAnimation(int x) {
 	glutTimerFunc(100, exploAnimation, 0);
 }
 
-void MurAnimation(int x) {
+void BombermanAnimation(int x) {
+	switch (spriteBomberman)
+	{
+	case(0):
+		spriteBomberman = 1;
+		valueBomberman = 0;
+		break;
+	case(1):
+		spriteBomberman = 2;
+		valueBomberman = 1;
+		break;
+	case(2):
+		spriteBomberman = 3;
+		valueBomberman = 2;
+		break;
+	case(3):
+		spriteBomberman = 4;
+		valueBomberman = 3;
+		break;
+	case(4):
+		spriteBomberman = 5;
+		valueBomberman = 4;
+		break;
+	case(5):
+		spriteBomberman = 6;
+		valueBomberman = 5;
+		break;
+	case(6):
+		spriteBomberman = 7;
+		valueBomberman = 6;
+		break;
+	case(7):
+		spriteBomberman = 0;
+		valueBomberman = 7;
+		break;
+	}
 
+	glutTimerFunc(200, BombermanAnimation, 0);
+}
+
+void ennemi1Animation(int x) {
+	switch (spriteEnnemi1)
+	{
+	case(0):
+		spriteEnnemi1 = 1;
+		valueEnnemi1 = 0;
+		break;
+	case(1):
+		spriteEnnemi1 = 2;
+		valueEnnemi1 = 2;
+		break;
+	case(2):
+		spriteEnnemi1 = 3;
+		valueEnnemi1 = 4;
+		break;
+	case(3):
+		spriteEnnemi1 = 0;
+		valueEnnemi1 = 6;
+		break;
+	}
+
+	glutTimerFunc(20, ennemi1Animation, 0);
 }
 
 
 Animation::Animation()
 {
-	glutTimerFunc(100, bombeAnimation, 0);
+	glutTimerFunc(200, bombeAnimation, 0);
 	glutTimerFunc(100, exploAnimation, 0);
-	glutTimerFunc(100, MurAnimation, 0);
+	glutTimerFunc(100, BombermanAnimation, 0);
+	glutTimerFunc(20, ennemi1Animation, 0);
 }
 
 

@@ -190,6 +190,7 @@ void main() {
 	/* 1 */ LoadGLTextures("images/Niveaux.png");
 	/* 2 */ LoadGLTextures("images/Bombes&Bonus.png");
 	/* 3 */ LoadGLTextures("images/Bomberman.png");
+	/* 4 */ LoadGLTextures("images/Ennemis.png");
 
 	glutMainLoop();
 }
