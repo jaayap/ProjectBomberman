@@ -15,6 +15,8 @@ using namespace std;
 int HAUTEUR_FENETRE = 1046;
 int LARGEUR_FENETRE = 800;
 
+bool enMouvement = false;
+
 vector<GLuint>	texture; // tableau qui contient nos textures
 
 Niveau niveau;
@@ -41,7 +43,11 @@ void LabyAffichage()
 	//glLoadIdentity();
 
 	niveau.dessinerNiveau();
+<<<<<<< HEAD
 //	bomberman.collisionEnnemi();
+=======
+	//bomberman.collisionEnnemi();
+>>>>>>> origin/master
 	if (bomberman.vivant) bomberman.dessiner();
 	if (ennemi1.vivant) ennemi1.dessiner();
 	if (ennemi2.vivant) ennemi2.dessiner();
@@ -52,6 +58,7 @@ void LabyAffichage()
 			bomberman.bombes[i].dessinerExplosion();
 		}
 	}
+	cout << enMouvement << endl;
 
 	glFlush();
 }
@@ -72,24 +79,30 @@ void TraitementClavier(int key, int x, int y)
 
 	if (key == GLUT_KEY_UP) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+			enMouvement = true;
 			bomberman.deplacementHaut();
 		}
-		
 	}
 	if (key == GLUT_KEY_DOWN) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+			enMouvement = true;
 			bomberman.deplacementBas();
 		}
 	}
 	if (key == GLUT_KEY_LEFT) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+			enMouvement = true;
 			bomberman.deplacementGauche();
 		}
 	}
 	if (key == GLUT_KEY_RIGHT) {
 		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+			enMouvement = true;
 			bomberman.deplacementDroite();
 		}
+	}
+	if (key != GLUT_KEY_RIGHT && key != GLUT_KEY_LEFT && key != GLUT_KEY_DOWN && key != GLUT_KEY_UP) {
+		enMouvement = false;
 	}
 
 	glFlush();
