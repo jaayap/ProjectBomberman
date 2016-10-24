@@ -126,42 +126,12 @@ void Bombe::exploser() {
 		}
 }
 
-/*
+
 void Bombe::effacerExplosion() {
-	for (int i = 1; i < portee - 1; i++) {
-		//dessin de l'explosion : 4 milieu de la bombe, 5 suite, 6 fin explosion
-
-		if (niveau.caseLibre(y, x - i) && !niveau.caseMurDestructible(y,x-i)) { //A gauche
-			niveau.modifierCase(y, x - i, '0');
-		}
-		if (niveau.caseLibre(y, x + i) && !niveau.caseMurDestructible(y, x + i)) { //A droite
-			niveau.modifierCase(y, x + i, '0');
-		}
-		if (niveau.caseLibre(y - i, x) && !niveau.caseMurDestructible(y - i, x)) { //En haut
-			niveau.modifierCase(y - i, x, '0');
-		}
-		if (niveau.caseLibre(y + i, x) && !niveau.caseMurDestructible(y + i,x)) { //En bas
-			niveau.modifierCase(y + i, x, '0');
-		}
-	}
-
-	//extremité de l'explosion
-	if (niveau.caseLibre(y, x - portee + 1) && !niveau.caseMurDestructible(y, x - portee + 1)) { //A gauche
-		niveau.modifierCase(y, x - portee + 1, '0');
-	}
-	if (niveau.caseLibre(y, x + portee - 1) && !niveau.caseMurDestructible(y, x + portee - 1)) { //A droite
-		niveau.modifierCase(y, x + portee - 1, '0');
-	}
-	if (niveau.caseLibre(y - portee + 1, x) && !niveau.caseMurDestructible(y - portee + 1, x)) { //En haut
-		niveau.modifierCase(y - portee + 1, x, '0');
-	}
-	if (niveau.caseLibre(y + portee - 1, x) && !niveau.caseMurDestructible(y + portee -1, x)) { //En bas
-		niveau.modifierCase(y + portee - 1, x, '0');
-	}
 
 	niveau.modifierCase(y, x, '0');
 
-}*/
+}
 
 void Bombe::dessinerExplosion() {
 
