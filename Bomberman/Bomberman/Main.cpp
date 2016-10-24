@@ -123,8 +123,20 @@ void LabyTimerExplosion(int z) {
 			}
 
 			if (bomberman.bombes[i].Timer > 7) {//effacer explosion		
+				// Efface la trace de l'explosion et réinitialise les booléens
 				bomberman.bombes[i].explosion = false;
-				bomberman.eraseExplosion(i);
+			
+				bomberman.eraseExplosion(i); 
+				
+				//on efface les murs détruits
+				for (int i = 0; i < 13; i++) {
+					for (int j = 0; j < 17; j++) {
+						if (niveau.getCase(i, j) == '3') {
+							niveau.modifierCase(i, j, '0');
+						}
+					}
+				}
+
 				
 			}
 			glutPostRedisplay();//important !
@@ -190,7 +202,7 @@ void main() {
 	/* 1 */ LoadGLTextures("images/Niveaux.png");
 	/* 2 */ LoadGLTextures("images/Bombes&Bonus.png");
 	/* 3 */ LoadGLTextures("images/Bomberman.png");
-	/* 4 */ LoadGLTextures("images/Ennemis.png");
+	/* 4 */ LoadGLTextures("images/EnnemiAllerRetour.png");
 
 	glutMainLoop();
 }

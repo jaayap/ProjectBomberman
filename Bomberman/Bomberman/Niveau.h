@@ -13,4 +13,5 @@ public:
 	bool caseLibre(int x,int y);
 	bool caseMurDestructible(int x, int y);
 	void modifierCase(int x, int y, char valeur);
+	char getCase(int x, int y);
 };

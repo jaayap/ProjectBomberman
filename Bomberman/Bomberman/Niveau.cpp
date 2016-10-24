@@ -102,7 +102,7 @@ void Niveau::dessinerNiveau() {
 
 			//Affichage des bombes.
 			if (matrice[i][j] == '8') {
-				cout << coord[7] << endl;
+			//	cout << coord[7] << endl;
 				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D, texture[2]);
 				glBegin(GL_QUADS);
@@ -134,4 +134,8 @@ bool Niveau::caseMurDestructible(int x,int y) {
 
 void Niveau::modifierCase(int x, int y, char valeur) {
 	matrice[x][y] = valeur;
+}
+
+char Niveau::getCase(int x, int y) {
+	return matrice[x][y];
 }
