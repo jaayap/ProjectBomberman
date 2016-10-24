@@ -11,6 +11,7 @@ int spriteBombe = 0, valueBombe = 0;
 int spriteExplo = 0, valueExplo = 0;
 int spriteBomberman = 0, valueBomberman = 0;
 int spriteEnnemi1 = 0, valueEnnemi1 = 0;
+int spriteEnnemi2 = 0, valueEnnemi2 = 0;
 
 
 void bombeAnimation(int x) {
@@ -125,6 +126,78 @@ void ennemi1Animation(int x) {
 	glutTimerFunc(20, ennemi1Animation, 0);
 }
 
+void ennemi2Animation(int x) {
+	switch (spriteEnnemi2)
+	{
+	case(0):
+		spriteEnnemi2 = 1;
+		valueEnnemi2 = 0;
+		break;
+	case(1):
+		spriteEnnemi2 = 2;
+		valueEnnemi2 = 1;
+		break;
+	case(2):
+		spriteEnnemi2 = 3;
+		valueEnnemi2 = 2;
+		break;
+	case(3):
+		spriteEnnemi2 = 4;
+		valueEnnemi2 = 3;
+		break;
+	case(4):
+		spriteEnnemi2 = 5;
+		valueEnnemi2 = 4;
+		break;
+	case(5):
+		spriteEnnemi2 = 6;
+		valueEnnemi2 = 5;
+		break;
+	case(6):
+		spriteEnnemi2 = 7;
+		valueEnnemi2 = 6;
+		break;
+	case(7):
+		spriteEnnemi2 = 8;
+		valueEnnemi2 = 7;
+		break;
+	case(8):
+		spriteEnnemi2 = 9;
+		valueEnnemi2 = 8;
+		break;
+	case(9):
+		spriteEnnemi2 = 10;
+		valueEnnemi2 = 9;
+		break;
+	case(10):
+		spriteEnnemi2 = 11;
+		valueEnnemi2 = 10;
+		break;
+	case(11):
+		spriteEnnemi2 = 12;
+		valueEnnemi2 = 11;
+		break;
+	case(12):
+		spriteEnnemi2 = 13;
+		valueEnnemi2 = 12;
+		break;
+	case(13):
+		spriteEnnemi2 = 14;
+		valueEnnemi2 = 13;
+		break;
+	case(14):
+		spriteEnnemi2 = 15;
+		valueEnnemi2 = 14;
+		break;
+	case(15):
+		spriteEnnemi2 = 0;
+		valueEnnemi2 = 15;
+		break;
+	}
+
+	glutTimerFunc(50, ennemi2Animation, 0);
+}
+
 
 Animation::Animation()
 {
@@ -132,6 +205,7 @@ Animation::Animation()
 	glutTimerFunc(100, exploAnimation, 0);
 	glutTimerFunc(100, BombermanAnimation, 0);
 	glutTimerFunc(20, ennemi1Animation, 0);
+	glutTimerFunc(50, ennemi1Animation, 0);
 }
 
 
