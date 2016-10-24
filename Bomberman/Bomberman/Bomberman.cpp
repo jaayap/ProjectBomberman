@@ -10,7 +10,7 @@
 
 using namespace std;
 
-float coordBomb[11] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f, 0.33333f, 0.66666f };
+float coordBomb[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 
 extern int valueBomberman;
 
@@ -64,8 +64,8 @@ void Bomberman::dessiner() {
 	glBindTexture(GL_TEXTURE_2D, texture[3]);
 	glBegin(GL_QUADS);
 	glColor3d(1.0, 1.0, 1.0);
-	glTexCoord2f(coordBomb[0 + valueBomberman], coordBomb[10]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
-	glTexCoord2f(coordBomb[1 + valueBomberman], coordBomb[10]); glVertex2d(x + offsetX, y + offsetY + 1);
+	glTexCoord2f(coordBomb[0 + valueBomberman], coordBomb[6]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
+	glTexCoord2f(coordBomb[1 + valueBomberman], coordBomb[6]); glVertex2d(x + offsetX, y + offsetY + 1);
 	glTexCoord2f(coordBomb[1 + valueBomberman], coordBomb[8]); glVertex2d(x + offsetX, y + offsetY - 0.5);
 	glTexCoord2f(coordBomb[0 + valueBomberman], coordBomb[8]); glVertex2d(x + offsetX + 1, y + offsetY - 0.5);
 	glEnd();
