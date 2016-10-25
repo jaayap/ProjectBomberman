@@ -127,7 +127,7 @@ void Bombe::dessinerExplosionHaut() {
 
 			//Test s'il on detruit un bonus 
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
-				if (x == niveau.bonusTab[k].getX() && y - i == niveau.bonusTab[k].getY()) {
+				if (x == niveau.bonusTab[k].getX() && y - i == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 					niveau.bonusTab[k].setVisible(false);
 					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 				}
@@ -166,7 +166,7 @@ void Bombe::dessinerExplosionHaut() {
 
 		//Test s'il on detruit un bonus 
 		for (int k = 0; k < size(niveau.bonusTab); k++) {
-			if (x == niveau.bonusTab[k].getX() && y - portee + 1 == niveau.bonusTab[k].getY()) {
+			if (x == niveau.bonusTab[k].getX() && y - portee + 1 == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 				niveau.bonusTab[k].setVisible(false);
 				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 			}
@@ -210,7 +210,7 @@ void Bombe::dessinerExplosionBas() {
 
 			//Test s'il on detruit un bonus 
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
-				if (x == niveau.bonusTab[k].getX() && y + i == niveau.bonusTab[k].getY()) {
+				if (x == niveau.bonusTab[k].getX() && y + i == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 					niveau.bonusTab[k].setVisible(false);
 					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 				}
@@ -244,7 +244,7 @@ void Bombe::dessinerExplosionBas() {
 
 		//Test s'il on detruit un bonus 
 		for (int k = 0; k < size(niveau.bonusTab); k++) {
-			if (x == niveau.bonusTab[k].getX() && y + portee - 1 == niveau.bonusTab[k].getY()) {
+			if (x == niveau.bonusTab[k].getX() && y + portee - 1 == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 				niveau.bonusTab[k].setVisible(false);
 				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 			}
@@ -287,7 +287,7 @@ void Bombe::dessinerExplosionGauche() {
 
 			//Test s'il on detruit un bonus 
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
-				if (x - 1 == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY()) {
+				if (x - 1 == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 					niveau.bonusTab[k].setVisible(false);
 					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 				}
@@ -322,7 +322,7 @@ void Bombe::dessinerExplosionGauche() {
 
 		//Test s'il on detruit un bonus 
 		for (int k = 0; k < size(niveau.bonusTab); k++) {
-			if (x  - portee + 1 == niveau.bonusTab[k].getX() && y== niveau.bonusTab[k].getY()) {
+			if (x  - portee + 1 == niveau.bonusTab[k].getX() && y== niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 				niveau.bonusTab[k].setVisible(false);
 				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 			}
@@ -364,7 +364,7 @@ void Bombe::dessinerExplosionDroite() {
 
 			//Test s'il on detruit un bonus 
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
-				if (x + i == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY()) {
+				if (x + i == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 					niveau.bonusTab[k].setVisible(false);
 					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 				}
@@ -398,7 +398,7 @@ void Bombe::dessinerExplosionDroite() {
 
 		//Test s'il on detruit un bonus 
 		for (int k = 0; k < size(niveau.bonusTab); k++) {
-			if (x + portee - 1== niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY()) {
+			if (x + portee - 1== niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 				niveau.bonusTab[k].setVisible(false);
 				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 			}

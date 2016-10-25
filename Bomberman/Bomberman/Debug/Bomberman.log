@@ -1,3 +1,12 @@
-﻿  Bonus.cpp
-  Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.exe
-  Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.pdb (Partial PDB)
+﻿  Bombe.cpp
+c:\users\jasmi\onedrive\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(83): warning C4018: '<': signed/unsigned mismatch
+c:\users\jasmi\onedrive\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(129): warning C4018: '<': signed/unsigned mismatch
+c:\users\jasmi\onedrive\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(168): warning C4018: '<': signed/unsigned mismatch
+c:\users\jasmi\onedrive\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(212): warning C4018: '<': signed/unsigned mismatch
+c:\users\jasmi\onedrive\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(246): warning C4018: '<': signed/unsigned mismatch
+c:\users\jasmi\onedrive\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(289): warning C4018: '<': signed/unsigned mismatch
+c:\users\jasmi\onedrive\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(324): warning C4018: '<': signed/unsigned mismatch
+c:\users\jasmi\onedrive\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(366): warning C4018: '<': signed/unsigned mismatch
+c:\users\jasmi\onedrive\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(400): warning C4018: '<': signed/unsigned mismatch
+  Bomberman.vcxproj -> C:\Users\jasmi\OneDrive\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.exe
+  Bomberman.vcxproj -> C:\Users\jasmi\OneDrive\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.pdb (Partial PDB)
