@@ -146,7 +146,6 @@ void Niveau::dessinerNiveau() {
 			for (int k = 0; k < size(bonusTab); k++) {
 				if (!caseMurDestructible(j, i) && bonusTab[k].getX() == i && bonusTab[k].getY() == j && !bonusTab[k].getUtiliser()) {
 					bonusTab[k].setVisible(true); // si le mur est detruit on affiche le bonus
-					cout << "ici";
 				}
 
 				if (bonusTab[k].getVisible()) {
