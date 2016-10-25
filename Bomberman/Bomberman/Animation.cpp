@@ -248,16 +248,12 @@ void bonusAnimation(int x) {
 		valueBonus = 2;
 		break;
 	case(3):
-		spriteBonus = 4;
-		valueBonus = 3;
-		break;
-	case(4):
 		spriteBonus = 0;
-		valueBonus = 4;
+		valueBonus = 3;
 		break;
 	}
 
-	glutTimerFunc(50, bonusAnimation, 0);
+	glutTimerFunc(80, bonusAnimation, 0);
 }
 
 
@@ -269,7 +265,7 @@ Animation::Animation()
 	glutTimerFunc(100, BombermanAnimation, 0);
 	glutTimerFunc(20, ennemi1Animation, 0);
 	glutTimerFunc(80, ennemi2Animation, 0);
-	glutTimerFunc(50, bonusAnimation, 0);
+	glutTimerFunc(100, bonusAnimation, 0);
 }
 
 
