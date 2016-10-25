@@ -80,13 +80,13 @@ void Bombe::dessinerExplosion() {
 
 void Bombe::dessinerExplosionHaut() {
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y - i, x)) { //En haut
+		if (niveau.caseLibre(y - i, x) && !arretExplosionHaut) { //En haut
 
-			if (niveau.caseMurDestructible(y - i, x)) {
+			if (niveau.caseMurDestructible(y - i, x) ) {
 				niveau.modifierCase(y - i, x, '3');
 				arretExplosionHaut = true;
 			}
-			else if (!arretExplosionHaut ){
+			else {
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				glEnable(GL_TEXTURE_2D);
@@ -146,12 +146,12 @@ void Bombe::dessinerExplosionHaut() {
 void Bombe::dessinerExplosionBas() {
 
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y + i, x)) { //En bas
+		if (niveau.caseLibre(y + i, x) && !arretExplosionBas) { //En bas
 			if (niveau.caseMurDestructible(y + i, x)) {
 				niveau.modifierCase(y + i, x, '3');
 				arretExplosionBas = true;
 			}
-			else if(!arretExplosionBas) {
+			else {
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				glEnable(GL_TEXTURE_2D);
@@ -208,13 +208,13 @@ void Bombe::dessinerExplosionGauche() {
 
 
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y, x - i)) { //A gauche
+		if (niveau.caseLibre(y, x - i) && !arretExplosionGauche) { //A gauche
 
 			if (niveau.caseMurDestructible(y, x - i)) {
 				niveau.modifierCase(y, x - i, '3');
 				arretExplosionGauche = true;
 			}
-			else if (!arretExplosionGauche) {
+			else {
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				glEnable(GL_TEXTURE_2D);
@@ -270,13 +270,13 @@ void Bombe::dessinerExplosionGauche() {
 void Bombe::dessinerExplosionDroite() {
 
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y, x + i)) { //A droite
+		if (niveau.caseLibre(y, x + i)&&  !arretExplosionDroite) { //A droite
 
 			if (niveau.caseMurDestructible(y, x + i)) {
 				niveau.modifierCase(y, x + i, '3');
 				arretExplosionDroite = true;
 			}
-			else if (!arretExplosionDroite){
+			else {
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				glEnable(GL_TEXTURE_2D);
