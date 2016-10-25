@@ -39,8 +39,7 @@ void TraitementClavierASCII(unsigned char key, int x, int y);
 int  LoadGLTextures(string name);
 
 
-void LabyAffichage()
-{
+void LabyAffichage() {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -94,12 +93,6 @@ void TraitementClavier(int key, int x, int y)
 	}
 	if (key == GLUT_KEY_RIGHT) {
 		droite = true;
-	}
-	if (key == GLUT_KEY_F1) {
-		TableEA.pop_back();
-	}
-	if (key == GLUT_KEY_F2) {
-		TableEAR.pop_back();
 	}
 
 	glFlush();
@@ -307,6 +300,7 @@ void main() {
 	/* 4 */ LoadGLTextures("images/EnnemiAllerRetour.png");
 	/* 5 */ LoadGLTextures("images/EnnemiAleatoire.png");
 	/* 6 */ LoadGLTextures("images/Sortie.png");
+	/* 7 */ LoadGLTextures("images/Time&Player&Score.png");
 
 	glutMainLoop();
 }
