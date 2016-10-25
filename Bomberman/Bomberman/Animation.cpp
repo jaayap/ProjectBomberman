@@ -9,6 +9,7 @@ using namespace std;
 
 int spriteBombe = 0, valueBombe = 0;
 int spriteExplo = 0, valueExplo = 0;
+int spriteMur = 0, valueMur = 0;
 int spriteBomberman = 0, valueBomberman = 0;
 int spriteEnnemi1 = 0, valueEnnemi1 = 0;
 int spriteEnnemi2 = 0, valueEnnemi2 = 0;
@@ -62,6 +63,30 @@ void exploAnimation(int x) {
 	}
 
 	glutTimerFunc(100, exploAnimation, 0);
+}
+
+void murAnimation(int x) {
+	switch (spriteMur)
+	{
+	case(0):
+		spriteMur = 1;
+		valueMur = 0;
+		break;
+	case(1):
+		spriteMur = 2;
+		valueMur = 2;
+		break;
+	case(2):
+		spriteMur = 3;
+		valueMur = 4;
+		break;
+	case(3):
+		spriteMur = 0;
+		valueMur = 6;
+		break;
+	}
+
+	glutTimerFunc(125, murAnimation, 0);
 }
 
 void BombermanAnimation(int x) {
@@ -211,6 +236,7 @@ Animation::Animation()
 {
 	glutTimerFunc(200, bombeAnimation, 0);
 	glutTimerFunc(100, exploAnimation, 0);
+	glutTimerFunc(125, murAnimation, 0);
 	glutTimerFunc(100, BombermanAnimation, 0);
 	glutTimerFunc(20, ennemi1Animation, 0);
 	glutTimerFunc(80, ennemi2Animation, 0);

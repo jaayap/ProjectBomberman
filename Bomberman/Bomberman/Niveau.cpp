@@ -12,10 +12,12 @@
 using namespace std;
 
 float coord[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
+int testAleatoire;
+int maxMur = 0;
 
 extern vector<GLuint> texture;
 
-extern int valueBombe, valueExplo;
+extern int valueBombe, valueExplo, valueMur;
 
 
 
@@ -82,16 +84,38 @@ void Niveau::dessinerNiveau() {
 				glBindTexture(GL_TEXTURE_2D, texture[1]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.25f, 0.0f); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(0.25f, 0.5f); glVertex2d(j + 1, i);
-				glTexCoord2f(0.0f, 0.5f); glVertex2d(j, i);
-				glTexCoord2f(0.0f, 0.0f); glVertex2d(j, i + 1);
+				glTexCoord2f(coord[2 + valueMur], 0.0f); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(coord[2 + valueMur], 0.5f); glVertex2d(j + 1, i);
+				glTexCoord2f(coord[0 + valueMur], 0.5f); glVertex2d(j, i);
+				glTexCoord2f(coord[0 + valueMur], 0.0f); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			}
 
 			//Affichage de l'herbe.
 			if (matrice[i][j] == '0') {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, texture[1]);
+				glBegin(GL_QUADS);
+				glColor3d(1.0, 1.0, 1.0);
+				glTexCoord2f(0.25f, 0.5f); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(0.25f, 1.0f); glVertex2d(j + 1, i);
+				glTexCoord2f(0.0f, 1.0f); glVertex2d(j, i);
+				glTexCoord2f(0.0f, 0.5f); glVertex2d(j, i + 1);
+				glEnd();
+				glDisable(GL_TEXTURE_2D);
+
+				// apparition aléatoire de murs destructibles
+				testAleatoire = (rand() % 2 + 1);
+				if (testAleatoire == 1 && maxMur < 50) {
+					matrice[i][j] = '2';
+					maxMur++;
+					cout << maxMur << endl;;
+				}
+			}
+
+			//Affichage de l'herbe SPAWN.
+			if (matrice[i][j] == '4') {
 				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D, texture[1]);
 				glBegin(GL_QUADS);
