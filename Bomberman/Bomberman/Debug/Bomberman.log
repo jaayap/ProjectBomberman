@@ -1,8 +1,20 @@
-﻿  Niveau.cpp
-c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\niveau.cpp(175): warning C4018: '<' : incompatibilité signed/unsigned
-  Main.cpp
-c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(62): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(173): warning C4018: '<' : incompatibilité signed/unsigned
-  Génération de code en cours...
-  Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.exe
-  Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.pdb (Partial PDB)
+﻿  Bombe.cpp
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(97): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(140): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(141): error C2678: '==' binaire : aucun opérateur trouvé qui accepte un opérande de partie gauche de type 'EnnemiAleatoire' (ou il n'existe pas de conversion acceptable)
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\system_error(389): note: est peut-être 'bool std::operator ==(const std::error_condition &,const std::error_condition &) noexcept'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\system_error(381): note: ou       'bool std::operator ==(const std::error_condition &,const std::error_code &) noexcept'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\system_error(373): note: ou       'bool std::operator ==(const std::error_code &,const std::error_condition &) noexcept'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\system_error(365): note: ou       'bool std::operator ==(const std::error_code &,const std::error_code &) noexcept'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\exception(339): note: ou       'bool std::operator ==(const std::exception_ptr &,std::nullptr_t) throw()'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\exception(334): note: ou       'bool std::operator ==(std::nullptr_t,const std::exception_ptr &) throw()'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\exception(329): note: ou       'bool std::operator ==(const std::exception_ptr &,const std::exception_ptr &) throw()'
+  c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(141): note: lors de la tentative de mise en correspondance de la liste des arguments '(EnnemiAleatoire, EnnemiAleatoire)'
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(157): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(205): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(257): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(301): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(353): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(397): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(448): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bombe.cpp(491): warning C4018: '<' : incompatibilité signed/unsigned

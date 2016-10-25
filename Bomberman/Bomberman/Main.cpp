@@ -64,7 +64,6 @@ void LabyAffichage()
 			bomberman.bombes[i].dessinerExplosion();
 		}
 	}
-	cout << enMouvement << endl;
 
 	glFlush();
 }
@@ -247,14 +246,11 @@ void tableEnnemis() {
 
 void detecteEnnemis(int z) {
 	if (size(TableEA) == 0 && size(TableEAR) == 0) {
-		cout << "victoire" << endl;
 		victoire = true;
 		return;
 	}
 
 	else {
-		cout << "toto" << size(TableEA) << endl;
-		cout << "titi" << size(TableEAR) << endl;
 		glutTimerFunc(100, detecteEnnemis, 0);
 	}
 }

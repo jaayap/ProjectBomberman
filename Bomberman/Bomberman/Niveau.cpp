@@ -110,7 +110,6 @@ void Niveau::dessinerNiveau() {
 				if (testAleatoire == 1 && maxMur < 50) {
 					matrice[i][j] = '2';
 					maxMur++;
-					//cout << maxMur << endl;;
 				}
 			}
 
