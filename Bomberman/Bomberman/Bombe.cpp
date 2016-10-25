@@ -7,6 +7,7 @@
 #include <vector>
 #include "EnnemiAleatoire.h"
 #include "EnnemiAllerRetour.h"
+#include "Animation.h"
 
 using namespace std; 
 
@@ -16,6 +17,9 @@ extern EnnemiAleatoire ennemi1;
 extern EnnemiAllerRetour ennemi2;
 extern EnnemiAllerRetour ennemi3;
 extern vector<GLuint> texture;
+extern int valueExplo;
+
+float coordExplo[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 
 bool arretExplosionHaut = false;
 bool arretExplosionBas = false;
@@ -60,10 +64,10 @@ void Bombe::dessinerExplosion() {
 	glBindTexture(GL_TEXTURE_2D, texture[2]);
 	glBegin(GL_QUADS);
 	glColor3d(1.0, 1.0, 1.0);
-	glTexCoord2f(0.25f, 0.75f); glVertex2d(x + 1, y + 1);
-	glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y);
-	glTexCoord2f(0.0f, 0.875f); glVertex2d(x, y);
-	glTexCoord2f(0.0f, 0.75f); glVertex2d(x, y + 1);
+	glTexCoord2f(0.25f, coordExplo[6 - valueExplo]); glVertex2d(x + 1, y + 1);
+	glTexCoord2f(0.25f, coordExplo[7 - valueExplo]); glVertex2d(x + 1, y);
+	glTexCoord2f(0.0f, coordExplo[7 - valueExplo]); glVertex2d(x, y);
+	glTexCoord2f(0.0f, coordExplo[6 - valueExplo]); glVertex2d(x, y + 1);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
@@ -89,10 +93,10 @@ void Bombe::dessinerExplosionHaut() {
 				glBindTexture(GL_TEXTURE_2D, texture[2]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y + 1 - i);
-				glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y - i);
-				glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y - i);
-				glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 1 - i);
+				glTexCoord2f(0.25f, coordExplo[7 - valueExplo]); glVertex2d(x + 1, y + 1 - i);
+				glTexCoord2f(0.5f, coordExplo[7 - valueExplo]);  glVertex2d(x + 1, y - i);
+				glTexCoord2f(0.25f, coordExplo[6 - valueExplo]);  glVertex2d(x, y - i);
+				glTexCoord2f(0.5f, coordExplo[6 - valueExplo]); glVertex2d(x, y + 1 - i);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 				glDisable(GL_BLEND);
@@ -118,10 +122,10 @@ void Bombe::dessinerExplosionHaut() {
 			glBindTexture(GL_TEXTURE_2D, texture[2]);
 			glBegin(GL_QUADS);
 			glColor3d(1.0, 1.0, 1.0);
-			glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1, y + 1 - portee + 1);
-			glTexCoord2f(0.75f, 0.875f); glVertex2d(x + 1, y - portee + 1);
-			glTexCoord2f(0.75f, 0.75f); glVertex2d(x, y - portee + 1);
-			glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 1 - portee + 1);
+			glTexCoord2f(0.5f, coordExplo[7 - valueExplo]); glVertex2d(x + 1, y + 1 - portee + 1);
+			glTexCoord2f(0.75f, coordExplo[7 - valueExplo]); glVertex2d(x + 1, y - portee + 1);
+			glTexCoord2f(0.75f, coordExplo[6 - valueExplo]); glVertex2d(x, y - portee + 1);
+			glTexCoord2f(0.5f, coordExplo[6 - valueExplo]); glVertex2d(x, y + 1 - portee + 1);
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
 			glDisable(GL_BLEND);
@@ -154,10 +158,10 @@ void Bombe::dessinerExplosionBas() {
 				glBindTexture(GL_TEXTURE_2D, texture[2]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y + 1 + i);
-				glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y + i);
-				glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y + i);
-				glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 1 + i);
+				glTexCoord2f(0.25f, coordExplo[7 - valueExplo]); glVertex2d(x + 1, y + 1 + i);
+				glTexCoord2f(0.5f, coordExplo[7 - valueExplo]);  glVertex2d(x + 1, y + i);
+				glTexCoord2f(0.25f, coordExplo[6 - valueExplo]);  glVertex2d(x, y + i);
+				glTexCoord2f(0.5f, coordExplo[6 - valueExplo]); glVertex2d(x, y + 1 + i);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 				glDisable(GL_BLEND);
@@ -182,10 +186,10 @@ void Bombe::dessinerExplosionBas() {
 			glBindTexture(GL_TEXTURE_2D, texture[2]);
 			glBegin(GL_QUADS);
 			glColor3d(1.0, 1.0, 1.0);
-			glTexCoord2f(0.75f, 0.875f); glVertex2d(x + 1, y + 1 + portee - 1);
-			glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1, y + portee - 1);
-			glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + portee - 1);
-			glTexCoord2f(0.75f, 0.75f); glVertex2d(x, y + 1 + portee - 1);
+			glTexCoord2f(0.75f, coordExplo[7 - valueExplo]); glVertex2d(x + 1, y + 1 + portee - 1);
+			glTexCoord2f(0.5f, coordExplo[7 - valueExplo]); glVertex2d(x + 1, y + portee - 1);
+			glTexCoord2f(0.5f, coordExplo[6 - valueExplo]); glVertex2d(x, y + portee - 1);
+			glTexCoord2f(0.75f, coordExplo[6 - valueExplo]); glVertex2d(x, y + 1 + portee - 1);
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
 			glDisable(GL_BLEND);
@@ -217,10 +221,10 @@ void Bombe::dessinerExplosionGauche() {
 				glBindTexture(GL_TEXTURE_2D, texture[2]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.5f, 0.75f); glVertex2d(x + 1 - i, y + 1);
-				glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1 - i, y);
-				glTexCoord2f(0.25f, 0.875f); glVertex2d(x - i, y);
-				glTexCoord2f(0.25f, 0.75f); glVertex2d(x - i, y + 1);
+				glTexCoord2f(0.5f, coordExplo[6 - valueExplo]); glVertex2d(x + 1 - i, y + 1);
+				glTexCoord2f(0.5f, coordExplo[7 - valueExplo]); glVertex2d(x + 1 - i, y);
+				glTexCoord2f(0.25f, coordExplo[7 - valueExplo]); glVertex2d(x - i, y);
+				glTexCoord2f(0.25f, coordExplo[6 - valueExplo]); glVertex2d(x - i, y + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);	
 				glDisable(GL_BLEND);
@@ -245,10 +249,10 @@ void Bombe::dessinerExplosionGauche() {
 			glBindTexture(GL_TEXTURE_2D, texture[2]);
 			glBegin(GL_QUADS);
 			glColor3d(1.0, 1.0, 1.0);
-			glTexCoord2f(0.5f, 0.75f);  glVertex2d(x + 1 - portee + 1, y + 1);
-			glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1 - portee + 1, y);
-			glTexCoord2f(0.75f, 0.875f); glVertex2d(x - portee + 1, y);
-			glTexCoord2f(0.75f, 0.75f); glVertex2d(x - portee + 1, y + 1);
+			glTexCoord2f(0.5f, coordExplo[6 - valueExplo]);  glVertex2d(x + 1 - portee + 1, y + 1);
+			glTexCoord2f(0.5f, coordExplo[7 - valueExplo]); glVertex2d(x + 1 - portee + 1, y);
+			glTexCoord2f(0.75f, coordExplo[7 - valueExplo]); glVertex2d(x - portee + 1, y);
+			glTexCoord2f(0.75f, coordExplo[6 - valueExplo]); glVertex2d(x - portee + 1, y + 1);
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
 			glDisable(GL_BLEND);
@@ -279,10 +283,10 @@ void Bombe::dessinerExplosionDroite() {
 				glBindTexture(GL_TEXTURE_2D, texture[2]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.5f, 0.75f); glVertex2d(x + 1 + i, y + 1);
-				glTexCoord2f(0.5f, 0.875f); glVertex2d(x + 1 + i, y);
-				glTexCoord2f(0.25f, 0.875f); glVertex2d(x + i, y);
-				glTexCoord2f(0.25f, 0.75f); glVertex2d(x + i, y + 1);
+				glTexCoord2f(0.5f, coordExplo[6 - valueExplo]); glVertex2d(x + 1 + i, y + 1);
+				glTexCoord2f(0.5f, coordExplo[7 - valueExplo]); glVertex2d(x + 1 + i, y);
+				glTexCoord2f(0.25f, coordExplo[7 - valueExplo]); glVertex2d(x + i, y);
+				glTexCoord2f(0.25f, coordExplo[6 - valueExplo]); glVertex2d(x + i, y + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 				glDisable(GL_BLEND);
@@ -305,10 +309,10 @@ void Bombe::dessinerExplosionDroite() {
 			glBindTexture(GL_TEXTURE_2D, texture[2]);
 			glBegin(GL_QUADS);
 			glColor3d(1.0, 1.0, 1.0);
-			glTexCoord2f(0.75f, 0.75f); glVertex2d(x + 1 + portee - 1, y + 1);
-			glTexCoord2f(0.75f, 0.875f); glVertex2d(x + 1 + portee - 1, y);
-			glTexCoord2f(0.5f, 0.875f); glVertex2d(x + portee - 1, y);
-			glTexCoord2f(0.5f, 0.75f); glVertex2d(x + portee - 1, y + 1);
+			glTexCoord2f(0.75f, coordExplo[6 - valueExplo]); glVertex2d(x + 1 + portee - 1, y + 1);
+			glTexCoord2f(0.75f, coordExplo[7 - valueExplo]); glVertex2d(x + 1 + portee - 1, y);
+			glTexCoord2f(0.5f, coordExplo[7 - valueExplo]); glVertex2d(x + portee - 1, y);
+			glTexCoord2f(0.5f, coordExplo[6 - valueExplo]); glVertex2d(x + portee - 1, y + 1);
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
 			glDisable(GL_BLEND);

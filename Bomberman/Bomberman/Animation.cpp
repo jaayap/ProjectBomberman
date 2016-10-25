@@ -62,7 +62,7 @@ void exploAnimation(int x) {
 		break;
 	}
 
-	glutTimerFunc(100, exploAnimation, 0);
+	glutTimerFunc(110, exploAnimation, 0);
 }
 
 void murAnimation(int x) {
