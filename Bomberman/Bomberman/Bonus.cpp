@@ -15,6 +15,7 @@ Bonus::Bonus(int x, int y,int type)
 	this->y = y;
 	this->type = type;
 	visible = false;
+	utiliser = false;
 }
 
 
@@ -35,6 +36,10 @@ int Bonus::getY()
 bool Bonus::getVisible() {
 	return visible;
 }
+bool Bonus::getUtiliser()
+{
+	return utiliser;
+}
 void Bonus::setVisible(bool valeur)
 {
 	visible = valeur;
@@ -42,7 +47,7 @@ void Bonus::setVisible(bool valeur)
 
 void Bonus::ramasser()
 {
-	cout << "ici";
+	cout << "ici_bonus";
 	switch (type) {
 		//type du bonus : 1 -> + bombes, 2 -> + portee, 3 -> + vitesse
 	case 1:
@@ -56,7 +61,8 @@ void Bonus::ramasser()
 		break;
 	}
 
-	this->visible = false;
+	visible = false;
+	utiliser = true;
 }
 
 void Bonus::dessiner()
