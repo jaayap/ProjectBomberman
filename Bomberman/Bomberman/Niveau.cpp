@@ -76,22 +76,7 @@ void Niveau::dessinerNiveau() {
 				glDisable(GL_TEXTURE_2D);
 			}
 
-			//Affichage des mur destructible.
-			if (matrice[i][j] == '2') {
-				glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, texture[1]);
-				glBegin(GL_QUADS);
-				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.5f, 0.5f); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(0.5f, 1.0f); glVertex2d(j + 1, i);
-				glTexCoord2f(0.25f, 1.0f); glVertex2d(j, i);
-				glTexCoord2f(0.25f, 0.5f); glVertex2d(j, i + 1);
-				glEnd();
-				glDisable(GL_TEXTURE_2D);
-
-		
-				if(!PlacerBonus) definirBonus(i, j); //on place les bonus derriere les mur destructible
-			}
+	
 
 			if (matrice[i][j] == '3') {
 				glEnable(GL_TEXTURE_2D);
@@ -128,6 +113,22 @@ void Niveau::dessinerNiveau() {
 				}
 			}
 
+			//Affichage des mur destructible.
+			if (matrice[i][j] == '2') {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, texture[1]);
+				glBegin(GL_QUADS);
+				glColor3d(1.0, 1.0, 1.0);
+				glTexCoord2f(0.5f, 0.5f); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(0.5f, 1.0f); glVertex2d(j + 1, i);
+				glTexCoord2f(0.25f, 1.0f); glVertex2d(j, i);
+				glTexCoord2f(0.25f, 0.5f); glVertex2d(j, i + 1);
+				glEnd();
+				glDisable(GL_TEXTURE_2D);
+
+
+				if (!PlacerBonus) definirBonus(i, j); //on place les bonus derriere les mur destructible
+			}
 			//Affichage de l'herbe SPAWN.
 			if (matrice[i][j] == '4') {
 				glEnable(GL_TEXTURE_2D);
