@@ -18,6 +18,7 @@ int LARGEUR_FENETRE = 800;
 
 bool enMouvement = false;
 bool haut = false, bas = false, gauche = false, droite = false;
+bool ennemi1V = false, ennemi2V = false, ennemi3V = false;
 bool victoire = false;
 
 vector<GLuint>	texture; // tableau qui contient nos textures
@@ -106,10 +107,8 @@ void TraitementClavier(int key, int x, int y)
 
 
 void TestDirection(int z) {
-	cout << bomberman.getVitesseDeplacement();
 	
 	float test = bomberman.getVitesseDeplacement() / 2.00;
-	cout << "test :" << test << endl;
 
 	if (haut) {
 		for (float i = 0.00; i < test; i += 0.1) {
@@ -256,6 +255,24 @@ void detecteEnnemis(int z) {
 	}
 
 	else {
+		if (!ennemi1.vivant && !ennemi1V) {
+			TableEA.pop_back();
+			ennemi1V = true;
+			glutTimerFunc(100, detecteEnnemis, 0);
+			return;
+		}
+		if (!ennemi2.vivant && !ennemi2V) {
+			TableEAR.pop_back();
+			ennemi2V = true;
+			glutTimerFunc(100, detecteEnnemis, 0);
+			return;
+		}
+		if (!ennemi3.vivant && !ennemi3V) {
+			TableEAR.pop_back();
+			ennemi3V = true;
+			glutTimerFunc(100, detecteEnnemis, 0);
+			return;
+		}
 		glutTimerFunc(100, detecteEnnemis, 0);
 	}
 }
