@@ -4,6 +4,7 @@
 #include <vector>
 #include <chrono>
 #include <iostream>
+#include <string>
 #include "Niveau.h"
 #include "Personnage.h"
 #include "Bomberman.h"
@@ -11,10 +12,14 @@
 #include "EnnemiAllerRetour.h"
 #include "Animation.h"
 
+
 using namespace std;
 
 int HAUTEUR_FENETRE = 1046;
-int LARGEUR_FENETRE = 800;
+int LARGEUR_FENETRE = 900;
+
+int score = 8000;
+int vie = 3;
 
 bool enMouvement = false;
 bool haut = false, bas = false, gauche = false, droite = false;
@@ -43,9 +48,6 @@ void LabyAffichage() {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
-	
-	//glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
-	//glLoadIdentity();
 
 	niveau.dessinerNiveau();
 
@@ -64,6 +66,48 @@ void LabyAffichage() {
 			bomberman.bombes[i].dessinerExplosion();
 		}
 	}
+
+	glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+	glLoadIdentity();
+
+	// Texture score & vie
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture[7]);
+	glBegin(GL_QUADS);
+	glColor3d(1.0, 1.0, 1.0);
+	glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+	glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+	glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 1);
+	glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 1);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+
+	// Affichage du score
+	string s = to_string(score);
+	int tailleScore = s.size();
+
+	glColor3f(1.0, 1.0, 1.0);
+	glRasterPos2f(5, 0.6f);
+	string scor = s;
+	for (int i = 0; i < tailleScore; ++i) {
+		glColor3d(1.0, 0.0, 0.0);
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, scor[i]);
+	}
+
+	// Affichage de la vie
+	string v = to_string(vie);
+	int tailleVie = v.size();
+
+	glColor3f(1.0, 1.0, 1.0);
+	glRasterPos2f(0.7f, 0.6f);
+	string vi = v;
+	for (int i = 0; i < tailleVie; ++i) {
+		glColor3d(1.0, 0.0, 0.0);
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, vi[i]);
+	}
+
+	glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE - 60);
+	glLoadIdentity();
 
 	glFlush();
 }
@@ -300,7 +344,7 @@ void main() {
 	/* 4 */ LoadGLTextures("images/EnnemiAllerRetour.png");
 	/* 5 */ LoadGLTextures("images/EnnemiAleatoire.png");
 	/* 6 */ LoadGLTextures("images/Sortie.png");
-	/* 7 */ LoadGLTextures("images/Time&Player&Score.png");
+	/* 7 */ LoadGLTextures("images/Score&Vie.png");
 
 	glutMainLoop();
 }
