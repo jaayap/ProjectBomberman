@@ -110,7 +110,7 @@ void Niveau::dessinerNiveau() {
 				if (testAleatoire == 1 && maxMur < 50) {
 					matrice[i][j] = '2';
 					maxMur++;
-					cout << maxMur << endl;;
+					//cout << maxMur << endl;;
 				}
 			}
 
@@ -144,8 +144,9 @@ void Niveau::dessinerNiveau() {
 			}
 
 			for (int k = 0; k < size(bonusTab); k++) {
-				if (!caseMurDestructible(j, i) && bonusTab[k].getX() == i && bonusTab[k].getY() == j) {
+				if (!caseMurDestructible(j, i) && bonusTab[k].getX() == i && bonusTab[k].getY() == j && !bonusTab[k].getUtiliser()) {
 					bonusTab[k].setVisible(true); // si le mur est detruit on affiche le bonus
+					cout << "ici";
 				}
 
 				if (bonusTab[k].getVisible()) {
@@ -180,8 +181,6 @@ char Niveau::getCase(int x, int y) {
 
 void Niveau::definirBonus(int i, int j) {
 	//Definition des bonus
-	cout << "BONUS";
-
 	int nbAleatoire = rand() % 4 + 1;    //entre 1-4
 	if (nbAleatoire == 1) {
 		Bonus bonusNbNombre(j, i, 1);
