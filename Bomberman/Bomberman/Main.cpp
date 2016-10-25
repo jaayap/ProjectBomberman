@@ -64,7 +64,7 @@ void LabyAffichage()
 			bomberman.bombes[i].dessinerExplosion();
 		}
 	}
-	cout << enMouvement << endl;
+	//cout << enMouvement << endl;
 
 	glFlush();
 }
@@ -107,26 +107,31 @@ void TraitementClavier(int key, int x, int y)
 
 
 void TestDirection(int z) {
+	cout << bomberman.getVitesseDeplacement();
+	
+	float test = bomberman.getVitesseDeplacement() / 2.00;
+	cout << "test :" << test << endl;
+
 	if (haut) {
-		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+		for (float i = 0.00; i < test; i += 0.1) {
 			enMouvement = true;
 			bomberman.deplacementHaut();
 		}
 	}
 	else if (bas) {
-		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+		for (float i = 0.00; i < test; i += 0.1) {
 			enMouvement = true;
 			bomberman.deplacementBas();
 		}
 	}
 	else if (gauche) {
-		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+		for (float i = 0.00; i < test; i += 0.1) {
 			enMouvement = true;
 			bomberman.deplacementGauche();
 		}
 	}
 	else if (droite) {
-		for (int i = 0; i < bomberman.getVitesseDeplacement(); i++) {
+		for (float i = 0.00; i < test; i += 0.1) {
 			enMouvement = true;
 			bomberman.deplacementDroite();
 		}
@@ -247,14 +252,14 @@ void tableEnnemis() {
 
 void detecteEnnemis(int z) {
 	if (size(TableEA) == 0 && size(TableEAR) == 0) {
-		cout << "victoire" << endl;
+	//	cout << "victoire" << endl;
 		victoire = true;
 		return;
 	}
 
 	else {
-		cout << "toto" << size(TableEA) << endl;
-		cout << "titi" << size(TableEAR) << endl;
+	//	cout << "toto" << size(TableEA) << endl;
+	//	cout << "titi" << size(TableEAR) << endl;
 		glutTimerFunc(100, detecteEnnemis, 0);
 	}
 }

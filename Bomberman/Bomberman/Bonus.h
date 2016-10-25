@@ -13,7 +13,7 @@ public:
 	bool getVisible();
 	bool getUtiliser();
 	void setVisible(bool);
-	void setUtiliser(bool);
+	void setUtiliser(bool utiliser);
 	void ramasser();
 	void dessiner();
 };

@@ -32,6 +32,7 @@ Bomberman::Bomberman(int xDepart, int  yDepart) : Personnage(x, y)
 	this->x = xDepart;
 	this->y = yDepart;
 	this->vivant = true;
+	this->vitesseDeplacement = 0.10f;
 }
 
 
