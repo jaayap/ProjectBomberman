@@ -215,6 +215,7 @@ char Niveau::getCase(int x, int y) {
 void Niveau::definirBonus(int i, int j) {
 	//Definition des bonus
 	int nbAleatoire = rand() % 4 + 1;    //entre 1-4
+	
 	if (nbAleatoire == 1) {
 		Bonus bonusNbNombre(j, i, 1);
 		bonusTab.push_back(bonusNbNombre);

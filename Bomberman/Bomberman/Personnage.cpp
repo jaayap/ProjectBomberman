@@ -29,14 +29,14 @@ bool Personnage::getVivant() {
 	return vivant;
 }
 
-int Personnage::getVitesseDeplacement() {
+float Personnage::getVitesseDeplacement() {
 	return vitesseDeplacement;
 }
 //Setter
 void Personnage::setVivant(bool vivant) {
 	this->vivant = vivant;
 }
-void Personnage::setVitesseDeplacement(int vitesse) {
+void Personnage::setVitesseDeplacement(float vitesse) {
 	this->vitesseDeplacement = vitesse;
 }
 
