@@ -3,11 +3,15 @@
 #include <vector>
 #include "GL/glut.h"
 #include "SOIL/SOIL.h"
+#include "Animation.h"
 
 using namespace std;
 
 extern vector<GLuint> texture;
 extern Bomberman bomberman;
+extern int valueBonus;
+
+float coordBonus[5] = { 0.0f, 0.25f, 0.5f, 0.75f, 1.0f };
 
 Bonus::Bonus(int x, int y,int type)
 {
@@ -74,10 +78,10 @@ void Bonus::dessiner()
 		glBindTexture(GL_TEXTURE_2D, texture[2]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y + 1);
-		glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y);
-		glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 1);
+		glTexCoord2f(coordBonus[0 + valueBonus], 0.5f); glVertex2d(x + 1, y + 1);
+		glTexCoord2f(coordBonus[1 + valueBonus], 0.5f);  glVertex2d(x + 1, y);
+		glTexCoord2f(coordBonus[0 + valueBonus], 0.375f);  glVertex2d(x, y);
+		glTexCoord2f(coordBonus[1 + valueBonus], 0.375f); glVertex2d(x, y + 1);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
@@ -89,10 +93,10 @@ void Bonus::dessiner()
 		glBindTexture(GL_TEXTURE_2D, texture[0]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y + 1);
-		glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y);
-		glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 1);
+		glTexCoord2f(coordBonus[0 + valueBonus], 0.375f); glVertex2d(x + 1, y + 1);
+		glTexCoord2f(coordBonus[1 + valueBonus], 0.375f);  glVertex2d(x + 1, y);
+		glTexCoord2f(coordBonus[0 + valueBonus], 0.25f);  glVertex2d(x, y);
+		glTexCoord2f(coordBonus[1 + valueBonus], 0.25f); glVertex2d(x, y + 1);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
@@ -104,10 +108,10 @@ void Bonus::dessiner()
 		glBindTexture(GL_TEXTURE_2D, texture[0]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.25f, 0.875f); glVertex2d(x + 1, y + 1);
-		glTexCoord2f(0.5f, 0.875f);  glVertex2d(x + 1, y);
-		glTexCoord2f(0.25f, 0.75f);  glVertex2d(x, y);
-		glTexCoord2f(0.5f, 0.75f); glVertex2d(x, y + 1);
+		glTexCoord2f(coordBonus[0 + valueBonus], 0.25f); glVertex2d(x + 1, y + 1);
+		glTexCoord2f(coordBonus[1 + valueBonus], 0.25f);  glVertex2d(x + 1, y);
+		glTexCoord2f(coordBonus[0 + valueBonus], 0.125f);  glVertex2d(x, y);
+		glTexCoord2f(coordBonus[1 + valueBonus], 0.125f); glVertex2d(x, y + 1);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);

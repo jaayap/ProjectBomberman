@@ -13,6 +13,7 @@ int spriteMur = 0, valueMur = 0;
 int spriteBomberman = 0, valueBomberman = 0;
 int spriteEnnemi1 = 0, valueEnnemi1 = 0;
 int spriteEnnemi2 = 0, valueEnnemi2 = 0;
+int spriteBonus = 0, valueBonus = 0;
 
 extern bool enMouvement;
 
@@ -231,6 +232,34 @@ void ennemi2Animation(int x) {
 	glutTimerFunc(80, ennemi2Animation, 0);
 }
 
+void bonusAnimation(int x) {
+	switch (spriteBonus)
+	{
+	case(0):
+		spriteBonus = 1;
+		valueBonus = 0;
+		break;
+	case(1):
+		spriteBonus = 2;
+		valueBonus = 1;
+		break;
+	case(2):
+		spriteBonus = 3;
+		valueBonus = 2;
+		break;
+	case(3):
+		spriteBonus = 4;
+		valueBonus = 3;
+		break;
+	case(4):
+		spriteBonus = 0;
+		valueBonus = 4;
+		break;
+	}
+
+	glutTimerFunc(50, bonusAnimation, 0);
+}
+
 
 Animation::Animation()
 {
@@ -240,6 +269,7 @@ Animation::Animation()
 	glutTimerFunc(100, BombermanAnimation, 0);
 	glutTimerFunc(20, ennemi1Animation, 0);
 	glutTimerFunc(80, ennemi2Animation, 0);
+	glutTimerFunc(50, bonusAnimation, 0);
 }
 
 
