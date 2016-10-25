@@ -16,11 +16,14 @@ public:
 	Bomberman(int xDepart, int yDepart);
 	~Bomberman();
 	int getNbBombe();
+	int getPorteeBombe();
 	void setNbBombe(int nb);
+	void setPorteeBombe(int portee);
 	void lancerBombe();
 	void declancherExplosion(int);
 	void eraseExplosion(int);
 	void collisionEnnemi();
+	void ramasserBonus();
 	void dessiner();
 
 };

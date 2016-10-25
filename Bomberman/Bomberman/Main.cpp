@@ -45,8 +45,12 @@ void LabyAffichage()
 	//glLoadIdentity();
 
 	niveau.dessinerNiveau();
-//	bomberman.collisionEnnemi();
+
+	//Test colision et bonus
 	//bomberman.collisionEnnemi();
+	bomberman.ramasserBonus();
+
+	//Affichage des personnages
 	if (bomberman.vivant) bomberman.dessiner();
 	if (ennemi1.vivant) ennemi1.dessiner();
 	if (ennemi2.vivant) ennemi2.dessiner();
@@ -161,13 +165,14 @@ void LabyTimerExplosion(int z) {
 		
 		if (bomberman.bombes[i].posee) {
 			bomberman.bombes[i].Timer++;
-	
-			if (bomberman.bombes[i].Timer > 5 && !bomberman.bombes[i].explosion) {//creer explosion
+			//Explosion au bout de 5 secondes
+			if (bomberman.bombes[i].Timer > 10 && !bomberman.bombes[i].explosion) {//creer explosion
 				bomberman.declancherExplosion(i);
 				bomberman.bombes[i].explosion = true;
 			}
 
-			if (bomberman.bombes[i].Timer > 7) {//effacer explosion		
+			//500 ms plus tard
+			if (bomberman.bombes[i].Timer > 11) {//effacer explosion		
 				// Efface la trace de l'explosion et réinitialise les booléens
 				bomberman.bombes[i].explosion = false;
 			
@@ -188,7 +193,7 @@ void LabyTimerExplosion(int z) {
 		}
 	}
 
-	glutTimerFunc(1000, LabyTimerExplosion, 0); 
+	glutTimerFunc(500, LabyTimerExplosion, 0); 
 }
 
 void LabyTimerEnnemi(int z) {

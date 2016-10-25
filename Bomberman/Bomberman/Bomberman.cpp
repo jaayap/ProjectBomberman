@@ -42,9 +42,18 @@ int Bomberman::getNbBombe()
 {
 	return nb_bombes;
 }
+int Bomberman::getPorteeBombe()
+{
+	return portee_bombe;
+}
 //Setter
 void Bomberman::setNbBombe(int nb) {
 	this->nb_bombes = nb;
+}
+
+void Bomberman::setPorteeBombe(int portee)
+{
+	this->portee_bombe = portee;
 }
 
 
@@ -75,6 +84,16 @@ void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un e
 
 	if ((ennemi1.getX() == x && ennemi1.getY() == y) || (ennemi2.getX() == x && ennemi2.getY() == y) || (ennemi3.getX() == x && ennemi3.getY() == y)) {
 		vivant = false;
+	}
+}
+
+void Bomberman::ramasserBonus() {
+	
+	for (int i = 0; i < size(niveau.bonusTab); i++) {
+		//on test si l'on est sur la case d'un bonus et qu'il est actif
+		if (x == niveau.bonusTab[i].getX() && y == niveau.bonusTab[i].getY() && niveau.bonusTab[i].getVisible()) {
+			niveau.bonusTab[i].ramasser();
+		}
 	}
 }
 
