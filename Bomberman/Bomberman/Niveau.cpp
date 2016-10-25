@@ -17,7 +17,8 @@ int maxMur = 0;
 
 extern vector<GLuint> texture;
 
-extern int valueBombe, valueExplo, valueMur;
+extern int valueBombe, valueExplo, valueMur, valueSortie;
+extern bool victoire;
 
 
 
@@ -145,7 +146,6 @@ void Niveau::dessinerNiveau() {
 
 			//Affichage des bombes.
 			if (matrice[i][j] == '8') {
-			//	cout << coord[7] << endl;
 				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D, texture[2]);
 				glBegin(GL_QUADS);
@@ -158,6 +158,20 @@ void Niveau::dessinerNiveau() {
 				glDisable(GL_TEXTURE_2D);
 			}
 
+			//Affichage de la sortie.
+			if (matrice[i][j] == '7') {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, texture[6]);
+				glBegin(GL_QUADS);
+				glColor3d(1.0, 1.0, 1.0);
+				glTexCoord2f(coord[1 + valueSortie], 0.0f); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(coord[1 + valueSortie], 1.0f); glVertex2d(j + 1, i - 1);
+				glTexCoord2f(coord[0 + valueSortie], 1.0f); glVertex2d(j, i - 1);
+				glTexCoord2f(coord[0 + valueSortie], 0.0f); glVertex2d(j, i + 1);
+				glEnd();
+				glDisable(GL_TEXTURE_2D);
+			}
+
 			for (int k = 0; k < size(bonusTab); k++) {
 				if (!caseMurDestructible(j, i) && bonusTab[k].getX() == i && bonusTab[k].getY() == j && !bonusTab[k].getUtiliser()) {
 					bonusTab[k].setVisible(true); // si le mur est detruit on affiche le bonus
@@ -166,6 +180,12 @@ void Niveau::dessinerNiveau() {
 				if (bonusTab[k].getVisible()) {
 					bonusTab[k].dessiner();
 				}
+			}
+
+			// Si les ennemis sont morts
+			if (victoire) {
+				matrice[6][8] = '7';
+				victoire = false;
 			}
 
 		}

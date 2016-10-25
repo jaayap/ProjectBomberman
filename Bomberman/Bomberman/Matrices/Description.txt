@@ -8,4 +8,6 @@
 5 = Explosion bombe centre
 6 = Explosion bombe fin
 
-8 = bombe;
+7 = Sortie
+
+8 = Bombe

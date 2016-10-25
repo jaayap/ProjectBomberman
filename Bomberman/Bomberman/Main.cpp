@@ -18,8 +18,11 @@ int LARGEUR_FENETRE = 800;
 
 bool enMouvement = false;
 bool haut = false, bas = false, gauche = false, droite = false;
+bool victoire = false;
 
 vector<GLuint>	texture; // tableau qui contient nos textures
+vector<EnnemiAleatoire> TableEA;
+vector<EnnemiAllerRetour> TableEAR;
 
 Niveau niveau;
 Bomberman bomberman(3,3);
@@ -91,6 +94,12 @@ void TraitementClavier(int key, int x, int y)
 	}
 	if (key == GLUT_KEY_RIGHT) {
 		droite = true;
+	}
+	if (key == GLUT_KEY_F1) {
+		TableEA.pop_back();
+	}
+	if (key == GLUT_KEY_F2) {
+		TableEAR.pop_back();
 	}
 
 	glFlush();
@@ -230,8 +239,30 @@ int LoadGLTextures(string name) //Charge l'image et la convertit en texture
 	return true;  // Return Success
 }
 
+void tableEnnemis() {
+	TableEA.push_back(ennemi1);
+	TableEAR.push_back(ennemi2);
+	TableEAR.push_back(ennemi3);
+}
+
+void detecteEnnemis(int z) {
+	if (size(TableEA) == 0 && size(TableEAR) == 0) {
+		cout << "victoire" << endl;
+		victoire = true;
+		return;
+	}
+
+	else {
+		cout << "toto" << size(TableEA) << endl;
+		cout << "titi" << size(TableEAR) << endl;
+		glutTimerFunc(100, detecteEnnemis, 0);
+	}
+}
+
 void main() {
 	srand((unsigned)time(0));
+
+	tableEnnemis();
 
 	// Gestion de la fenêtre
 	glutInitWindowPosition(10, 10);
@@ -248,6 +279,7 @@ void main() {
 	glutTimerFunc(50, TestDirection, 0);
 	glutTimerFunc(1000, LabyTimerExplosion, 0);
 	glutTimerFunc(500, LabyTimerEnnemi, 0);
+	glutTimerFunc(100, detecteEnnemis, 0);
 
 	// Gestion des textures
 	/* 0 */ LoadGLTextures("images/Test.png");
@@ -256,6 +288,7 @@ void main() {
 	/* 3 */ LoadGLTextures("images/Bomberman.png");
 	/* 4 */ LoadGLTextures("images/EnnemiAllerRetour.png");
 	/* 5 */ LoadGLTextures("images/EnnemiAleatoire.png");
+	/* 6 */ LoadGLTextures("images/Sortie.png");
 
 	glutMainLoop();
 }
