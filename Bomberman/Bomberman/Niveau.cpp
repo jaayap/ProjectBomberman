@@ -62,6 +62,20 @@ void Niveau::dessinerNiveau() {
 				glDisable(GL_TEXTURE_2D);
 			}
 
+			//Affichage du décors.
+			if (matrice[i][j] == '5') {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, texture[1]);
+				glBegin(GL_QUADS);
+				glColor3d(1.0, 1.0, 1.0);
+				glTexCoord2f(1.0f, 0.5f); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(1.0f, 1.0f); glVertex2d(j + 1, i);
+				glTexCoord2f(0.75f, 1.0f); glVertex2d(j, i);
+				glTexCoord2f(0.75f, 0.5f); glVertex2d(j, i + 1);
+				glEnd();
+				glDisable(GL_TEXTURE_2D);
+			}
+
 			//Affichage des mur destructible.
 			if (matrice[i][j] == '2') {
 				glEnable(GL_TEXTURE_2D);
@@ -161,7 +175,7 @@ void Niveau::dessinerNiveau() {
 
 bool Niveau::caseLibre(int x,int y) { // penser a inverser quand on appelle la fonction : caseLibre(y,x)
 	if (x < 0 || y < 0 || x > 13 || y > 17) return false;
-	if (matrice[x][y] == '1' || matrice[x][y] == '8') return false;
+	if (matrice[x][y] == '1' || matrice[x][y] == '8' || matrice[x][y] == '5') return false;
 	else return true;
 }
 
