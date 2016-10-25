@@ -97,7 +97,14 @@ void Bombe::dessinerExplosion() {
 		}
 	}
 
-	
+	//Test s'il y a une autre bombe - au cas ou
+	for (int k = 0; k < size(bomberman.bombes); k++) {
+		if (x == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
+			bomberman.declancherExplosion(k);
+			bomberman.bombes[k].explosion = true;
+			bomberman.bombes[k].Timer = 12;
+		}
+	}
 	
 
 	dessinerExplosionHaut();
@@ -191,6 +198,15 @@ void Bombe::dessinerExplosionHaut() {
 				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 			}
 		}
+
+		//Test s'il y a une autre bombe
+		for (int k = 0; k < size(bomberman.bombes); k++) {
+			if (x == bomberman.bombes[k].getX() && y - portee + 1 == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
+				bomberman.declancherExplosion(k);
+				bomberman.bombes[k].explosion = true;
+				bomberman.bombes[k].Timer = 12;
+			}
+		}
 	}
 
 	
@@ -235,6 +251,15 @@ void Bombe::dessinerExplosionBas() {
 					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 				}
 			}
+
+			//Test s'il y a une autre bombe
+			for (int k = 0; k < size(bomberman.bombes); k++) {
+				if (x == bomberman.bombes[k].getX() && y + i == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
+					bomberman.declancherExplosion(k);
+					bomberman.bombes[k].explosion = true;
+					bomberman.bombes[k].Timer = 12;
+				}
+			}
 		}
 		else arretExplosionBas = true;
 	}
@@ -270,6 +295,14 @@ void Bombe::dessinerExplosionBas() {
 			}
 		}
 
+		//Test s'il y a une autre bombe
+		for (int k = 0; k < size(bomberman.bombes); k++) {
+			if (x == bomberman.bombes[k].getX() && y + portee - 1 == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
+				bomberman.declancherExplosion(k);
+				bomberman.bombes[k].explosion = true;
+				bomberman.bombes[k].Timer = 12;
+			}
+		}
 	}
 }
 
@@ -307,9 +340,18 @@ void Bombe::dessinerExplosionGauche() {
 
 			//Test s'il on detruit un bonus 
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
-				if (x - 1 == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
+				if (x - i== niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 					niveau.bonusTab[k].setVisible(false);
 					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				}
+			}
+
+			//Test s'il y a une autre bombe
+			for (int k = 0; k < size(bomberman.bombes); k++) {
+				if (x - i == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
+					bomberman.declancherExplosion(k);
+					bomberman.bombes[k].explosion = true;
+					bomberman.bombes[k].Timer = 12;
 				}
 			}
 		}
@@ -334,6 +376,7 @@ void Bombe::dessinerExplosionGauche() {
 			glDisable(GL_BLEND);
 		}
 		else niveau.modifierCase(y, x - portee + 1, '3');
+
 		//Test si il y a des mort
 		if (x - portee + 1 == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
 		if (x - portee + 1 == ennemi1.getX() && y == ennemi1.getY()) ennemi1.setVivant(false);
@@ -345,6 +388,15 @@ void Bombe::dessinerExplosionGauche() {
 			if (x  - portee + 1 == niveau.bonusTab[k].getX() && y== niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 				niveau.bonusTab[k].setVisible(false);
 				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+			}
+		}
+
+		//Test s'il y a une autre bombe
+		for (int k = 0; k < size(bomberman.bombes); k++) {
+			if (x - portee + 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
+				bomberman.declancherExplosion(k);
+				bomberman.bombes[k].explosion = true;
+				bomberman.bombes[k].Timer = 12;
 			}
 		}
 	}
@@ -389,6 +441,15 @@ void Bombe::dessinerExplosionDroite() {
 					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 				}
 			}
+
+			//Test s'il y a une autre bombe
+			for (int k = 0; k < size(bomberman.bombes); k++) {
+				if (x + i == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
+					bomberman.declancherExplosion(k);
+					bomberman.bombes[k].explosion = true;
+					bomberman.bombes[k].Timer = 12;
+				}
+			}
 		}
 		else arretExplosionDroite = true;
 	}
@@ -421,6 +482,15 @@ void Bombe::dessinerExplosionDroite() {
 			if (x + portee - 1== niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 				niveau.bonusTab[k].setVisible(false);
 				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+			}
+		}
+
+		//Test s'il y a une autre bombe
+		for (int k = 0; k < size(bomberman.bombes); k++) {
+			if (x + portee - 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
+				bomberman.declancherExplosion(k);
+				bomberman.bombes[k].explosion = true;
+				bomberman.bombes[k].Timer = 12;
 			}
 		}
 	}
