@@ -59,13 +59,13 @@ void Bonus::ramasser()
 	switch (type) {
 		//type du bonus : 1 -> + bombes, 2 -> + portee, 3 -> + vitesse
 	case 1:
-		bomberman.setNbBombe(bomberman.getNbBombe() + 1);
+		if(bomberman.getNbBombe() <= 8) bomberman.setNbBombe(bomberman.getNbBombe() + 1);
 		break;
 	case 2:
 		if (bomberman.getPorteeBombe() <= 8) bomberman.setPorteeBombe(bomberman.getPorteeBombe() + 1);
 		break;
 	case 3:
-		bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() * 1.5); //A tester
+		if (bomberman.getVitesseDeplacement() <= 2) bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() * 1.5); //A tester
 		break;
 	}
 
