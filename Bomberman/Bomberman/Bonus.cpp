@@ -49,6 +49,11 @@ void Bonus::setVisible(bool valeur)
 	visible = valeur;
 }
 
+void Bonus::setUtiliser(bool utiliser)
+{
+	this->utiliser = utiliser;
+}
+
 void Bonus::ramasser()
 {
 	switch (type) {
