@@ -72,6 +72,23 @@ void Bombe::dessinerExplosion() {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
 
+
+	//Test si il y a des mort
+	if (x == bomberman.getX()	&& y == bomberman.getY())	bomberman.setVivant(false);
+	if (x == ennemi1.getX()		&& y == ennemi1.getY())		ennemi1.setVivant(false);
+	if (x == ennemi2.getX()		&& y == ennemi2.getY())		ennemi2.setVivant(false);
+	if (x == ennemi3.getX()		&& y == ennemi3.getY())		ennemi3.setVivant(false);
+
+	//Test s'il on detruit un bonus 
+	for (int k = 0; k < size(niveau.bonusTab); k++) {
+		if (x == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY()) {
+			niveau.bonusTab[k].setVisible(false);
+			niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+		}
+	}
+
+
+
 	dessinerExplosionHaut();
 	dessinerExplosionBas();
 	dessinerExplosionGauche();
@@ -80,13 +97,13 @@ void Bombe::dessinerExplosion() {
 
 void Bombe::dessinerExplosionHaut() {
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y - i, x)) { //En haut
+		if (niveau.caseLibre(y - i, x) && !arretExplosionHaut) { //En haut
 
-			if (niveau.caseMurDestructible(y - i, x)) {
+			if (niveau.caseMurDestructible(y - i, x) ) {
 				niveau.modifierCase(y - i, x, '3');
 				arretExplosionHaut = true;
 			}
-			else if (!arretExplosionHaut ){
+			else {
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				glEnable(GL_TEXTURE_2D);
@@ -107,6 +124,14 @@ void Bombe::dessinerExplosionHaut() {
 			if (x == ennemi1.getX() && y - i == ennemi1.getY()) ennemi1.setVivant(false);
 			if (x == ennemi2.getX() && y - i == ennemi2.getY()) ennemi2.setVivant(false);
 			if (x == ennemi3.getX() && y - i == ennemi3.getY()) ennemi3.setVivant(false);
+
+			//Test s'il on detruit un bonus 
+			for (int k = 0; k < size(niveau.bonusTab); k++) {
+				if (x == niveau.bonusTab[k].getX() && y - i == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
+					niveau.bonusTab[k].setVisible(false);
+					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				}
+			}
 		}
 		else arretExplosionHaut = true;
 
@@ -138,6 +163,14 @@ void Bombe::dessinerExplosionHaut() {
 		if (x == ennemi1.getX() && y - portee + 1 == ennemi1.getY()) ennemi1.setVivant(false);
 		if (x == ennemi2.getX() && y - portee + 1 == ennemi2.getY()) ennemi2.setVivant(false);
 		if (x == ennemi3.getX() && y - portee + 1 == ennemi3.getY()) ennemi3.setVivant(false);
+
+		//Test s'il on detruit un bonus 
+		for (int k = 0; k < size(niveau.bonusTab); k++) {
+			if (x == niveau.bonusTab[k].getX() && y - portee + 1 == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
+				niveau.bonusTab[k].setVisible(false);
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+			}
+		}
 	}
 
 	
@@ -146,12 +179,12 @@ void Bombe::dessinerExplosionHaut() {
 void Bombe::dessinerExplosionBas() {
 
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y + i, x)) { //En bas
+		if (niveau.caseLibre(y + i, x) && !arretExplosionBas) { //En bas
 			if (niveau.caseMurDestructible(y + i, x)) {
 				niveau.modifierCase(y + i, x, '3');
 				arretExplosionBas = true;
 			}
-			else if(!arretExplosionBas) {
+			else {
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				glEnable(GL_TEXTURE_2D);
@@ -174,6 +207,14 @@ void Bombe::dessinerExplosionBas() {
 			if (x == ennemi1.getX() && y + i == ennemi1.getY()) ennemi1.setVivant(false);
 			if (x == ennemi2.getX() && y + i == ennemi2.getY()) ennemi2.setVivant(false);
 			if (x == ennemi3.getX() && y + i == ennemi3.getY()) ennemi3.setVivant(false);
+
+			//Test s'il on detruit un bonus 
+			for (int k = 0; k < size(niveau.bonusTab); k++) {
+				if (x == niveau.bonusTab[k].getX() && y + i == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
+					niveau.bonusTab[k].setVisible(false);
+					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				}
+			}
 		}
 		else arretExplosionBas = true;
 	}
@@ -201,6 +242,14 @@ void Bombe::dessinerExplosionBas() {
 		if (x == ennemi2.getX() && y + portee - 1 == ennemi2.getY()) ennemi2.setVivant(false);
 		if (x == ennemi3.getX() && y + portee - 1 == ennemi3.getY()) ennemi3.setVivant(false);
 
+		//Test s'il on detruit un bonus 
+		for (int k = 0; k < size(niveau.bonusTab); k++) {
+			if (x == niveau.bonusTab[k].getX() && y + portee - 1 == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
+				niveau.bonusTab[k].setVisible(false);
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+			}
+		}
+
 	}
 }
 
@@ -208,13 +257,13 @@ void Bombe::dessinerExplosionGauche() {
 
 
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y, x - i)) { //A gauche
+		if (niveau.caseLibre(y, x - i) && !arretExplosionGauche) { //A gauche
 
 			if (niveau.caseMurDestructible(y, x - i)) {
 				niveau.modifierCase(y, x - i, '3');
 				arretExplosionGauche = true;
 			}
-			else if (!arretExplosionGauche) {
+			else {
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				glEnable(GL_TEXTURE_2D);
@@ -236,6 +285,13 @@ void Bombe::dessinerExplosionGauche() {
 			if ((x - i) == ennemi2.getX() && y == ennemi2.getY()) ennemi2.setVivant(false);
 			if ((x - i) == ennemi3.getX() && y == ennemi3.getY()) ennemi3.setVivant(false);
 
+			//Test s'il on detruit un bonus 
+			for (int k = 0; k < size(niveau.bonusTab); k++) {
+				if (x - 1 == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
+					niveau.bonusTab[k].setVisible(false);
+					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				}
+			}
 		}
 		else arretExplosionGauche = true;
 
@@ -263,6 +319,14 @@ void Bombe::dessinerExplosionGauche() {
 		if (x - portee + 1 == ennemi1.getX() && y == ennemi1.getY()) ennemi1.setVivant(false);
 		if (x - portee + 1 == ennemi2.getX() && y == ennemi2.getY()) ennemi2.setVivant(false);
 		if (x - portee + 1 == ennemi3.getX() && y == ennemi3.getY()) ennemi3.setVivant(false);
+
+		//Test s'il on detruit un bonus 
+		for (int k = 0; k < size(niveau.bonusTab); k++) {
+			if (x  - portee + 1 == niveau.bonusTab[k].getX() && y== niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
+				niveau.bonusTab[k].setVisible(false);
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+			}
+		}
 	}
 
 }
@@ -270,13 +334,13 @@ void Bombe::dessinerExplosionGauche() {
 void Bombe::dessinerExplosionDroite() {
 
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y, x + i)) { //A droite
+		if (niveau.caseLibre(y, x + i)&&  !arretExplosionDroite) { //A droite
 
 			if (niveau.caseMurDestructible(y, x + i)) {
 				niveau.modifierCase(y, x + i, '3');
 				arretExplosionDroite = true;
 			}
-			else if (!arretExplosionDroite){
+			else {
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				glEnable(GL_TEXTURE_2D);
@@ -297,6 +361,14 @@ void Bombe::dessinerExplosionDroite() {
 			if (x + i == ennemi1.getX() && y == ennemi1.getY()) ennemi1.setVivant(false);
 			if (x + i == ennemi2.getX() && y == ennemi2.getY()) ennemi2.setVivant(false);
 			if (x + i == ennemi3.getX() && y == ennemi3.getY()) ennemi3.setVivant(false);
+
+			//Test s'il on detruit un bonus 
+			for (int k = 0; k < size(niveau.bonusTab); k++) {
+				if (x + i == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
+					niveau.bonusTab[k].setVisible(false);
+					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				}
+			}
 		}
 		else arretExplosionDroite = true;
 	}
@@ -323,5 +395,13 @@ void Bombe::dessinerExplosionDroite() {
 		if (x + portee - 1 == ennemi1.getX() && y == ennemi1.getY()) ennemi1.setVivant(false);
 		if (x + portee - 1 == ennemi2.getX() && y == ennemi2.getY()) ennemi2.setVivant(false);
 		if (x + portee - 1 == ennemi3.getX() && y == ennemi3.getY()) ennemi3.setVivant(false);
+
+		//Test s'il on detruit un bonus 
+		for (int k = 0; k < size(niveau.bonusTab); k++) {
+			if (x + portee - 1== niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
+				niveau.bonusTab[k].setVisible(false);
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+			}
+		}
 	}
 }
