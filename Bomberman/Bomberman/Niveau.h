@@ -17,7 +17,9 @@ public:
 	void dessinerNiveau();
 	bool caseLibre(int x,int y);
 	bool caseMurDestructible(int x, int y);
+	bool caseLibreBombe(int x, int y);
 	void modifierCase(int x, int y, char valeur);
 	char getCase(int x, int y);
 	void definirBonus(int i, int j);
+
 };

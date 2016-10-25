@@ -38,6 +38,16 @@ Bombe::Bombe(int x, int y, int portee) {
 	explosion = false;
 }
 
+int Bombe::getX()
+{
+	return x;
+}
+
+int Bombe::getY()
+{
+	return y;
+}
+
 Bombe::~Bombe()
 {
 }
@@ -87,7 +97,8 @@ void Bombe::dessinerExplosion() {
 		}
 	}
 
-
+	
+	
 
 	dessinerExplosionHaut();
 	dessinerExplosionBas();
@@ -97,7 +108,7 @@ void Bombe::dessinerExplosion() {
 
 void Bombe::dessinerExplosionHaut() {
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y - i, x) && !arretExplosionHaut) { //En haut
+		if (niveau.caseLibreBombe(y - i, x) && !arretExplosionHaut) { //En haut
 
 			if (niveau.caseMurDestructible(y - i, x) ) {
 				niveau.modifierCase(y - i, x, '3');
@@ -132,12 +143,21 @@ void Bombe::dessinerExplosionHaut() {
 					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
 				}
 			}
+
+			//Test s'il y a une autre bombe
+			for (int k = 0; k < size(bomberman.bombes); k++) {
+				if (x == bomberman.bombes[k].getX() && y - i == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
+					bomberman.declancherExplosion(k);
+					bomberman.bombes[k].explosion = true;
+					bomberman.bombes[k].Timer = 12;
+				}
+			}
 		}
 		else arretExplosionHaut = true;
 
 	}
 
-	if (niveau.caseLibre(y - portee + 1, x) && !arretExplosionHaut ) {
+	if (niveau.caseLibreBombe(y - portee + 1, x) && !arretExplosionHaut ) {
 		
 		if (!niveau.caseMurDestructible(y - portee + 1, x) && niveau.getCase(y - portee + 1, x) != '3') {
 			//on affiche l'extremite de l'explosion si ce n'est pas un mur destructible
@@ -179,7 +199,7 @@ void Bombe::dessinerExplosionHaut() {
 void Bombe::dessinerExplosionBas() {
 
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y + i, x) && !arretExplosionBas) { //En bas
+		if (niveau.caseLibreBombe(y + i, x) && !arretExplosionBas) { //En bas
 			if (niveau.caseMurDestructible(y + i, x)) {
 				niveau.modifierCase(y + i, x, '3');
 				arretExplosionBas = true;
@@ -219,7 +239,7 @@ void Bombe::dessinerExplosionBas() {
 		else arretExplosionBas = true;
 	}
 
-	if (niveau.caseLibre(y + portee - 1, x) && !arretExplosionBas) { //En bas
+	if (niveau.caseLibreBombe(y + portee - 1, x) && !arretExplosionBas) { //En bas
 		if (!niveau.caseMurDestructible(y + portee - 1, x) && niveau.getCase(y + portee - 1, x) != '3') {
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -257,7 +277,7 @@ void Bombe::dessinerExplosionGauche() {
 
 
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y, x - i) && !arretExplosionGauche) { //A gauche
+		if (niveau.caseLibreBombe(y, x - i) && !arretExplosionGauche) { //A gauche
 
 			if (niveau.caseMurDestructible(y, x - i)) {
 				niveau.modifierCase(y, x - i, '3');
@@ -297,7 +317,7 @@ void Bombe::dessinerExplosionGauche() {
 
 	}
 	//extremité de l'explosion
-	if (niveau.caseLibre(y, x - portee + 1) && !arretExplosionGauche) { //A gauche
+	if (niveau.caseLibreBombe(y, x - portee + 1) && !arretExplosionGauche) { //A gauche
 		if (!niveau.caseMurDestructible(y, x - portee + 1) && niveau.getCase(y, x - portee + 1) != '3') {
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -334,7 +354,7 @@ void Bombe::dessinerExplosionGauche() {
 void Bombe::dessinerExplosionDroite() {
 
 	for (int i = 1; i < portee - 1; i++) {
-		if (niveau.caseLibre(y, x + i)&&  !arretExplosionDroite) { //A droite
+		if (niveau.caseLibreBombe(y, x + i)&&  !arretExplosionDroite) { //A droite
 
 			if (niveau.caseMurDestructible(y, x + i)) {
 				niveau.modifierCase(y, x + i, '3');
@@ -373,7 +393,7 @@ void Bombe::dessinerExplosionDroite() {
 		else arretExplosionDroite = true;
 	}
 
-	if (niveau.caseLibre(y, x + portee - 1) && !arretExplosionDroite) { //A droite
+	if (niveau.caseLibreBombe(y, x + portee - 1) && !arretExplosionDroite) { //A droite
 		if (!niveau.caseMurDestructible(y, x + portee - 1) && niveau.getCase(y, x + portee - 1) != '3') {
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

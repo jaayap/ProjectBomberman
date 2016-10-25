@@ -204,6 +204,12 @@ bool Niveau::caseMurDestructible(int x,int y) {
 	else return false;
 }
 
+bool Niveau::caseLibreBombe(int x, int y) {
+	if (x < 0 || y < 0 || x > 13 || y > 17) return false;
+	if (matrice[x][y] == '1' || matrice[x][y] == '5') return false;
+	else return true;
+}
+
 void Niveau::modifierCase(int x, int y, char valeur) {
 	matrice[x][y] = valeur;
 }
