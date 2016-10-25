@@ -64,10 +64,6 @@ void LabyAffichage()
 			bomberman.bombes[i].dessinerExplosion();
 		}
 	}
-<<<<<<< HEAD
-=======
-	//cout << enMouvement << endl;
->>>>>>> fc89be0f6a8332baeb030436b131748d2c2e484a
 
 	glFlush();
 }
@@ -255,20 +251,11 @@ void tableEnnemis() {
 
 void detecteEnnemis(int z) {
 	if (size(TableEA) == 0 && size(TableEAR) == 0) {
-<<<<<<< HEAD
-=======
-	//	cout << "victoire" << endl;
->>>>>>> fc89be0f6a8332baeb030436b131748d2c2e484a
 		victoire = true;
 		return;
 	}
 
 	else {
-<<<<<<< HEAD
-=======
-	//	cout << "toto" << size(TableEA) << endl;
-	//	cout << "titi" << size(TableEAR) << endl;
->>>>>>> fc89be0f6a8332baeb030436b131748d2c2e484a
 		glutTimerFunc(100, detecteEnnemis, 0);
 	}
 }
