@@ -72,7 +72,7 @@ void Bomberman::lancerBombe() {
 }
 
 void Bomberman::declancherExplosion(int nb) {
-	//bombes[nb].exploser();
+	bombes[nb].exploser();
 	setNbBombe(nb_bombes + 1);
 }
 

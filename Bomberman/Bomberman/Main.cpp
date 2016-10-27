@@ -62,7 +62,9 @@ void LabyAffichage() {
 	if (ennemi3.vivant) ennemi3.dessiner();
 
 	for (int i = 0; i < size(bomberman.bombes); i++) {
+		
 		if (bomberman.bombes[i].explosion) {
+			cout << "explosion a dessiner" << i <<endl;
 			bomberman.bombes[i].dessinerExplosion();
 		}
 	}
@@ -216,8 +218,8 @@ void LabyTimerExplosion(int z) {
 			bomberman.bombes[i].Timer++;
 			//Explosion au bout de 5 secondes
 			if (bomberman.bombes[i].Timer > 10 && !bomberman.bombes[i].explosion) {//creer explosion
-				bomberman.declancherExplosion(i);
 				bomberman.bombes[i].explosion = true;
+				bomberman.declancherExplosion(i);	
 			}
 
 			//500 ms plus tard
