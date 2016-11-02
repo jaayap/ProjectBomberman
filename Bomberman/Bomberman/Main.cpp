@@ -35,8 +35,8 @@ vector<EnnemiAleatoire> TableEA;
 vector<EnnemiAllerRetour> TableEAR;
 
 Niveau niveau;
-Bomberman bomberman(3,3);
-EnnemiAleatoire ennemi1(3, 4);
+Bomberman bomberman(3, 1);
+EnnemiAleatoire ennemi1(5, 9);
 EnnemiAllerRetour ennemi2(5, 3, 1, false);
 EnnemiAllerRetour ennemi3(8, 5, 4, false);
 

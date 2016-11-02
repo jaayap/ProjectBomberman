@@ -132,17 +132,29 @@ void Niveau::dessinerNiveau() {
 				glDisable(GL_TEXTURE_2D);
 
 
-				if (!PlacerBonus) definirBonus(i, j); //on place les bonus derriere les mur destructible
+				if (!PlacerBonus) {
+					definirBonus(i, j); //on place les bonus derriere les mur destructible
+				}
 			}
 
 			// destruction des murs
 			if (victoire && matrice[i][j] == '2') {
 				matrice[i][j] = '0';
+				for (int k = 0; k < size(bonusTab); k++) {
+					bonusTab[k].setVisible(false);
+					bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+					PlacerBonus = false;
+				}
 			}
 
 			// destruction des murs
 			if (!life && matrice[i][j] == '2') {
 				matrice[i][j] = '0';
+				for (int k = 0; k < size(bonusTab); k++) {
+					bonusTab[k].setVisible(false);
+					bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+					PlacerBonus = false;
+				}
 			}
 
 			//Affichage de l'herbe SPAWN.
