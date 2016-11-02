@@ -78,10 +78,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="icon1.ico">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
     <Image Include="Images\Icone.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="icon1.ico">
+    <Image Include="icon2.ico">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>

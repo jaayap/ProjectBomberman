@@ -5,6 +5,7 @@
 #include "GL/glut.h"
 #include "SOIL/SOIL.h"
 #include "Niveau.h"
+#include "Bomberman.h"
 #include <vector>
 #include "Animation.h"
 #include "Bonus.h"
@@ -19,8 +20,10 @@ float numeroNiveau = 0;
 extern vector<GLuint> texture;
 
 extern int valueBombe, valueExplo, valueMur, valueSortie;
+
 extern bool victoire;
 extern bool GameOver;
+extern bool life;
 
 
 
@@ -134,6 +137,11 @@ void Niveau::dessinerNiveau() {
 
 			// destruction des murs
 			if (victoire && matrice[i][j] == '2') {
+				matrice[i][j] = '0';
+			}
+
+			// destruction des murs
+			if (!life && matrice[i][j] == '2') {
 				matrice[i][j] = '0';
 			}
 

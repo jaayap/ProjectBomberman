@@ -154,7 +154,7 @@ void BomberdeathAnimation(int x) {
 		valueBomberdeath = 4;
 		break;
 	case(3):
-		spriteBomberdeath = 4;
+		spriteBomberdeath = 0;
 		valueBomberdeath = 6;
 		break;
 	}

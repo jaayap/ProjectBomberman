@@ -182,9 +182,9 @@ void Bomberman::dessiner() {
 		glBindTexture(GL_TEXTURE_2D, texture[10]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(coordBomb[0 + valueBomberdeath], coordBomb[6]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
-		glTexCoord2f(coordBomb[1 + valueBomberdeath], coordBomb[6]); glVertex2d(x + offsetX, y + offsetY + 1);
-		glTexCoord2f(coordBomb[1 + valueBomberdeath], coordBomb[8]); glVertex2d(x + offsetX, y + offsetY - 0.5);
+		glTexCoord2f(coordBomb[0 + valueBomberdeath], coordBomb[0]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
+		glTexCoord2f(coordBomb[2 + valueBomberdeath], coordBomb[0]); glVertex2d(x + offsetX, y + offsetY + 1);
+		glTexCoord2f(coordBomb[2 + valueBomberdeath], coordBomb[8]); glVertex2d(x + offsetX, y + offsetY - 0.5);
 		glTexCoord2f(coordBomb[0 + valueBomberdeath], coordBomb[8]); glVertex2d(x + offsetX + 1, y + offsetY - 0.5);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);

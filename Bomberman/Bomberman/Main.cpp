@@ -91,7 +91,7 @@ void LabyAffichage() {
 		niveau.dessinerNiveau();
 
 		//Test colision et bonus
-		//bomberman.collisionEnnemi();
+		bomberman.collisionEnnemi();
 		bomberman.ramasserBonus();
 
 		//Affichage des personnages
