@@ -16,6 +16,7 @@ float coord[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0
 int testAleatoire;
 int maxMur = 0;
 float numeroNiveau = 0;
+bool PlacerBonus;
 
 extern vector<GLuint> texture;
 
@@ -23,7 +24,7 @@ extern int valueBombe, valueExplo, valueMur, valueSortie;
 
 extern bool victoire;
 extern bool GameOver;
-extern bool life;
+extern bool die;
 
 
 
@@ -54,6 +55,16 @@ void Niveau::dessinerNiveau() {
 	for (int i = 0; i < 13; i++) {
 		for (int j = 0; j < 17; j++) {
 
+			// destruction des murs
+			if (victoire && matrice[i][j] == '2') {
+				matrice[i][j] = '0';
+			}
+
+			// destruction des murs
+			if (die && matrice[i][j] == '2') {
+				matrice[i][j] = '0';
+			}
+
 			//Affichage des mur indestructible.
 			if (matrice[i][j] == '1') {
 				glEnable(GL_TEXTURE_2D);
@@ -81,8 +92,6 @@ void Niveau::dessinerNiveau() {
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			}
-
-	
 
 			if (matrice[i][j] == '3') {
 				glEnable(GL_TEXTURE_2D);
@@ -137,26 +146,6 @@ void Niveau::dessinerNiveau() {
 				}
 			}
 
-			// destruction des murs
-			if (victoire && matrice[i][j] == '2') {
-				matrice[i][j] = '0';
-				for (int k = 0; k < size(bonusTab); k++) {
-					bonusTab[k].setVisible(false);
-					bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
-					PlacerBonus = false;
-				}
-			}
-
-			// destruction des murs
-			if (!life && matrice[i][j] == '2') {
-				matrice[i][j] = '0';
-				for (int k = 0; k < size(bonusTab); k++) {
-					bonusTab[k].setVisible(false);
-					bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
-					PlacerBonus = false;
-				}
-			}
-
 			//Affichage de l'herbe SPAWN.
 			if (matrice[i][j] == '4') {
 				glEnable(GL_TEXTURE_2D);
@@ -204,7 +193,7 @@ void Niveau::dessinerNiveau() {
 
 			// Affichage du Game Over
 			if (GameOver) {
-				cout << "gameover" << endl;
+				//cout << "gameover" << endl;
 			}
 
 			for (int k = 0; k < size(bonusTab); k++) {

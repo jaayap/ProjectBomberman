@@ -20,14 +20,16 @@ bool die = false;
 bool life = true;
 
 extern int valueBomberman;
-extern int valueBomberdeath;
+extern int spriteBomberdeath;
 extern int direction;
 extern int vie;
 extern int maxMur;
 
+extern float valueBomberdeath;
 extern float numeroNiveau;
 
 extern bool victoire;
+extern bool PlacerBonus;
 
 extern vector<GLuint> texture;
 extern Niveau niveau;
@@ -97,6 +99,12 @@ void AnimDeath(int z) {
 	life = true;
 	vie--;
 	maxMur = 0;
+	for (int k = 0; k < size(niveau.bonusTab); k++) {
+		niveau.bonusTab[k].setVisible(false);
+		niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise	
+	}
+	PlacerBonus = false;
+	return;
 }
 
 void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi
@@ -106,13 +114,9 @@ void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un e
 		if (vie == 0) {
 			GameOver = true;
 		}
-		if (die) {
-			retour();
-			die = false;
-			return;
-		}
 		else if (life) {
-			glutTimerFunc(400, AnimDeath, 0);
+			spriteBomberdeath = 0;
+			glutTimerFunc(600, AnimDeath, 0);
 			life = false;
 			return;
 		}
@@ -182,13 +186,19 @@ void Bomberman::dessiner() {
 		glBindTexture(GL_TEXTURE_2D, texture[10]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(coordBomb[0 + valueBomberdeath], coordBomb[0]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
-		glTexCoord2f(coordBomb[2 + valueBomberdeath], coordBomb[0]); glVertex2d(x + offsetX, y + offsetY + 1);
-		glTexCoord2f(coordBomb[2 + valueBomberdeath], coordBomb[8]); glVertex2d(x + offsetX, y + offsetY - 0.5);
-		glTexCoord2f(coordBomb[0 + valueBomberdeath], coordBomb[8]); glVertex2d(x + offsetX + 1, y + offsetY - 0.5);
+		glTexCoord2f(valueBomberdeath, coordBomb[0]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
+		glTexCoord2f(valueBomberdeath + 0.16666667, coordBomb[0]); glVertex2d(x + offsetX, y + offsetY + 1);
+		glTexCoord2f(valueBomberdeath + 0.16666667, coordBomb[8]); glVertex2d(x + offsetX, y + offsetY - 0.5);
+		glTexCoord2f(valueBomberdeath, coordBomb[8]); glVertex2d(x + offsetX + 1, y + offsetY - 0.5);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
+	}
+
+	if (die) {
+		retour();
+		die = false;
+		return;
 	}
 	
 }

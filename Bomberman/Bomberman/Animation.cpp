@@ -11,7 +11,8 @@ int spriteBombe = 0, valueBombe = 0;
 int spriteExplo = 0, valueExplo = 0;
 int spriteMur = 0, valueMur = 0;
 int spriteBomberman = 0, valueBomberman = 0;
-int spriteBomberdeath = 0, valueBomberdeath = 0;
+int spriteBomberdeath = 0;
+float valueBomberdeath = 0;
 int spriteEnnemi1 = 0, valueEnnemi1 = 0;
 int spriteEnnemi2 = 0, valueEnnemi2 = 0;
 int spriteBonus = 0, valueBonus = 0;
@@ -147,15 +148,23 @@ void BomberdeathAnimation(int x) {
 		break;
 	case(1):
 		spriteBomberdeath = 2;
-		valueBomberdeath = 2;
+		valueBomberdeath = 0.16666667;
 		break;
 	case(2):
 		spriteBomberdeath = 3;
-		valueBomberdeath = 4;
+		valueBomberdeath = 0.33333333;
 		break;
 	case(3):
+		spriteBomberdeath = 4;
+		valueBomberdeath = 0.5;
+		break;
+	case(4):
+		spriteBomberdeath = 5;
+		valueBomberdeath = 0.6666666;
+		break;
+	case(5):
 		spriteBomberdeath = 0;
-		valueBomberdeath = 6;
+		valueBomberdeath = 0.8333333;
 		break;
 	}
 
