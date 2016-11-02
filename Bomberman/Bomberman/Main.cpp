@@ -418,6 +418,8 @@ void main() {
 	/* 7 */ LoadGLTextures("images/Score&Vie.png");
 	/* 8 */ LoadGLTextures("images/menu.png");
 	/* 9 */ LoadGLTextures("images/Tete_bomberman.png");
+	/* 10 */ LoadGLTextures("images/Bomberdeath.png");
+	/* 11 */ LoadGLTextures("images/GameOver.png");
 
 	glutMainLoop();
 }

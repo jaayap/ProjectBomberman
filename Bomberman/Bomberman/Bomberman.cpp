@@ -16,8 +16,11 @@ float coordBomb[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f,
 int rotation;
 
 bool GameOver = false;
+bool die = false;
+bool life = true;
 
 extern int valueBomberman;
+extern int valueBomberdeath;
 extern int direction;
 extern int vie;
 extern int maxMur;
@@ -89,17 +92,30 @@ void Bomberman::eraseExplosion(int nb) {
 	bombes.erase(bombes.begin() + nb);
 }
 
+void AnimDeath(int z) {
+	die = true;
+	life = true;
+	vie--;
+	maxMur = 0;
+}
+
 void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi
 
 	if ((ennemi1.getX() == x && ennemi1.getY() == y) || (ennemi2.getX() == x && ennemi2.getY() == y) || (ennemi3.getX() == x && ennemi3.getY() == y)) {
 		//vivant = false;
 		if (vie == 0) {
 			GameOver = true;
+		}
+		if (die) {
+			retour();
+			die = false;
 			return;
 		}
-		vie--;
-		retour();
-		return;
+		else if (life) {
+			glutTimerFunc(400, AnimDeath, 0);
+			life = false;
+			return;
+		}
 	}
 }
 
@@ -144,17 +160,35 @@ void Bomberman::dessiner() {
 		victoire = false;
 	}
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture[3]);
-	glBegin(GL_QUADS);
-	glColor3d(1.0, 1.0, 1.0);
-	glTexCoord2f(coordBomb[0 + valueBomberman], coordBomb[6 - rotation]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
-	glTexCoord2f(coordBomb[1 + valueBomberman], coordBomb[6 - rotation]); glVertex2d(x + offsetX, y + offsetY + 1);
-	glTexCoord2f(coordBomb[1 + valueBomberman], coordBomb[8 - rotation]); glVertex2d(x + offsetX, y + offsetY - 0.5);
-	glTexCoord2f(coordBomb[0 + valueBomberman], coordBomb[8 - rotation]); glVertex2d(x + offsetX + 1, y + offsetY - 0.5);
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_BLEND);
+	if (life) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[3]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(coordBomb[0 + valueBomberman], coordBomb[6 - rotation]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
+		glTexCoord2f(coordBomb[1 + valueBomberman], coordBomb[6 - rotation]); glVertex2d(x + offsetX, y + offsetY + 1);
+		glTexCoord2f(coordBomb[1 + valueBomberman], coordBomb[8 - rotation]); glVertex2d(x + offsetX, y + offsetY - 0.5);
+		glTexCoord2f(coordBomb[0 + valueBomberman], coordBomb[8 - rotation]); glVertex2d(x + offsetX + 1, y + offsetY - 0.5);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+	}
+	else if (!life) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[10]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(coordBomb[0 + valueBomberdeath], coordBomb[6]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
+		glTexCoord2f(coordBomb[1 + valueBomberdeath], coordBomb[6]); glVertex2d(x + offsetX, y + offsetY + 1);
+		glTexCoord2f(coordBomb[1 + valueBomberdeath], coordBomb[8]); glVertex2d(x + offsetX, y + offsetY - 0.5);
+		glTexCoord2f(coordBomb[0 + valueBomberdeath], coordBomb[8]); glVertex2d(x + offsetX + 1, y + offsetY - 0.5);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+	}
+	
 }

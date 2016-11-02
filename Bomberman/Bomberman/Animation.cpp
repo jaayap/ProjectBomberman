@@ -11,6 +11,7 @@ int spriteBombe = 0, valueBombe = 0;
 int spriteExplo = 0, valueExplo = 0;
 int spriteMur = 0, valueMur = 0;
 int spriteBomberman = 0, valueBomberman = 0;
+int spriteBomberdeath = 0, valueBomberdeath = 0;
 int spriteEnnemi1 = 0, valueEnnemi1 = 0;
 int spriteEnnemi2 = 0, valueEnnemi2 = 0;
 int spriteBonus = 0, valueBonus = 0;
@@ -135,6 +136,30 @@ void BombermanAnimation(int x) {
 	}
 
 	glutTimerFunc(100, BombermanAnimation, 0);
+}
+
+void BomberdeathAnimation(int x) {
+	switch (spriteBomberdeath)
+	{
+	case(0):
+		spriteBomberdeath = 1;
+		valueBomberdeath = 0;
+		break;
+	case(1):
+		spriteBomberdeath = 2;
+		valueBomberdeath = 2;
+		break;
+	case(2):
+		spriteBomberdeath = 3;
+		valueBomberdeath = 4;
+		break;
+	case(3):
+		spriteBomberdeath = 4;
+		valueBomberdeath = 6;
+		break;
+	}
+
+	glutTimerFunc(100, BomberdeathAnimation, 0);
 }
 
 void ennemi1Animation(int x) {
@@ -304,6 +329,7 @@ Animation::Animation()
 	glutTimerFunc(100, exploAnimation, 0);
 	glutTimerFunc(125, murAnimation, 0);
 	glutTimerFunc(100, BombermanAnimation, 0);
+	glutTimerFunc(100, BomberdeathAnimation, 0);
 	glutTimerFunc(20, ennemi1Animation, 0);
 	glutTimerFunc(80, ennemi2Animation, 0);
 	glutTimerFunc(100, bonusAnimation, 0);
