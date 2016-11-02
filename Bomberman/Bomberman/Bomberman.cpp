@@ -15,6 +15,8 @@ using namespace std;
 float coordBomb[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 int rotation;
 
+bool GameOver = false;
+
 extern int valueBomberman;
 extern int direction;
 extern int vie;
@@ -91,6 +93,10 @@ void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un e
 
 	if ((ennemi1.getX() == x && ennemi1.getY() == y) || (ennemi2.getX() == x && ennemi2.getY() == y) || (ennemi3.getX() == x && ennemi3.getY() == y)) {
 		//vivant = false;
+		if (vie == 0) {
+			GameOver = true;
+			return;
+		}
 		vie--;
 		retour();
 		return;

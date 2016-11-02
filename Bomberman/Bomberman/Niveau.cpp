@@ -20,6 +20,7 @@ extern vector<GLuint> texture;
 
 extern int valueBombe, valueExplo, valueMur, valueSortie;
 extern bool victoire;
+extern bool GameOver;
 
 
 
@@ -179,6 +180,11 @@ void Niveau::dessinerNiveau() {
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 				glDisable(GL_BLEND);
+			}
+
+			// Affichage du Game Over
+			if (GameOver) {
+				cout << "gameover" << endl;
 			}
 
 			for (int k = 0; k < size(bonusTab); k++) {
