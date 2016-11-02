@@ -1,7 +1,4 @@
-﻿  Main.cpp
-c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(64): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(215): warning C4018: '<' : incompatibilité signed/unsigned
-  Bonus.cpp
-  Génération de code en cours...
+﻿  Niveau.cpp
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\niveau.cpp(184): warning C4018: '<' : incompatibilité signed/unsigned
   Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.exe
   Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.pdb (Partial PDB)

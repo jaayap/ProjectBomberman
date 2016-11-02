@@ -17,6 +17,12 @@ int rotation;
 
 extern int valueBomberman;
 extern int direction;
+extern int vie;
+extern int maxMur;
+
+extern float numeroNiveau;
+
+extern bool victoire;
 
 extern vector<GLuint> texture;
 extern Niveau niveau;
@@ -84,7 +90,10 @@ void Bomberman::eraseExplosion(int nb) {
 void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi
 
 	if ((ennemi1.getX() == x && ennemi1.getY() == y) || (ennemi2.getX() == x && ennemi2.getY() == y) || (ennemi3.getX() == x && ennemi3.getY() == y)) {
-		vivant = false;
+		//vivant = false;
+		vie--;
+		retour();
+		return;
 	}
 }
 
@@ -96,6 +105,12 @@ void Bomberman::ramasserBonus() {
 			niveau.bonusTab[i].ramasser();
 		}
 	}
+}
+
+// Retour à la case départ après la perte d'une vie
+void Bomberman::retour() {
+	x = 2;
+	y = 1;
 }
 
 
@@ -114,6 +129,13 @@ void Bomberman::dessiner() {
 	case(4):
 		rotation = 0;
 		break;
+	}
+
+	if (victoire && x == 8 && y == 6) {
+		numeroNiveau = 0.25f;
+		retour();
+		maxMur = 0;
+		victoire = false;
 	}
 
 	glEnable(GL_BLEND);
