@@ -10,6 +10,7 @@ using namespace std;
 extern vector<GLuint> texture;
 extern Bomberman bomberman;
 extern int valueBonus;
+extern int score;
 
 float coordBonus[5] = { 0.0f, 0.25f, 0.5f, 0.75f, 1.0f };
 
@@ -60,12 +61,15 @@ void Bonus::ramasser()
 		//type du bonus : 1 -> + bombes, 2 -> + portee, 3 -> + vitesse
 	case 1:
 		if(bomberman.getNbBombe() <= 8) bomberman.setNbBombe(bomberman.getNbBombe() + 1);
+		score += 50;
 		break;
 	case 2:
 		if (bomberman.getPorteeBombe() <= 8) bomberman.setPorteeBombe(bomberman.getPorteeBombe() + 1);
+		score += 50;
 		break;
 	case 3:
 		if (bomberman.getVitesseDeplacement() <= 0.45) bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() * 1.5f); //A tester
+		score += 50;
 		break;
 	}
 

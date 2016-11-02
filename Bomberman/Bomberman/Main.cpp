@@ -18,7 +18,7 @@ using namespace std;
 int HAUTEUR_FENETRE = 1046;
 int LARGEUR_FENETRE = 900;
 
-int score = 8000;
+int score = 0;
 int vie = 3;
 
 bool enMouvement = false;
