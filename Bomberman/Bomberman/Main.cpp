@@ -25,6 +25,10 @@ bool enMouvement = false;
 bool haut = false, bas = false, gauche = false, droite = false;
 bool ennemi1V = false, ennemi2V = false, ennemi3V = false;
 bool victoire = false;
+bool afficherMenu = true;
+float position_cursor_x = 0.25;
+float position_cursor_y = 0.63;
+int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
 
 vector<GLuint>	texture; // tableau qui contient nos textures
 vector<EnnemiAleatoire> TableEA;
@@ -49,67 +53,103 @@ void LabyAffichage() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 
-	niveau.dessinerNiveau();
+	if (afficherMenu) {
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		// Texture Background Menu
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[8]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
 
-	//Test colision et bonus
-	//bomberman.collisionEnnemi();
-	bomberman.ramasserBonus();
 
-	//Affichage des personnages
-	if (bomberman.vivant) bomberman.dessiner();
-	if (ennemi1.vivant) ennemi1.dessiner();
-	if (ennemi2.vivant) ennemi2.dessiner();
-	if (ennemi3.vivant) ennemi3.dessiner();
+		glViewport(LARGEUR_FENETRE * position_cursor_x,-HAUTEUR_FENETRE * position_cursor_y, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		// Texture du curseur
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[9]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(1, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(1, 1);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 1);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+	}
+	else {
 
-	for (int i = 0; i < size(bomberman.bombes); i++) {
-		
-		if (bomberman.bombes[i].explosion) {
-			cout << "explosion a dessiner" << i <<endl;
-			bomberman.bombes[i].dessinerExplosion();
+		niveau.dessinerNiveau();
+
+		//Test colision et bonus
+		//bomberman.collisionEnnemi();
+		bomberman.ramasserBonus();
+
+		//Affichage des personnages
+		if (bomberman.vivant) bomberman.dessiner();
+		if (ennemi1.vivant) ennemi1.dessiner();
+		if (ennemi2.vivant) ennemi2.dessiner();
+		if (ennemi3.vivant) ennemi3.dessiner();
+
+		for (int i = 0; i < size(bomberman.bombes); i++) {
+
+			if (bomberman.bombes[i].explosion) {
+				cout << "explosion a dessiner" << i << endl;
+				bomberman.bombes[i].dessinerExplosion();
+			}
 		}
+
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+
+		// Texture score & vie
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[7]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 1);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 1);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+
+		// Affichage du score
+		string s = to_string(score);
+		int tailleScore = s.size();
+
+		glColor3f(1.0, 1.0, 1.0);
+		glRasterPos2f(5, 0.6f);
+		string scor = s;
+		for (int i = 0; i < tailleScore; ++i) {
+			glColor3d(1.0, 0.0, 0.0);
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, scor[i]);
+		}
+
+		// Affichage de la vie
+		string v = to_string(vie);
+		int tailleVie = v.size();
+
+		glColor3f(1.0, 1.0, 1.0);
+		glRasterPos2f(0.7f, 0.6f);
+		string vi = v;
+		for (int i = 0; i < tailleVie; ++i) {
+			glColor3d(1.0, 0.0, 0.0);
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, vi[i]);
+		}
+
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE - 60);
+		glLoadIdentity();
 	}
-
-	glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
-	glLoadIdentity();
-
-	// Texture score & vie
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture[7]);
-	glBegin(GL_QUADS);
-	glColor3d(1.0, 1.0, 1.0);
-	glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
-	glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 1);
-	glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 1);
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
-
-	// Affichage du score
-	string s = to_string(score);
-	int tailleScore = s.size();
-
-	glColor3f(1.0, 1.0, 1.0);
-	glRasterPos2f(5, 0.6f);
-	string scor = s;
-	for (int i = 0; i < tailleScore; ++i) {
-		glColor3d(1.0, 0.0, 0.0);
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, scor[i]);
-	}
-
-	// Affichage de la vie
-	string v = to_string(vie);
-	int tailleVie = v.size();
-
-	glColor3f(1.0, 1.0, 1.0);
-	glRasterPos2f(0.7f, 0.6f);
-	string vi = v;
-	for (int i = 0; i < tailleVie; ++i) {
-		glColor3d(1.0, 0.0, 0.0);
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, vi[i]);
-	}
-
-	glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE - 60);
-	glLoadIdentity();
 
 	glFlush();
 }
@@ -128,19 +168,38 @@ void TraitementClavier(int key, int x, int y)
 {
 	glutPostRedisplay();
 
-	if (key == GLUT_KEY_UP) {
-		haut = true;
-	}
-	if (key == GLUT_KEY_DOWN) {	
-		bas = true;
-	}
-	if (key == GLUT_KEY_LEFT) {
-		gauche = true;
-	}
-	if (key == GLUT_KEY_RIGHT) {
-		droite = true;
-	}
+	if (afficherMenu) {	
+		//Bouge le curseur 
+		if (key == GLUT_KEY_UP) {
+			if (position_cursor_y > 0.63) {
+				position_cursor_y -= 0.07;
+				position_cursor -= 1;
+			}
+		}
 
+		if (key == GLUT_KEY_DOWN) {
+			if (position_cursor_y < 0.7) {
+				position_cursor_y += 0.07;
+				position_cursor += 1;
+			}
+		}
+
+	//	cout << position_cursor;
+	}
+	else {
+		if (key == GLUT_KEY_UP) {
+			haut = true;
+		}
+		if (key == GLUT_KEY_DOWN) {
+			bas = true;
+		}
+		if (key == GLUT_KEY_LEFT) {
+			gauche = true;
+		}
+		if (key == GLUT_KEY_RIGHT) {
+			droite = true;
+		}
+	}
 	glFlush();
 }
 
@@ -198,14 +257,24 @@ void TraitementAucuneTouche(int key, int x, int y) {
 
 void TraitementClavierASCII(unsigned char key, int x, int y) {
 	glutPostRedisplay();
+	if (afficherMenu) {
+		if (key == 10 || key == 13) { // Touche entree
+			if (position_cursor == 1) { // on lance le niveau
+				afficherMenu = false;
+			}
+		}
+	}
+	else {
+		if (key == 66 || key == 98) { // touche B
+			bomberman.lancerBombe();
+		}
+	}
+	
 	if (key == 27) {// Escape key
 		glutDestroyWindow(1);
 		exit(0);
 	}
 
-	if (key == 66 || key == 98) { // touche B
-		bomberman.lancerBombe();
-	}
 	glFlush();
 }
 
@@ -347,6 +416,8 @@ void main() {
 	/* 5 */ LoadGLTextures("images/EnnemiAleatoire.png");
 	/* 6 */ LoadGLTextures("images/Sortie.png");
 	/* 7 */ LoadGLTextures("images/Score&Vie.png");
+	/* 8 */ LoadGLTextures("images/menu.png");
+	/* 9 */ LoadGLTextures("images/Tete_bomberman.png");
 
 	glutMainLoop();
 }
