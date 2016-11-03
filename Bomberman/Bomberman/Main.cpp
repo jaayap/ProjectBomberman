@@ -11,7 +11,6 @@
 #include "EnnemiAleatoire.h"
 #include "EnnemiAllerRetour.h"
 #include "Animation.h"
-#include "FMOD/fmod.h"
 
 
 using namespace std;
@@ -285,6 +284,11 @@ void TraitementAucuneTouche(int key, int x, int y) {
 	if (key == GLUT_KEY_RIGHT) {
 		droite = false;
 		enMouvement = false;
+	}
+
+	//TEST
+	if (key == GLUT_KEY_F1) {
+		
 	}
 }
 
