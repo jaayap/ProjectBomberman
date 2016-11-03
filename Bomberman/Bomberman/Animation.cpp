@@ -1,6 +1,6 @@
 #include "Animation.h"
 #include <iostream>
-#include <string>
+#include <String>
 #include "GL/glut.h"
 #include "SOIL/SOIL.h"
 #include <vector>

@@ -4,13 +4,14 @@
 #include <vector>
 #include <chrono>
 #include <iostream>
-#include <string>
+#include <String>
 #include "Niveau.h"
 #include "Personnage.h"
 #include "Bomberman.h"
 #include "EnnemiAleatoire.h"
 #include "EnnemiAllerRetour.h"
 #include "Animation.h"
+#include "SFML/Audio.hpp"
 
 
 using namespace std;
@@ -439,6 +440,16 @@ void detecteEnnemis(int z) {
 
 void main() {
 	srand((unsigned)time(0));
+
+	sf::Music music;
+
+	music.openFromFile("Musiques/zone.wav");
+	music.play();
+
+	sf::Music music2;
+
+	music2.openFromFile("Musiques/canary.wav");
+	music2.play();
 
 	tableEnnemis();
 

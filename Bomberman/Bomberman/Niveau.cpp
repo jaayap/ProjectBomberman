@@ -1,7 +1,7 @@
-#include <sstream>
+#include <Sstream>
 #include <fstream>
 #include <iostream>
-#include <string>
+#include <String>
 #include "GL/glut.h"
 #include "SOIL/SOIL.h"
 #include "Niveau.h"

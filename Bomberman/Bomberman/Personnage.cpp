@@ -1,4 +1,4 @@
-#include <string>
+#include <String>
 #include <iostream>
 #include "Personnage.h"
 #include "Niveau.h"
