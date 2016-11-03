@@ -11,5 +11,6 @@ public:
 	void dessiner();
 	void calculDeplacement();
 	void Deplacer();
+	void retour(int, int);
 };
 

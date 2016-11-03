@@ -15,6 +15,7 @@ int rotationEnnemi1;
 extern int valueEnnemi1;
 
 extern bool life;
+extern bool die;
 
 extern Niveau niveau;
 extern vector<GLuint> texture;
@@ -205,4 +206,9 @@ void EnnemiAllerRetour::deplacementBas()
 	}
 
 	direction = 4;
+}
+
+void EnnemiAllerRetour::retour(int x, int y) {
+	this->x = x;
+	this->y = y;
 }

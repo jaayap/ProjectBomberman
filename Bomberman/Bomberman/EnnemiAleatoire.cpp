@@ -206,3 +206,8 @@ void EnnemiAleatoire::calculDeplacement() {//1 : A gauche, 2 : A droite, 3 : En 
 	deplacement_precedent = deplacement; // on enregistre la valeur
 	Deplacer(); // on se deplace
 }
+
+void EnnemiAleatoire::retour(int x, int y) {
+	this->x = x;
+	this->y = y;
+}

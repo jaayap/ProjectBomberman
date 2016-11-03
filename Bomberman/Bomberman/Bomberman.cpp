@@ -32,6 +32,7 @@ extern float numeroNiveau;
 
 extern bool victoire;
 extern bool PlacerBonus;
+extern bool afficherMenu;
 
 extern vector<GLuint> texture;
 extern Niveau niveau;
@@ -101,6 +102,10 @@ void AnimDeath(int z) {
 	life = true;
 	vie--;
 	maxMur = 0;
+	if (GameOver) {
+		afficherMenu = true;
+		// RESET LE JEU
+	}
 	return;
 }
 
@@ -108,10 +113,20 @@ void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un e
 
 	if ((ennemi1.getX() == x && ennemi1.getY() == y) || (ennemi2.getX() == x && ennemi2.getY() == y) || (ennemi3.getX() == x && ennemi3.getY() == y)) {
 		//vivant = false;
-		if (vie == 0) {
+		if (vie == 0 && !GameOver && life && !die) {
 			GameOver = true;
+			life = false;
+			nb_bombes = 1;
+			portee_bombe = 3;
+			spriteBomberdeath = 0;
+			glutTimerFunc(600, AnimDeath, 0);
+			for (int k = 0; k < size(niveau.bonusTab); k++) {
+				niveau.bonusTab[k].setVisible(false);
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise	
+			}
+			return;
 		}
-		else if (life && !die) {
+		else if (life && !die && !afficherMenu) {
 			life = false;
 			nb_bombes = 1;
 			portee_bombe = 3;

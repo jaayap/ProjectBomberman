@@ -16,5 +16,6 @@ public:
 	void deplacementDroite();
 	void deplacementHaut();
 	void deplacementBas();
+	void retour(int, int);
 };
 
