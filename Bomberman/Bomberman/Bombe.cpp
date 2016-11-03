@@ -303,9 +303,9 @@ void Bombe::dessinerExplosionHaut() {
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 
-		//on laisse les tests dans cette fonction car on souhaite vérifier pendant toutes l'explosion
+		//on laisse les tests dans cette fonction car on souhaite vérifier pendant toute la duree de l'explosion
 		//Test si il y a des mort
-		if (x == bomberman.getX() && y - i == bomberman.getY()) bomberman.setVivant(false);
+		if (x == bomberman.getX() && y - i == bomberman.getY() && (bomberman.offsetX == 0)) bomberman.setVivant(false);
 
 		for (int k = 0; k < size(ennemisTab); k++) {
 			if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y - i) {
@@ -339,7 +339,7 @@ void Bombe::dessinerExplosionHaut() {
 		glDisable(GL_BLEND);
 		
 		//Test si il y a des mort
-		if (x == bomberman.getX() && y - portee + 1 == bomberman.getY()) bomberman.setVivant(false);
+		if (x == bomberman.getX() && y - portee + 1 == bomberman.getY() && (bomberman.offsetX == 0)) bomberman.setVivant(false);
 
 		for (int k = 0; k < size(ennemisTab); k++) {
 			if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y - portee + 1) {
@@ -376,7 +376,7 @@ void Bombe::dessinerExplosionBas() {
 		glDisable(GL_BLEND);
 
 		//Test si il y a des mort
-		if (x == bomberman.getX() && y + i == bomberman.getY()) bomberman.setVivant(false);
+		if (x == bomberman.getX() && y + i == bomberman.getY() && bomberman.offsetX == 0) bomberman.setVivant(false);
 
 		for (int k = 0; k < size(ennemisTab); k++) {
 			if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y + i) {
@@ -411,7 +411,7 @@ void Bombe::dessinerExplosionBas() {
 
 
 		//Test si il y a des mort
-		if (x == bomberman.getX() && y + portee - 1 == bomberman.getY()) bomberman.setVivant(false);
+		if (x == bomberman.getX() && y + portee - 1 == bomberman.getY() && bomberman.offsetX == 0) bomberman.setVivant(false);
 
 		for (int k = 0; k < size(ennemisTab); k++) {
 			if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y + portee - 1) {
@@ -449,7 +449,7 @@ void Bombe::dessinerExplosionGauche() {
 		glDisable(GL_BLEND);
 
 		//Test si il y a des mort
-		if ((x - i) == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+		if ((x - i) == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
 	
 		for (int k = 0; k < size(ennemisTab); k++) {
 			if (ennemisTab[k]->getX() == (x - i) && ennemisTab[k]->getY() == y) {
@@ -484,7 +484,7 @@ void Bombe::dessinerExplosionGauche() {
 		glDisable(GL_BLEND);
 
 		//Test si il y a des mort
-		if (x - portee + 1 == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+		if (x - portee + 1 == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
 
 		for (int k = 0; k < size(ennemisTab); k++) {
 			if (ennemisTab[k]->getX() == x - portee + 1 && ennemisTab[k]->getY() == y) {
@@ -555,7 +555,7 @@ void Bombe::dessinerExplosionDroite() {
 		glDisable(GL_BLEND);
 
 		//Test si il y a des mort
-		if (x + portee - 1 == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+		if (x + portee - 1 == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
 
 		for (int k = 0; k < size(ennemisTab); k++) {
 			if (ennemisTab[k]->getX() == x + portee - 1 && ennemisTab[k]->getY() == y) {

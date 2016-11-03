@@ -73,15 +73,22 @@ void Bomberman::setPorteeBombe(int portee)
 
 
 void Bomberman::lancerBombe() {
-
+	bool dejaBombe = false;
 	if (nb_bombes > 0) {
-		niveau.modifierCase(y, x, '8');
+		
+		for (int i = 0; i < size(bombes); i++) {
+			if (bombes[i].getX() == x && bombes[i].getY() == y)
+				dejaBombe = true;
+		}
+		if (!dejaBombe) {
+			niveau.modifierCase(y, x, '8');
 
-		Bombe bombe = Bombe(x, y, portee_bombe);
-		bombe.posee = true;
+			Bombe bombe = Bombe(x, y, portee_bombe);
+			bombe.posee = true;
 
-		bombes.push_back(bombe);
-		nb_bombes--;
+			bombes.push_back(bombe);
+			nb_bombes--;
+		}
 	}
 }
 
