@@ -38,9 +38,7 @@ extern vector<GLuint> texture;
 extern Niveau niveau;
 
 //pour gerer les collisions :
-extern EnnemiAleatoire ennemi1;
-extern EnnemiAllerRetour ennemi2;
-extern EnnemiAllerRetour ennemi3;
+extern vector<Personnage*> ennemisTab;
 
 
 Bomberman::Bomberman(int xDepart, int  yDepart) : Personnage(x, y)
@@ -111,32 +109,33 @@ void AnimDeath(int z) {
 
 void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi
 
-	if ((ennemi1.getX() == x && ennemi1.getY() == y) || (ennemi2.getX() == x && ennemi2.getY() == y) || (ennemi3.getX() == x && ennemi3.getY() == y)) {
-		//vivant = false;
-		if (vie == 0 && !GameOver && life && !die) {
-			GameOver = true;
-			life = false;
-			nb_bombes = 1;
-			portee_bombe = 3;
-			spriteBomberdeath = 0;
-			glutTimerFunc(600, AnimDeath, 0);
-			for (int k = 0; k < size(niveau.bonusTab); k++) {
-				niveau.bonusTab[k].setVisible(false);
-				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise	
+	for (int i = 0; i < size(ennemisTab); i++) {
+		if (ennemisTab[i]->getX() == x && ennemisTab[i]->getY() == y) {
+			//vivant = false;
+			if (vie == 0 && !GameOver && life && !die) {
+				GameOver = true;
+				life = false;
+				nb_bombes = 1;
+				portee_bombe = 3;
+				spriteBomberdeath = 0;
+				glutTimerFunc(600, AnimDeath, 0);
+				for (int k = 0; k < size(niveau.bonusTab); k++) {
+					niveau.bonusTab[k].setVisible(false);
+					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise	
+				}
+				return;
 			}
-			return;
-		}
-		else if (life && !die && !afficherMenu) {
-			life = false;
-			nb_bombes = 1;
-			portee_bombe = 3;
-			spriteBomberdeath = 0;
-			glutTimerFunc(600, AnimDeath, 0);
-			for (int k = 0; k < size(niveau.bonusTab); k++) {
-				niveau.bonusTab[k].setVisible(false);
-				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise	
+			else if (life && !die && !afficherMenu) {
+				life = false;
+				nb_bombes = 1;
+				portee_bombe = 3;
+				spriteBomberdeath = 0;
+				glutTimerFunc(600, AnimDeath, 0);
+				for (int k = 0; k < size(niveau.bonusTab); k++) {
+					niveau.bonusTab[k].setVisible(false);
+					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				}
 			}
-			return;
 		}
 	}
 }
