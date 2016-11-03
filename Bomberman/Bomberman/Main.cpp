@@ -29,17 +29,21 @@ bool afficherMenu = true;
 float position_cursor_x = 0.25;
 float position_cursor_y = 0.63;
 int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
+bool pause = false; //permet de mettre le jeu en pause
 
 vector<GLuint>	texture; // tableau qui contient nos textures
 vector<EnnemiAleatoire> TableEA;
 vector<EnnemiAllerRetour> TableEAR;
 
-vector<Personnage*> ennemisTab;
-
 Niveau niveau;
+
+//Joueur
 Bomberman bomberman(3, 1);
 
-//pour bomberman.cpp ->A modif
+//Declaration des ennemis
+
+vector<Personnage*> ennemisTab;
+
 EnnemiAleatoire ennemi1(5, 9);
 EnnemiAllerRetour ennemi2(5, 3, 1, false);
 EnnemiAllerRetour ennemi3(8, 5, 4, false);
@@ -91,73 +95,90 @@ void LabyAffichage() {
 		glDisable(GL_BLEND);
 	}
 	else {
+	
+			niveau.dessinerNiveau();
 
-		niveau.dessinerNiveau();
+			//Test colision et bonus
+			bomberman.collisionEnnemi();
+			bomberman.ramasserBonus();
 
-		//Test colision et bonus
-		bomberman.collisionEnnemi();
-		bomberman.ramasserBonus();
-
-		//Affichage des personnages
-		if (bomberman.vivant) bomberman.dessiner();
-	//	if (ennemi1.vivant) ennemi1.dessiner();
-	//	if (ennemi2.vivant) ennemi2.dessiner();
-	//	if (ennemi3.vivant) ennemi3.dessiner();
-		for (int i = 0; i < size(ennemisTab); i++) {
-			if (ennemisTab[i]->vivant) {
-				ennemisTab[i]->dessiner();
+			//Affichage des personnages
+			if (bomberman.vivant) bomberman.dessiner();
+			//	if (ennemi1.vivant) ennemi1.dessiner();
+			//	if (ennemi2.vivant) ennemi2.dessiner();
+			//	if (ennemi3.vivant) ennemi3.dessiner();
+			for (int i = 0; i < size(ennemisTab); i++) {
+				if (ennemisTab[i]->vivant) {
+					ennemisTab[i]->dessiner();
+				}
 			}
-		}
 
-		for (int i = 0; i < size(bomberman.bombes); i++) {
+			for (int i = 0; i < size(bomberman.bombes); i++) {
 
-			if (bomberman.bombes[i].explosion) {
-				cout << "explosion a dessiner" << i << endl;
-				bomberman.bombes[i].dessinerExplosion();
+				if (bomberman.bombes[i].explosion) {
+					cout << "explosion a dessiner" << i << endl;
+					bomberman.bombes[i].dessinerExplosion();
+				}
 			}
+
+			glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+			glLoadIdentity();
+
+			// Texture score & vie
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, texture[7]);
+			glBegin(GL_QUADS);
+			glColor3d(1.0, 1.0, 1.0);
+			glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+			glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+			glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 1);
+			glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 1);
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+
+			// Affichage du score
+			string s = to_string(score);
+			int tailleScore = s.size();
+
+			glColor3f(1.0, 1.0, 1.0);
+			glRasterPos2f(5, 0.6f);
+			string scor = s;
+			for (int i = 0; i < tailleScore; ++i) {
+				glColor3d(1.0, 0.0, 0.0);
+				glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, scor[i]);
+			}
+
+			// Affichage de la vie
+			string v = to_string(vie);
+			int tailleVie = v.size();
+
+			glColor3f(1.0, 1.0, 1.0);
+			glRasterPos2f(0.7f, 0.6f);
+			string vi = v;
+			for (int i = 0; i < tailleVie; ++i) {
+				glColor3d(1.0, 0.0, 0.0);
+				glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, vi[i]);
+			}
+
+			glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE - 60);
+			glLoadIdentity();
+		
+		if(pause) {
+			//Affichage de l'ecran pause
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, texture[12]);
+			glBegin(GL_QUADS);
+			glColor3d(1.0, 1.0, 1.0);
+			glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+			glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+			glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+			glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_BLEND);
 		}
-
-		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
-		glLoadIdentity();
-
-		// Texture score & vie
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[7]);
-		glBegin(GL_QUADS);
-		glColor3d(1.0, 1.0, 1.0);
-		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
-		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
-		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 1);
-		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 1);
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
-
-		// Affichage du score
-		string s = to_string(score);
-		int tailleScore = s.size();
-
-		glColor3f(1.0, 1.0, 1.0);
-		glRasterPos2f(5, 0.6f);
-		string scor = s;
-		for (int i = 0; i < tailleScore; ++i) {
-			glColor3d(1.0, 0.0, 0.0);
-			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, scor[i]);
-		}
-
-		// Affichage de la vie
-		string v = to_string(vie);
-		int tailleVie = v.size();
-
-		glColor3f(1.0, 1.0, 1.0);
-		glRasterPos2f(0.7f, 0.6f);
-		string vi = v;
-		for (int i = 0; i < tailleVie; ++i) {
-			glColor3d(1.0, 0.0, 0.0);
-			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, vi[i]);
-		}
-
-		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE - 60);
-		glLoadIdentity();
 	}
 
 	glFlush();
@@ -196,17 +217,20 @@ void TraitementClavier(int key, int x, int y)
 	//	cout << position_cursor;
 	}
 	else {
-		if (key == GLUT_KEY_UP) {
-			haut = true;
-		}
-		if (key == GLUT_KEY_DOWN) {
-			bas = true;
-		}
-		if (key == GLUT_KEY_LEFT) {
-			gauche = true;
-		}
-		if (key == GLUT_KEY_RIGHT) {
-			droite = true;
+		if (!pause) {
+			
+			if (key == GLUT_KEY_UP) {
+				haut = true;
+			}
+			if (key == GLUT_KEY_DOWN) {
+				bas = true;
+			}
+			if (key == GLUT_KEY_LEFT) {
+				gauche = true;
+			}
+			if (key == GLUT_KEY_RIGHT) {
+				droite = true;
+			}
 		}
 	}
 	glFlush();
@@ -274,9 +298,15 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 		}
 	}
 	else {
-		if (key == 66 || key == 98) { // touche B
+		if ((key == 66 || key == 98) && !pause) { // touche B
 			bomberman.lancerBombe();
 		}
+		//mettre en pause le jeu
+		if (key == 80 || key == 112) { // touche P
+			if (pause) pause = false; 
+			else pause = true;
+		}
+
 	}
 	
 	if (key == 27) {// Escape key
@@ -293,7 +323,7 @@ void LabyTimerExplosion(int z) {
 	for (int i = 0; i < size(bomberman.bombes); i++) {
 		
 		if (bomberman.bombes[i].posee) {
-			bomberman.bombes[i].Timer++;
+			if(!pause) bomberman.bombes[i].Timer++;
 			//Explosion au bout de 5 secondes
 			if (bomberman.bombes[i].Timer > 10 && !bomberman.bombes[i].explosion) {//creer explosion
 				bomberman.bombes[i].explosion = true;
@@ -326,14 +356,13 @@ void LabyTimerExplosion(int z) {
 }
 
 void LabyTimerEnnemi(int z) {
+	if (!pause) {
+		for (int i = 0; i < size(ennemisTab); i++) {
 
-	for (int i = 0; i < size(ennemisTab); i++) {
-		
-		ennemisTab[i]->calculDeplacement();
-		ennemisTab[i]->dessiner();
+			ennemisTab[i]->calculDeplacement();
+			ennemisTab[i]->dessiner();
+		}
 	}
-	
-
 	glutTimerFunc(30, LabyTimerEnnemi, 0);
 }
 
@@ -439,6 +468,7 @@ void main() {
 	/* 9 */ LoadGLTextures("images/Tete_bomberman.png");
 	/* 10 */ LoadGLTextures("images/Bomberdeath.png");
 	/* 11 */ LoadGLTextures("images/GameOver.png");
+	/* 12 */ LoadGLTextures("images/Pause.png");
 
 	glutMainLoop();
 }
