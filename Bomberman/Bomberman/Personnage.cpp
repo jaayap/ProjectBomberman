@@ -82,6 +82,10 @@ void Personnage::deplacementDroite()
 	direction = 2;
 }
 
+void Personnage::calculDeplacement()
+{
+}
+
 void Personnage::deplacementHaut()
 {
 	if (offsetX < 0.35 && offsetX > -0.35) {

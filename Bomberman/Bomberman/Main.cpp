@@ -34,8 +34,12 @@ vector<GLuint>	texture; // tableau qui contient nos textures
 vector<EnnemiAleatoire> TableEA;
 vector<EnnemiAllerRetour> TableEAR;
 
+vector<Personnage*> ennemisTab;
+
 Niveau niveau;
 Bomberman bomberman(3, 1);
+
+//pour bomberman.cpp ->A modif
 EnnemiAleatoire ennemi1(5, 9);
 EnnemiAllerRetour ennemi2(5, 3, 1, false);
 EnnemiAllerRetour ennemi3(8, 5, 4, false);
@@ -96,9 +100,14 @@ void LabyAffichage() {
 
 		//Affichage des personnages
 		if (bomberman.vivant) bomberman.dessiner();
-		if (ennemi1.vivant) ennemi1.dessiner();
-		if (ennemi2.vivant) ennemi2.dessiner();
-		if (ennemi3.vivant) ennemi3.dessiner();
+	//	if (ennemi1.vivant) ennemi1.dessiner();
+	//	if (ennemi2.vivant) ennemi2.dessiner();
+	//	if (ennemi3.vivant) ennemi3.dessiner();
+		for (int i = 0; i < size(ennemisTab); i++) {
+			if (ennemisTab[i]->vivant) {
+				ennemisTab[i]->dessiner();
+			}
+		}
 
 		for (int i = 0; i < size(bomberman.bombes); i++) {
 
@@ -317,12 +326,13 @@ void LabyTimerExplosion(int z) {
 }
 
 void LabyTimerEnnemi(int z) {
-	ennemi1.calculDeplacement();
-	ennemi2.calculDeplacement();
-	ennemi3.calculDeplacement();
-	ennemi1.dessiner();
-	ennemi1.dessiner();
-	ennemi3.dessiner();
+
+	for (int i = 0; i < size(ennemisTab); i++) {
+		
+		ennemisTab[i]->calculDeplacement();
+		ennemisTab[i]->dessiner();
+	}
+	
 
 	glutTimerFunc(30, LabyTimerEnnemi, 0);
 }
@@ -354,6 +364,13 @@ void tableEnnemis() {
 	TableEA.push_back(ennemi1);
 	TableEAR.push_back(ennemi2);
 	TableEAR.push_back(ennemi3);
+
+//	ennemisTab.push_back(new EnnemiAleatoire(5, 9));
+//	ennemisTab.push_back(new EnnemiAllerRetour(5, 3, 1, false));
+//	ennemisTab.push_back(new EnnemiAllerRetour(8, 5, 4, false));
+	ennemisTab.push_back(&ennemi1);
+	ennemisTab.push_back(&ennemi2);
+	ennemisTab.push_back(&ennemi3);
 }
 
 void detecteEnnemis(int z) {
@@ -381,6 +398,8 @@ void detecteEnnemis(int z) {
 			glutTimerFunc(100, detecteEnnemis, 0);
 			return;
 		}
+
+
 		glutTimerFunc(100, detecteEnnemis, 0);
 	}
 }
