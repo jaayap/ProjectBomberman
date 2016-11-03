@@ -5,6 +5,7 @@
 #include "EnnemiAllerRetour.h"
 #include "Animation.h"
 #include <vector>
+#include "Bomberman.h"
 
 using namespace std;
 
@@ -12,6 +13,8 @@ float coordEnnemi[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875
 int rotationEnnemi1;
 
 extern int valueEnnemi1;
+
+extern bool life;
 
 extern Niveau niveau;
 extern vector<GLuint> texture;
@@ -64,7 +67,7 @@ void EnnemiAllerRetour::dessiner() {
 
 
 void EnnemiAllerRetour::Deplacer() {
-	if (vivant) {
+	if (vivant && life) {
 
 		switch (deplacement) {	//1 : A gauche, 2 : A droite, 3 : En bas, 4 : En haut
 			case 1:

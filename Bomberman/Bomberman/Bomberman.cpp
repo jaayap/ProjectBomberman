@@ -13,6 +13,8 @@
 using namespace std;
 
 float coordBomb[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
+float vitesseDeplacement;
+
 int rotation;
 
 bool GameOver = false;
@@ -99,11 +101,6 @@ void AnimDeath(int z) {
 	life = true;
 	vie--;
 	maxMur = 0;
-	for (int k = 0; k < size(niveau.bonusTab); k++) {
-		niveau.bonusTab[k].setVisible(false);
-		niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise	
-	}
-	PlacerBonus = false;
 	return;
 }
 
@@ -114,10 +111,16 @@ void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un e
 		if (vie == 0) {
 			GameOver = true;
 		}
-		else if (life) {
+		else if (life && !die) {
+			life = false;
+			nb_bombes = 1;
+			portee_bombe = 3;
 			spriteBomberdeath = 0;
 			glutTimerFunc(600, AnimDeath, 0);
-			life = false;
+			for (int k = 0; k < size(niveau.bonusTab); k++) {
+				niveau.bonusTab[k].setVisible(false);
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise	
+			}
 			return;
 		}
 	}
@@ -165,6 +168,8 @@ void Bomberman::dessiner() {
 	}
 
 	if (life) {
+		vitesseDeplacement = 0.10f;
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_TEXTURE_2D);
@@ -180,6 +185,8 @@ void Bomberman::dessiner() {
 		glDisable(GL_BLEND);
 	}
 	else if (!life) {
+		vitesseDeplacement = 0.0f;
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_TEXTURE_2D);

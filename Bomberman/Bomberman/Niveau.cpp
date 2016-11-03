@@ -16,6 +16,7 @@ float coord[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0
 int testAleatoire;
 int maxMur = 0;
 float numeroNiveau = 0;
+
 bool PlacerBonus;
 
 extern vector<GLuint> texture;
@@ -140,6 +141,9 @@ void Niveau::dessinerNiveau() {
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 
+				if (die) {
+					PlacerBonus = false;
+				}
 
 				if (!PlacerBonus) {
 					definirBonus(i, j); //on place les bonus derriere les mur destructible

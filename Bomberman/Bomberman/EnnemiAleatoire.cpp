@@ -5,6 +5,7 @@
 #include "Niveau.h"
 #include <vector>
 #include "Animation.h"
+#include "Bomberman.h"
 
 using namespace std;
 
@@ -14,6 +15,8 @@ extern Niveau niveau;
 extern vector<GLuint> texture;
 
 extern int valueEnnemi2;
+
+extern bool life;
 
 EnnemiAleatoire::EnnemiAleatoire(int xDepart, int yDepart) : Personnage(x, y)
 {
@@ -44,7 +47,7 @@ void EnnemiAleatoire::dessiner() {
 
 
 void EnnemiAleatoire::Deplacer() {
-	if (vivant) {
+	if (vivant && life) {
 	
 		switch (deplacement) {	//1 : A gauche, 2 : A droite, 3 : En bas, 4 : En haut
 			case 1:
