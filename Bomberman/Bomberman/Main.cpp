@@ -49,6 +49,11 @@ EnnemiAleatoire ennemi1(5, 9);
 EnnemiAllerRetour ennemi2(5, 3, 1, false);
 EnnemiAllerRetour ennemi3(8, 5, 4, false);
 
+// Sons
+vector<sf::Music*> tableMusic;
+sf::Music musicMenu;
+sf::Music musicZone1;
+
 // Déclarations de fonctions
 void LabyAffichage();
 void LabyRedim(int width, int height);
@@ -116,7 +121,6 @@ void LabyAffichage() {
 			for (int i = 0; i < size(bomberman.bombes); i++) {
 
 				if (bomberman.bombes[i].explosion) {
-					cout << "explosion a dessiner" << i << endl;
 					bomberman.bombes[i].dessinerExplosion();
 				}
 			}
@@ -351,7 +355,6 @@ void LabyTimerExplosion(int z) {
 					}
 				}
 
-				
 			}
 			glutPostRedisplay();//important !
 		}
@@ -433,23 +436,27 @@ void detecteEnnemis(int z) {
 			return;
 		}
 
-
 		glutTimerFunc(100, detecteEnnemis, 0);
 	}
 }
 
+void PlayMusic() {
+
+	// Musique menu principal
+	tableMusic.push_back(&musicMenu);
+	tableMusic.push_back(&musicZone1);
+
+	if (afficherMenu) {
+		for (int i = 0; i < size(tableMusic); i++) {
+			if (tableMusic[i] == &musicMenu) {
+			}
+		}
+	}
+
+}
+
 void main() {
 	srand((unsigned)time(0));
-
-	sf::Music music;
-
-	music.openFromFile("Musiques/zone.wav");
-	music.play();
-
-	sf::Music music2;
-
-	music2.openFromFile("Musiques/canary.wav");
-	music2.play();
 
 	tableEnnemis();
 
@@ -484,6 +491,15 @@ void main() {
 	/* 10 */ LoadGLTextures("images/Bomberdeath.png");
 	/* 11 */ LoadGLTextures("images/GameOver.png");
 	/* 12 */ LoadGLTextures("images/Pause.png");
+
+	// Gestion des sons
+	PlayMusic();
+	musicMenu.openFromFile("Musiques/menu.wav");
+	musicZone1.openFromFile("Musiques/zone1.wav");
+	
+	musicMenu.play();
+	musicMenu.setLoop(true);
+	//musicZone1.play();
 
 	glutMainLoop();
 }
