@@ -11,6 +11,7 @@
 #include "EnnemiAleatoire.h"
 #include "EnnemiAllerRetour.h"
 #include "Animation.h"
+#include "FMOD/fmod.h"
 
 
 using namespace std;
@@ -54,7 +55,6 @@ void LabyRedim(int width, int height);
 void TraitementClavier(int key, int x, int y);
 void TraitementClavierASCII(unsigned char key, int x, int y);
 int  LoadGLTextures(string name);
-
 
 void LabyAffichage() {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
