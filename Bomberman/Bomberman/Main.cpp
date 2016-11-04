@@ -109,7 +109,7 @@ void LabyAffichage() {
 			bomberman.ramasserBonus();
 
 			//Affichage des personnages
-			if (bomberman.vivant) bomberman.dessiner();
+			bomberman.dessiner();
 			//	if (ennemi1.vivant) ennemi1.dessiner();
 			//	if (ennemi2.vivant) ennemi2.dessiner();
 			//	if (ennemi3.vivant) ennemi3.dessiner();
@@ -118,6 +118,8 @@ void LabyAffichage() {
 					ennemisTab[i]->dessiner();
 				}
 			}
+
+			// victoire
 
 			for (int i = 0; i < size(bomberman.bombes); i++) {
 
@@ -335,13 +337,13 @@ void LabyTimerExplosion(int z) {
 		if (bomberman.bombes[i].posee) {
 			if(!pause) bomberman.bombes[i].Timer++;
 			//Explosion au bout de 5 secondes
-			if (bomberman.bombes[i].Timer > 10 && !bomberman.bombes[i].explosion) {//creer explosion
+			if (bomberman.bombes[i].Timer > 5 && !bomberman.bombes[i].explosion) {//creer explosion
 				bomberman.bombes[i].explosion = true;
 				bomberman.declancherExplosion(i);	
 			}
 
 			//500 ms plus tard
-			if (bomberman.bombes[i].Timer > 11) {//effacer explosion		
+			if (bomberman.bombes[i].Timer > 6) {//effacer explosion		
 				// Efface la trace de l'explosion et réinitialise les booléens
 				bomberman.bombes[i].explosion = false;
 			

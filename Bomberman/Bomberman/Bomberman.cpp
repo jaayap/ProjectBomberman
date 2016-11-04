@@ -37,9 +37,15 @@ extern bool afficherMenu;
 extern vector<GLuint> texture;
 extern Niveau niveau;
 
+extern Bomberman bomberman;
+
 //pour gerer les collisions :
 extern vector<Personnage*> ennemisTab;
 
+
+void AnimDeath(int z) {
+	die = true;
+}
 
 Bomberman::Bomberman(int xDepart, int  yDepart) : Personnage(x, y)
 {
@@ -102,47 +108,11 @@ void Bomberman::eraseExplosion(int nb) {
 	bombes.erase(bombes.begin() + nb);
 }
 
-void AnimDeath(int z) {
-	die = true;
-	life = true;
-	vie--;
-	maxMur = 0;
-	if (GameOver) {
-		afficherMenu = true;
-		// RESET LE JEU
-	}
-	return;
-}
-
 void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi
 
 	for (int i = 0; i < size(ennemisTab); i++) {
 		if (ennemisTab[i]->getX() == x && ennemisTab[i]->getY() == y) {
-			//vivant = false;
-			if (vie == 0 && !GameOver && life && !die) {
-				GameOver = true;
-				life = false;
-				nb_bombes = 1;
-				portee_bombe = 3;
-				spriteBomberdeath = 0;
-				glutTimerFunc(600, AnimDeath, 0);
-				for (int k = 0; k < size(niveau.bonusTab); k++) {
-					niveau.bonusTab[k].setVisible(false);
-					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise	
-				}
-				return;
-			}
-			else if (life && !die && !afficherMenu) {
-				life = false;
-				nb_bombes = 1;
-				portee_bombe = 3;
-				spriteBomberdeath = 0;
-				glutTimerFunc(600, AnimDeath, 0);
-				for (int k = 0; k < size(niveau.bonusTab); k++) {
-					niveau.bonusTab[k].setVisible(false);
-					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
-				}
-			}
+			vivant = false;
 		}
 	}
 }
@@ -188,9 +158,36 @@ void Bomberman::dessiner() {
 		victoire = false;
 	}
 
-	if (life) {
-		vitesseDeplacement = 0.10f;
+	if (vivant == false && life) {
+		if (vie == 0 && !GameOver && life && !die) {
+			GameOver = true;
+			life = false;
+			nb_bombes = 1;
+			portee_bombe = 3;
+			spriteBomberdeath = 0;
+			for (int k = 0; k < size(niveau.bonusTab); k++) {
+				niveau.bonusTab[k].setVisible(false);
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise	
+			}
+			vivant = true;
+			glutTimerFunc(600, AnimDeath, 0);
+		}
+		else if (life && !die && !afficherMenu) {
+			life = false;
+			nb_bombes = 1;
+			portee_bombe = 3;
+			spriteBomberdeath = 0;
+			for (int k = 0; k < size(niveau.bonusTab); k++) {
+				niveau.bonusTab[k].setVisible(false);
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+			}
+			vivant = true;
+			glutTimerFunc(600, AnimDeath, 0);
+		}
+	}
+	
 
+	if (life) {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_TEXTURE_2D);
@@ -224,7 +221,24 @@ void Bomberman::dessiner() {
 	}
 
 	if (die) {
+		if (GameOver && vie == 0) {
+			afficherMenu = true;
+			vie = 3;
+			retour();
+			maxMur = 0;
+			vitesseDeplacement = 0.10f;
+			bomberman.vivant = true;
+			life = true;
+			die = false;
+			// RESET LE JEU
+			return;
+		}
 		retour();
+		vie--;
+		maxMur = 0;
+		vitesseDeplacement = 0.10f;
+		bomberman.vivant = true;
+		life = true;
 		die = false;
 		return;
 	}

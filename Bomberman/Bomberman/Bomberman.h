@@ -8,8 +8,8 @@
 class Bomberman : public Personnage
 {
 	int score;
-	int nb_bombes = 1;
-	int portee_bombe = 3;
+public:int nb_bombes = 1;
+public:int portee_bombe = 3;
 public:std::vector<Bombe> bombes;
 
 public:
