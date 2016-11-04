@@ -51,6 +51,7 @@ EnnemiAllerRetour ennemi3(8, 5, 4, false);
 
 // Sons
 vector<sf::Music*> tableMusic;
+sf::Music MusiqueEnCours;
 sf::Music musicMenu;
 sf::Music musicZone1;
 
@@ -440,18 +441,50 @@ void detecteEnnemis(int z) {
 	}
 }
 
-void PlayMusic() {
-
-	// Musique menu principal
-	tableMusic.push_back(&musicMenu);
-	tableMusic.push_back(&musicZone1);
+void PlayMusic(int z) {
 
 	if (afficherMenu) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicMenu) {
+				if (musicMenu.getStatus() == sf::Sound::Status::Playing) {
+					glutTimerFunc(50, PlayMusic, 0);
+					return;
+				}
+				else {
+					cout << "Musique Menu" << endl;
+					musicMenu.play();
+					musicMenu.setLoop(true);
+				}
+			}
+			else {
+				musicZone1.stop();
+				musicZone1.setLoop(false);
+				// utiliser le tableau pour stopper TOUTES les autres musiques
 			}
 		}
 	}
+	else if (!afficherMenu) {
+		for (int i = 0; i < size(tableMusic); i++) {
+			if (tableMusic[i] == &musicZone1) {
+				if (musicZone1.getStatus() == sf::Sound::Status::Playing) {
+					glutTimerFunc(50, PlayMusic, 0);
+					return;
+				}
+				else {
+					cout << "Musique Zone 1" << endl;
+					musicZone1.play();
+					musicZone1.setLoop(true);
+				}
+			}
+			else {
+				musicMenu.stop();
+				musicMenu.setLoop(false);
+				// utiliser le tableau pour stopper TOUTES les autres musiques
+			}
+		}
+	}
+
+	glutTimerFunc(50, PlayMusic, 0);
 
 }
 
@@ -493,13 +526,14 @@ void main() {
 	/* 12 */ LoadGLTextures("images/Pause.png");
 
 	// Gestion des sons
-	PlayMusic();
 	musicMenu.openFromFile("Musiques/menu.wav");
 	musicZone1.openFromFile("Musiques/zone1.wav");
-	
-	musicMenu.play();
-	musicMenu.setLoop(true);
-	//musicZone1.play();
+
+	// Intégration des musiques dans un tableau
+	tableMusic.push_back(&musicMenu);
+	tableMusic.push_back(&musicZone1);
+
+	glutTimerFunc(50, PlayMusic, 0);
 
 	glutMainLoop();
 }
