@@ -24,9 +24,8 @@ int vie = 3;
 
 bool enMouvement = false;
 bool haut = false, bas = false, gauche = false, droite = false;
-bool ennemi1V = false, ennemi2V = false, ennemi3V = false;
 bool victoire = false;
-bool afficherMenu = true;
+bool afficherMenu = false;
 float position_cursor_x = 0.25;
 float position_cursor_y = 0.63;
 int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
@@ -55,6 +54,12 @@ sf::Music MusiqueEnCours;
 sf::Music musicMenu;
 sf::Music musicZone1;
 
+// Intro
+bool afficherHistoire = true;
+bool incrAlpha = true;
+float alphaImg = 1.0f;
+int numImage = 13;
+
 // Déclarations de fonctions
 void LabyAffichage();
 void LabyRedim(int width, int height);
@@ -63,11 +68,29 @@ void TraitementClavierASCII(unsigned char key, int x, int y);
 int  LoadGLTextures(string name);
 
 void LabyAffichage() {
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 
-	if (afficherMenu) {
+	if (afficherHistoire) {
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		// Texture Background Histoire
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[numImage]);
+		glBegin(GL_QUADS);
+		glColor4f(1.0, 1.0, 1.0, alphaImg);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+	}
+	else if (afficherMenu) {
 		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 		glLoadIdentity();
 		// Texture Background Menu
@@ -296,7 +319,8 @@ void TraitementAucuneTouche(int key, int x, int y) {
 
 	//TEST
 	if (key == GLUT_KEY_F1) {
-		
+		afficherMenu = true;
+		afficherHistoire = false;
 	}
 }
 
@@ -420,7 +444,7 @@ void detecteEnnemis(int z) {
 	}
 
 	else {
-		if (!ennemi1.vivant && !ennemi1V) {
+		/*if (!ennemi1.vivant && !ennemi1V) {
 			TableEA.pop_back();
 			ennemi1V = true;
 			glutTimerFunc(100, detecteEnnemis, 0);
@@ -437,7 +461,7 @@ void detecteEnnemis(int z) {
 			ennemi3V = true;
 			glutTimerFunc(100, detecteEnnemis, 0);
 			return;
-		}
+		}*/
 
 		glutTimerFunc(100, detecteEnnemis, 0);
 	}
@@ -490,6 +514,30 @@ void PlayMusic(int z) {
 
 }
 
+void transitionHistoire(int z) {
+	if (numImage < 15) {
+		if (incrAlpha) {
+			if (alphaImg >= 1.0f) {
+				incrAlpha = false;
+			}
+			else if (alphaImg < 1.0f) {
+				alphaImg += 0.01f;
+			}
+		}
+		else if (!incrAlpha) {
+			if (alphaImg <= 0.0f) {
+				incrAlpha = true;
+				numImage++;
+			}
+			else if (alphaImg > 0.0f) {
+				alphaImg -= 0.01f;
+			}
+		}
+	}
+	
+	glutTimerFunc(50, transitionHistoire, 0);
+}
+
 void main() {
 	srand((unsigned)time(0));
 
@@ -511,6 +559,7 @@ void main() {
 	glutTimerFunc(1000, LabyTimerExplosion, 0);
 	glutTimerFunc(500, LabyTimerEnnemi, 0);
 	glutTimerFunc(100, detecteEnnemis, 0);
+	glutTimerFunc(100, transitionHistoire, 0);
 
 	// Gestion des textures
 	/* 0 */ LoadGLTextures("images/Test.png");
@@ -521,11 +570,17 @@ void main() {
 	/* 5 */ LoadGLTextures("images/EnnemiAleatoire.png");
 	/* 6 */ LoadGLTextures("images/Sortie.png");
 	/* 7 */ LoadGLTextures("images/Score&Vie.png");
-	/* 8 */ LoadGLTextures("images/menu.png");
-	/* 9 */ LoadGLTextures("images/Tete_bomberman.png");
+	/* 8 */ LoadGLTextures("images/Menu.png");
+	/* 9 */ LoadGLTextures("images/TeteMenu.png");
 	/* 10 */ LoadGLTextures("images/Bomberdeath.png");
 	/* 11 */ LoadGLTextures("images/GameOver.png");
 	/* 12 */ LoadGLTextures("images/Pause.png");
+	/* 13 */ LoadGLTextures("images/Intro1.png");
+	/* 14 */ LoadGLTextures("images/Intro2.png");
+	/* 15 */ LoadGLTextures("images/Intro1.png");
+	/* 16 */ LoadGLTextures("images/Intro1.png");
+	/* 17 */ LoadGLTextures("images/Intro1.png");
+	/* 18 */ LoadGLTextures("images/Intro1.png");
 
 	// Gestion des sons
 	musicMenu.openFromFile("Musiques/menu.wav");
