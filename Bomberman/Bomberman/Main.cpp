@@ -50,9 +50,10 @@ EnnemiAllerRetour ennemi3(8, 5, 4, false);
 
 // Sons
 vector<sf::Music*> tableMusic;
-sf::Music MusiqueEnCours;
+sf::Music musicIntro;
 sf::Music musicMenu;
 sf::Music musicZone1;
+int volume = 100;
 
 // Intro
 bool afficherHistoire = true;
@@ -319,14 +320,19 @@ void TraitementAucuneTouche(int key, int x, int y) {
 
 	//TEST
 	if (key == GLUT_KEY_F1) {
-		afficherMenu = true;
-		afficherHistoire = false;
+		
 	}
 }
 
 void TraitementClavierASCII(unsigned char key, int x, int y) {
 	glutPostRedisplay();
-	if (afficherMenu) {
+	if (afficherHistoire) {
+		if (key == 10 || key == 13) { // Touche entree
+			afficherHistoire = false;
+			afficherMenu = true;
+		}
+	}
+	else if (afficherMenu && !afficherHistoire) {
 		if (key == 10 || key == 13) { // Touche entree
 			if (position_cursor == 1) { // on lance le niveau
 				afficherMenu = false;
@@ -469,7 +475,22 @@ void detecteEnnemis(int z) {
 
 void PlayMusic(int z) {
 
-	if (afficherMenu) {
+	if (afficherHistoire) {
+		for (int i = 0; i < size(tableMusic); i++) {
+			if (tableMusic[i] == &musicIntro) {
+				if (musicIntro.getStatus() == sf::Sound::Status::Playing) {
+					glutTimerFunc(50, PlayMusic, 0);
+					return;
+				}
+				else {
+					cout << "Musique Intro" << endl;
+					musicIntro.play();
+					musicIntro.setLoop(true);
+				}
+			}
+		}
+	}
+	else if (afficherMenu && !afficherHistoire) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicMenu) {
 				if (musicMenu.getStatus() == sf::Sound::Status::Playing) {
@@ -485,11 +506,13 @@ void PlayMusic(int z) {
 			else {
 				musicZone1.stop();
 				musicZone1.setLoop(false);
+				musicIntro.stop();
+				musicIntro.setLoop(false);
 				// utiliser le tableau pour stopper TOUTES les autres musiques
 			}
 		}
 	}
-	else if (!afficherMenu) {
+	else if (!afficherMenu && !afficherHistoire) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicZone1) {
 				if (musicZone1.getStatus() == sf::Sound::Status::Playing) {
@@ -515,10 +538,12 @@ void PlayMusic(int z) {
 }
 
 void transitionHistoire(int z) {
-	if (numImage < 15) {
+	if (numImage < 19) {
 		if (incrAlpha) {
 			if (alphaImg >= 1.0f) {
 				incrAlpha = false;
+				glutTimerFunc(2000, transitionHistoire, 0);
+				return;
 			}
 			else if (alphaImg < 1.0f) {
 				alphaImg += 0.01f;
@@ -527,10 +552,23 @@ void transitionHistoire(int z) {
 		else if (!incrAlpha) {
 			if (alphaImg <= 0.0f) {
 				incrAlpha = true;
+				if (numImage == 18) {
+					afficherHistoire = false;
+					afficherMenu = true;
+					return;
+				}
 				numImage++;
 			}
-			else if (alphaImg > 0.0f) {
+			else if (alphaImg > 0.0f && numImage != 18) {
 				alphaImg -= 0.01f;
+			}
+			else {
+				alphaImg -= 0.01f;
+				if (volume > 0) {
+					cout << volume << endl;
+					volume--;
+					musicIntro.setVolume(volume);
+				}
 			}
 		}
 	}
@@ -577,16 +615,18 @@ void main() {
 	/* 12 */ LoadGLTextures("images/Pause.png");
 	/* 13 */ LoadGLTextures("images/Intro1.png");
 	/* 14 */ LoadGLTextures("images/Intro2.png");
-	/* 15 */ LoadGLTextures("images/Intro1.png");
-	/* 16 */ LoadGLTextures("images/Intro1.png");
-	/* 17 */ LoadGLTextures("images/Intro1.png");
-	/* 18 */ LoadGLTextures("images/Intro1.png");
+	/* 15 */ LoadGLTextures("images/Intro3.png");
+	/* 16 */ LoadGLTextures("images/Intro4.png");
+	/* 17 */ LoadGLTextures("images/Intro5.png");
+	/* 18 */ LoadGLTextures("images/Intro6.png");
 
 	// Gestion des sons
+	musicIntro.openFromFile("Musiques/intro.wav");
 	musicMenu.openFromFile("Musiques/menu.wav");
 	musicZone1.openFromFile("Musiques/zone1.wav");
 
 	// Intégration des musiques dans un tableau
+	tableMusic.push_back(&musicIntro);
 	tableMusic.push_back(&musicMenu);
 	tableMusic.push_back(&musicZone1);
 
