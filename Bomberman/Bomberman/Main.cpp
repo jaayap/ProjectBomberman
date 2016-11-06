@@ -134,16 +134,11 @@ void LabyAffichage() {
 
 			//Affichage des personnages
 			bomberman.dessiner();
-			//	if (ennemi1.vivant) ennemi1.dessiner();
-			//	if (ennemi2.vivant) ennemi2.dessiner();
-			//	if (ennemi3.vivant) ennemi3.dessiner();
 			for (int i = 0; i < size(ennemisTab); i++) {
 				if (ennemisTab[i]->vivant) {
 					ennemisTab[i]->dessiner();
 				}
 			}
-
-			// victoire
 
 			for (int i = 0; i < size(bomberman.bombes); i++) {
 
@@ -435,9 +430,6 @@ void tableEnnemis() {
 	TableEAR.push_back(ennemi2);
 	TableEAR.push_back(ennemi3);
 
-//	ennemisTab.push_back(new EnnemiAleatoire(5, 9));
-//	ennemisTab.push_back(new EnnemiAllerRetour(5, 3, 1, false));
-//	ennemisTab.push_back(new EnnemiAllerRetour(8, 5, 4, false));
 	ennemisTab.push_back(&ennemi1);
 	ennemisTab.push_back(&ennemi2);
 	ennemisTab.push_back(&ennemi3);
@@ -450,24 +442,7 @@ void detecteEnnemis(int z) {
 	}
 
 	else {
-		/*if (!ennemi1.vivant && !ennemi1V) {
-			TableEA.pop_back();
-			ennemi1V = true;
-			glutTimerFunc(100, detecteEnnemis, 0);
-			return;
-		}
-		if (!ennemi2.vivant && !ennemi2V) {
-			TableEAR.pop_back();
-			ennemi2V = true;
-			glutTimerFunc(100, detecteEnnemis, 0);
-			return;
-		}
-		if (!ennemi3.vivant && !ennemi3V) {
-			TableEAR.pop_back();
-			ennemi3V = true;
-			glutTimerFunc(100, detecteEnnemis, 0);
-			return;
-		}*/
+		// ENNEMIS MORTS
 
 		glutTimerFunc(100, detecteEnnemis, 0);
 	}
@@ -533,47 +508,51 @@ void PlayMusic(int z) {
 		}
 	}
 
+	// PAUSE
+
 	glutTimerFunc(50, PlayMusic, 0);
 
 }
 
 void transitionHistoire(int z) {
-	if (numImage < 19) {
-		if (incrAlpha) {
-			if (alphaImg >= 1.0f) {
-				incrAlpha = false;
-				glutTimerFunc(2000, transitionHistoire, 0);
-				return;
-			}
-			else if (alphaImg < 1.0f) {
-				alphaImg += 0.01f;
-			}
-		}
-		else if (!incrAlpha) {
-			if (alphaImg <= 0.0f) {
-				incrAlpha = true;
-				if (numImage == 18) {
-					afficherHistoire = false;
-					afficherMenu = true;
+	if (afficherHistoire) {
+		if (numImage < 19) {
+			if (incrAlpha) {
+				if (alphaImg >= 1.0f) {
+					incrAlpha = false;
+					glutTimerFunc(2000, transitionHistoire, 0);
 					return;
 				}
-				numImage++;
+				else if (alphaImg < 1.0f) {
+					alphaImg += 0.01f;
+				}
 			}
-			else if (alphaImg > 0.0f && numImage != 18) {
-				alphaImg -= 0.01f;
-			}
-			else {
-				alphaImg -= 0.01f;
-				if (volume > 0) {
-					cout << volume << endl;
-					volume--;
-					musicIntro.setVolume(volume);
+			else if (!incrAlpha) {
+				if (alphaImg <= 0.0f) {
+					incrAlpha = true;
+					if (numImage == 18) {
+						afficherHistoire = false;
+						afficherMenu = true;
+						return;
+					}
+					numImage++;
+				}
+				else if (alphaImg > 0.0f && numImage != 18) {
+					alphaImg -= 0.01f;
+				}
+				else {
+					alphaImg -= 0.01f;
+					if (volume > 0) {
+						cout << volume << endl;
+						volume--;
+						musicIntro.setVolume(volume);
+					}
 				}
 			}
 		}
+
+		glutTimerFunc(50, transitionHistoire, 0);
 	}
-	
-	glutTimerFunc(50, transitionHistoire, 0);
 }
 
 void main() {

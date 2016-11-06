@@ -16,6 +16,7 @@ extern Bomberman bomberman;
 extern vector<Personnage*> ennemisTab;
 extern vector<GLuint> texture;
 extern int valueExplo;
+extern bool spawn;
 
 float coordExplo[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 
@@ -314,7 +315,12 @@ void Bombe::effacerExplosion() {
 
 void Bombe::dessinerExplosion() {
 	// on efface la bombe
-	niveau.modifierCase(y, x, '0');
+	if (spawn) {
+		niveau.modifierCase(y, x, '4');
+	}
+	else if (!spawn) {
+		niveau.modifierCase(y, x, '0');
+	}
 
 	//Centre de l'explosion
 	glEnable(GL_BLEND);

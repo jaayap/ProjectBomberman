@@ -20,6 +20,7 @@ int rotation;
 bool GameOver = false;
 bool die = false;
 bool life = true;
+bool spawn = false;
 
 extern int valueBomberman;
 extern int spriteBomberdeath;
@@ -80,13 +81,19 @@ void Bomberman::setPorteeBombe(int portee)
 
 void Bomberman::lancerBombe() {
 	bool dejaBombe = false;
+
 	if (nb_bombes > 0) {
-		
 		for (int i = 0; i < size(bombes); i++) {
 			if (bombes[i].getX() == x && bombes[i].getY() == y)
 				dejaBombe = true;
 		}
 		if (!dejaBombe) {
+			if (niveau.getCase(y, x) == '4') {
+				spawn = true;
+			}
+			else if (niveau.getCase(y, x) == '0') {
+				spawn = false;
+			}
 			niveau.modifierCase(y, x, '8');
 
 			Bombe bombe = Bombe(x, y, portee_bombe);

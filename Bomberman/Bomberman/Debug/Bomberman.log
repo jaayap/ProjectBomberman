@@ -1,2 +1,10 @@
-﻿  Bomberman.vcxproj -> C:\Users\Max\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.exe
+﻿  Main.cpp
+c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(137): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(143): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(360): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(396): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(454): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(469): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(491): warning C4018: '<' : incompatibilité signed/unsigned
+  Bomberman.vcxproj -> C:\Users\Max\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.exe
   Bomberman.vcxproj -> C:\Users\Max\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.pdb (Partial PDB)
