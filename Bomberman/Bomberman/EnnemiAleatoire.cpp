@@ -22,6 +22,8 @@ EnnemiAleatoire::EnnemiAleatoire(int xDepart, int yDepart) : Personnage(x, y)
 {
 	this->x = xDepart;
 	this->y = yDepart;
+	xDep = xDepart;
+	yDep = yDepart;
 }
 
 
@@ -207,7 +209,8 @@ void EnnemiAleatoire::calculDeplacement() {//1 : A gauche, 2 : A droite, 3 : En 
 	Deplacer(); // on se deplace
 }
 
-void EnnemiAleatoire::retour(int x, int y) {
-	this->x = x;
-	this->y = y;
+void EnnemiAleatoire::retour() {
+	x = xDep;
+	y = yDep;
+	cout << xDep << yDep << endl;
 }

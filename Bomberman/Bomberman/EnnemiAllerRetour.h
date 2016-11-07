@@ -6,6 +6,8 @@ class EnnemiAllerRetour : public Personnage
 	int deplacement = 1;
 	int deplacement_precedent = 1;
 	bool traverseMurDestructible;
+	int xDep;
+	int yDep;
 public:
 	EnnemiAllerRetour(int x, int y, int direction, bool traverse);
 	~EnnemiAllerRetour();
@@ -16,6 +18,6 @@ public:
 	void deplacementDroite();
 	void deplacementHaut();
 	void deplacementBas();
-	void retour(int, int);
+	void retour();
 };
 

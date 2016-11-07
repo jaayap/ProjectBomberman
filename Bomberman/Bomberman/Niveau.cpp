@@ -126,12 +126,12 @@ void Niveau::dessinerNiveau() {
 
 				// apparition aléatoire de murs destructibles
 				testAleatoire = (rand() % 2 + 1);
-				if (testAleatoire == 1 && maxMur < 50 && vie == 3 && !GameOver) {
+				if (testAleatoire == 1 && maxMur < 60 && vie == 3 && !GameOver) {
 					finPlacementMur = true;
 					matrice[i][j] = '2';
 					maxMur++;
 				}
-				else if (finPlacementMur && maxMur == 50 && vie == 3 && !GameOver) {
+				else if (finPlacementMur && maxMur == 60 && vie == 3 && !GameOver) {
 					nbrMur = 0;
 					finPlacementMur = false;
 				}

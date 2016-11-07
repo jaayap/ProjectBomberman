@@ -249,8 +249,12 @@ void Bomberman::dessiner() {
 				ennemisTab.push_back(&ennemi1);
 				ennemisTab.push_back(&ennemi2);
 				ennemisTab.push_back(&ennemi3);
+				ennemi1.retour();
+				ennemi2.retour();
+				ennemi3.retour();
 				for (int i = 1; i < size(ennemisTab); i++) {
 					ennemisTab[i]->vivant = true;
+					//ennemisTab[i].retour();
 				}
 			}
 			maxMur = 0;
@@ -286,6 +290,9 @@ void Bomberman::dessiner() {
 			ennemisTab.push_back(&ennemi1);
 			ennemisTab.push_back(&ennemi2);
 			ennemisTab.push_back(&ennemi3);
+			ennemi1.retour();
+			ennemi2.retour();
+			ennemi3.retour();
 			for (int i = 1; i < size(ennemisTab); i++) {
 				ennemisTab[i]->vivant = true;
 			}

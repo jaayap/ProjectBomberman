@@ -24,6 +24,8 @@ EnnemiAllerRetour::EnnemiAllerRetour(int x,int y,int direction, bool traverse) :
 {
 	this->x = x;
 	this->y = y;
+	xDep = x;
+	yDep = y;
 	this->deplacement = direction;
 	this->traverseMurDestructible = traverse;
 }
@@ -208,7 +210,8 @@ void EnnemiAllerRetour::deplacementBas()
 	direction = 4;
 }
 
-void EnnemiAllerRetour::retour(int x, int y) {
-	this->x = x;
-	this->y = y;
+void EnnemiAllerRetour::retour() {
+	x = xDep;
+	y = yDep;
+	cout << xDep << yDep << endl;
 }
