@@ -17,7 +17,6 @@
 #include "SerialClass.h"	// Library described above
 #include <string>
 
-
 using namespace std;
 
 int HAUTEUR_FENETRE = 1046;
@@ -35,6 +34,7 @@ float position_cursor_y = 0.63;
 int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
 bool pause = false; //permet de mettre le jeu en pause
 bool utiliserManette = true;
+bool explosionEnCours = false;
 
 vector<GLuint>	texture; // tableau qui contient nos textures
 vector<EnnemiAleatoire> TableEA;
@@ -70,7 +70,7 @@ int numImage = 13;
 
 //Arduino
 Serial* SP = new Serial("COM3");    // adjust as needed - port com
-char incomingData[256] = "";			// don't forget to pre-allocate memory
+char incomingData[256] = "";		// don't forget to pre-allocate memory
 int dataLength = 256;
 int readResult = 0;
 
@@ -384,11 +384,13 @@ void LabyTimerExplosion(int z) {
 	for (int i = 0; i < size(bomberman.bombes); i++) {
 		
 		if (bomberman.bombes[i].posee) {
+			explosionEnCours = true;
 			if(!pause) bomberman.bombes[i].Timer++;
 			//Explosion au bout de 5 secondes
 			if (bomberman.bombes[i].Timer > 5 && !bomberman.bombes[i].explosion) {//creer explosion
 				bomberman.bombes[i].explosion = true;
 				bomberman.declancherExplosion(i);	
+				
 			}
 
 			//500 ms plus tard
@@ -406,6 +408,8 @@ void LabyTimerExplosion(int z) {
 						}
 					}
 				}
+
+				explosionEnCours = false;
 
 			}
 			glutPostRedisplay();//important !
@@ -519,7 +523,6 @@ void PlayMusic(int z) {
 	}
 
 	// PAUSE
-
 	glutTimerFunc(50, PlayMusic, 0);
 
 }
@@ -579,6 +582,21 @@ void TraitementArduino(int z) {
 					//printf("\n BombeButton");
 					bomberman.lancerBombe();
 				}
+				else  if (afficherHistoire) {
+					afficherHistoire = false;
+					afficherMenu = true;
+				}
+				else if (afficherMenu && !afficherHistoire) {
+					if (position_cursor == 1) { //avanture
+						afficherMenu = false;
+					}
+					else if (position_cursor == 2) { //versus
+
+					}
+					else if (position_cursor == 3) {//option
+
+					}
+				}
 			}
 			else if (incomingData[0] == 'B') { //on appuie sur le bouton
 				printf("\n BonusButton");
@@ -589,6 +607,19 @@ void TraitementArduino(int z) {
 				}
 				else {
 					pause = true;
+					glEnable(GL_BLEND);
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					glEnable(GL_TEXTURE_2D);
+					glBindTexture(GL_TEXTURE_2D, texture[12]);
+					glBegin(GL_QUADS);
+					glColor3d(1.0, 1.0, 1.0);
+					glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+					glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+					glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+					glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+					glEnd();
+					glDisable(GL_TEXTURE_2D);
+					glDisable(GL_BLEND);
 				}
 			}
 
@@ -599,7 +630,7 @@ void TraitementArduino(int z) {
 				bas = false;
 				enMouvement = false;
 			}
-
+		
 			//JOYSTICK	
 			if (afficherMenu) {
 				//Bouge le curseur 
@@ -621,31 +652,48 @@ void TraitementArduino(int z) {
 				if (!pause) {
 					if (incomingData[0] == 'X') {
 						bas = true;
+						haut = false;
+						gauche = false;
+						droite = false;
 					}
 					else if (incomingData[0] == 'H') {
 						haut = true;
+						bas = false;
+						gauche = false;
+						droite = false;
 					}
 					else if (incomingData[0] == 'G') {
 						gauche = true;
+						droite = false;
+						bas = false;
+						haut = false;
 					}
 					else if (incomingData[0] == 'D') {
 						droite = true;
+						bas = false;
+						haut = false;
+						gauche = false;
 					}
 				}
 			}
 		}
 
-		//LED
-		//on envoit des données
-		if (!bomberman.vivant) {
-			SP->WriteData("a", 1);//allume la led 5
+		//LED VERTE
+		if (!afficherMenu && !afficherHistoire) {
+			SP->WriteData("v", 1);//allume la led 5 (verte)
+		}
+		else SP->WriteData("b", 1);//eteint la led 5 (verte)
+		//LED RGB
+		if (explosionEnCours) {
+			SP->WriteData("e", 1);
 		}
 		else {
-			SP->WriteData("b", 1);//eteint la led 5
+			SP->WriteData("d", 1);
 		}
+	
 
 	}
-	//glFlush();
+	glFlush();
 	glutTimerFunc(200, TraitementArduino, 0);
 }
 
@@ -706,5 +754,4 @@ void main() {
 	glutTimerFunc(50, PlayMusic, 0);
 
 	glutMainLoop();
-
 }
