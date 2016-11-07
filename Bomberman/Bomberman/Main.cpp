@@ -12,6 +12,10 @@
 #include "EnnemiAllerRetour.h"
 #include "Animation.h"
 #include "SFML/Audio.hpp"
+#include <stdio.h>
+#include <tchar.h>
+#include "SerialClass.h"	// Library described above
+#include <string>
 
 
 using namespace std;
@@ -30,6 +34,7 @@ float position_cursor_x = 0.25;
 float position_cursor_y = 0.63;
 int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
 bool pause = false; //permet de mettre le jeu en pause
+bool utiliserManette = false;
 
 vector<GLuint>	texture; // tableau qui contient nos textures
 vector<EnnemiAleatoire> TableEA;
@@ -62,11 +67,20 @@ bool incrAlpha = true;
 float alphaImg = 1.0f;
 int numImage = 13;
 
+
+//Arduino
+Serial* SP = new Serial("COM3");    // adjust as needed - port com
+char incomingData[256] = "";			// don't forget to pre-allocate memory
+int dataLength = 256;
+int readResult = 0;
+
+
 // Déclarations de fonctions
 void LabyAffichage();
 void LabyRedim(int width, int height);
 void TraitementClavier(int key, int x, int y);
 void TraitementClavierASCII(unsigned char key, int x, int y);
+void TraitementArduino(int z);
 int  LoadGLTextures(string name);
 
 void LabyAffichage() {
@@ -551,6 +565,114 @@ void transitionHistoire(int z) {
 	}
 }
 
+
+void TraitementArduino(int z) {
+
+	if (SP->IsConnected() && utiliserManette)
+	{
+		readResult = SP->ReadData(incomingData, dataLength);//on lit les infos de l'arduino
+
+		if (readResult != -1) { //on lit les données
+								/*	if (incomingData[0] == '0'){
+								printf("\n bouclier");
+								SP->WriteData("b", 0);
+								Sleep(150);
+								}
+								else if (incomingData[0] == '1'){ //on appuie sur le bouton
+								printf("\n Laser");
+								SP->WriteData("l", 1);
+								Sleep(150);
+								}*/
+
+			if (incomingData[0] == 'A') { //on appuie sur le bouton
+		
+				if (!pause && !afficherHistoire && !afficherMenu) { // touche B
+					//printf("\n BombeButton");
+					bomberman.lancerBombe();
+				}
+				//SP->WriteData("a", 1); 
+				//Sleep(150);
+			}
+			else if (incomingData[0] == 'B') { //on appuie sur le bouton
+				printf("\n BonusButton");
+				//SP->WriteData("b", 1);
+
+				//Sleep(150);
+			}
+			else if (incomingData[0] == 'C') { //on appuie sur le bouton
+				if (pause) {
+					printf("\n Play");
+					pause = false;
+				}
+				else {
+					printf("\n Pause");
+					pause = true;
+				}
+
+				//SP->WriteData("B", 1);
+
+				//Sleep(150);
+			}
+
+			if (incomingData[0] == 'R') {
+				gauche = false;
+				droite = false;
+				haut = false;
+				bas = false;
+				enMouvement = false;
+			}
+
+			//JOYSTICK	
+
+			if (afficherMenu) {
+				//Bouge le curseur 
+				if (incomingData[0] == 'H') {
+					if (position_cursor_y > 0.63) {
+						position_cursor_y -= 0.07;
+						position_cursor -= 1;
+					}
+				}
+
+				if (incomingData[0] == 'X') {
+					if (position_cursor_y < 0.7) {
+						position_cursor_y += 0.07;
+						position_cursor += 1;
+					}
+				}
+
+				//	cout << position_cursor;
+			}
+			else {
+				if (!pause) {
+					if (incomingData[0] == 'X') {
+						bas = true;
+					}
+					else if (incomingData[0] == 'H') {
+						haut = true;
+					}
+					else if (incomingData[0] == 'G') {
+						gauche = true;
+					}
+					else if (incomingData[0] == 'D') {
+						droite = true;
+					}
+				}
+			}
+		}
+
+		//on envoit des données
+		if (!bomberman.vivant) {
+			SP->WriteData("a", 1);//allume la led 5
+		}
+		else {
+			SP->WriteData("b", 1);//eteint la led 5
+		}
+
+	}
+	//glFlush();
+	glutTimerFunc(200, TraitementArduino, 0);
+}
+
 void main() {
 	srand((unsigned)time(0));
 
@@ -572,6 +694,7 @@ void main() {
 	glutTimerFunc(1000, LabyTimerExplosion, 0);
 	glutTimerFunc(500, LabyTimerEnnemi, 0);
 	glutTimerFunc(100, transitionHistoire, 0);
+	glutTimerFunc(100, TraitementArduino, 0);
 
 	// Gestion des textures
 	/* 0 */ LoadGLTextures("images/Test.png");
@@ -607,4 +730,5 @@ void main() {
 	glutTimerFunc(50, PlayMusic, 0);
 
 	glutMainLoop();
+
 }
