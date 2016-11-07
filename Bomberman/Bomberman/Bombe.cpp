@@ -331,13 +331,7 @@ void Bombe::effacerExplosion() {
 }
 
 void Bombe::dessinerExplosion() {
-	// on efface la bombe
-	if (spawn) {
-		niveau.modifierCase(y, x, '4');
-	}
-	else if (!spawn) {
-		niveau.modifierCase(y, x, '0');
-	}
+	effacerBombes();
 
 	//Centre de l'explosion
 	glEnable(GL_BLEND);
@@ -661,4 +655,14 @@ void Bombe::dessinerExplosionDroite() {
 			}
 		}
 	} 
+}
+
+void Bombe::effacerBombes() {
+	// on efface la bombe
+	if (spawn) {
+		niveau.modifierCase(y, x, '4');
+	}
+	else if (!spawn) {
+		niveau.modifierCase(y, x, '0');
+	}
 }

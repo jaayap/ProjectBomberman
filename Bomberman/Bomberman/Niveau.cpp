@@ -126,12 +126,12 @@ void Niveau::dessinerNiveau() {
 
 				// apparition aléatoire de murs destructibles
 				testAleatoire = (rand() % 2 + 1);
-				if (testAleatoire == 1 && maxMur < 50 && vie == 3) {
+				if (testAleatoire == 1 && maxMur < 50 && vie == 3 && !GameOver) {
 					finPlacementMur = true;
 					matrice[i][j] = '2';
 					maxMur++;
 				}
-				else if (finPlacementMur && maxMur == 50 && vie == 3) {
+				else if (finPlacementMur && maxMur == 50 && vie == 3 && !GameOver) {
 					nbrMur = 0;
 					finPlacementMur = false;
 				}
@@ -162,8 +162,10 @@ void Niveau::dessinerNiveau() {
 				glDisable(GL_TEXTURE_2D);
 
 				if (die) {
-					PlacerBonus = false;
 					murDetruit = nbrMur;
+				}
+				if (die && GameOver) {
+					PlacerBonus = false;
 				}
 
 				if (!PlacerBonus) {
@@ -264,7 +266,7 @@ char Niveau::getCase(int x, int y) {
 
 void Niveau::definirBonus(int i, int j) {
 	//Definition des bonus
-	int nbAleatoire = rand() % 4 + 1;    //entre 1-4
+	int nbAleatoire = rand() % 8 + 1;    //entre 1-8
 	
 	if (nbAleatoire == 1) {
 		Bonus bonusNbNombre(j, i, 1);
