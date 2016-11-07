@@ -124,9 +124,11 @@
     <ClCompile Include="Bonus.cpp" />
     <ClCompile Include="EnnemiAleatoire.cpp" />
     <ClCompile Include="EnnemiAllerRetour.cpp" />
+    <ClCompile Include="Interfacage_arduino.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Niveau.cpp" />
     <ClCompile Include="Personnage.cpp" />
+    <ClCompile Include="Serial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -138,6 +140,7 @@
     <ClInclude Include="Niveau.h" />
     <ClInclude Include="Personnage.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SerialClass.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Bomberman.rc" />

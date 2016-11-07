@@ -38,6 +38,10 @@ void loop() {
   int sensorValueC = digitalRead(4);//on recupere la valeur du bouton "start/pause"
   int sensorValueJoystickX = analogRead(A0);//Valeur x du joystick - 0 = bas _ 1024 = haut
   int sensorValueJoystickY = analogRead(A1);//Valeur y du joystick - 0 = gauche _ 1024 = droite
+// Serial.println("Bas-haut");//bas
+ // Serial.println(sensorValueJoystickY);//bas
+ //  Serial.println("Gauche-Droite");//bas
+//    Serial.println(sensorValueJoystickY);//bas
 
   if(sensorValueA == HIGH){
     Serial.println("A"); //valeur envoyee au code c++
@@ -62,5 +66,10 @@ void loop() {
   else if(sensorValueJoystickY >= 1020) {
      Serial.println("D");//droite
   }
+
+  if(sensorValueJoystickX > 400 && sensorValueJoystickY > 400 && sensorValueJoystickX < 600 && sensorValueJoystickY < 600){
+      Serial.println("R");//reinitialisation valeur
+  }
+  
   delay(50);
 }
