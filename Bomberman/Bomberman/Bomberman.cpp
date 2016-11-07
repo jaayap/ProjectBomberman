@@ -27,6 +27,7 @@ extern int spriteBomberdeath;
 extern int direction;
 extern int vie;
 extern int maxMur;
+extern int nbrMur;
 
 extern float valueBomberdeath;
 extern float numeroNiveau;
@@ -39,6 +40,10 @@ extern vector<GLuint> texture;
 extern Niveau niveau;
 
 extern Bomberman bomberman;
+
+extern EnnemiAleatoire ennemi1;
+extern EnnemiAllerRetour ennemi2;
+extern EnnemiAllerRetour ennemi3;
 
 //pour gerer les collisions :
 extern vector<Personnage*> ennemisTab;
@@ -128,7 +133,6 @@ void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un e
 }
 
 void Bomberman::ramasserBonus() {
-	
 	for (int i = 0; i < size(niveau.bonusTab); i++) {
 		//on test si l'on est sur la case d'un bonus et qu'il est actif
 		if (x == niveau.bonusTab[i].getX() && y == niveau.bonusTab[i].getY() && niveau.bonusTab[i].getVisible()) {
@@ -236,6 +240,7 @@ void Bomberman::dessiner() {
 			vie = 3;
 			retour();
 			maxMur = 0;
+			nbrMur = 50;
 			vitesseDeplacement = 0.10f;
 			bomberman.vivant = true;
 			life = true;
@@ -245,6 +250,21 @@ void Bomberman::dessiner() {
 		}
 		retour();
 		vie--;
+		if (size(ennemisTab) > 1) {
+			cout << size(ennemisTab) << endl;
+			for (int i = 0; i < size(ennemisTab); i++) {
+				ennemisTab[i]->vivant = false;
+				ennemisTab.erase(ennemisTab.begin() + i);
+			}
+			cout << size(ennemisTab) << endl;
+			ennemisTab.push_back(&ennemi1);
+			ennemisTab.push_back(&ennemi2);
+			ennemisTab.push_back(&ennemi3);
+			for (int i = 0; i < size(ennemisTab); i++) {
+				ennemisTab[i]->vivant = true;
+			}
+			cout << size(ennemisTab) << endl;
+		}
 		maxMur = 0;
 		vitesseDeplacement = 0.10f;
 		bomberman.vivant = true;

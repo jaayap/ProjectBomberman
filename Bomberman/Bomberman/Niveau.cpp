@@ -15,13 +15,17 @@ using namespace std;
 float coord[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 int testAleatoire;
 int maxMur = 0;
+int nbrMur = 0;
+int murDetruit = 0;
 float numeroNiveau = 0;
 
 bool PlacerBonus;
+bool finPlacementMur = true;
 
 extern vector<GLuint> texture;
 
 extern int valueBombe, valueExplo, valueMur, valueSortie;
+extern int vie;
 
 extern bool victoire;
 extern bool GameOver;
@@ -122,10 +126,26 @@ void Niveau::dessinerNiveau() {
 
 				// apparition aléatoire de murs destructibles
 				testAleatoire = (rand() % 2 + 1);
-				if (testAleatoire == 1 && maxMur < 50) {
+				if (testAleatoire == 1 && maxMur < 50 && vie == 3) {
+					finPlacementMur = true;
 					matrice[i][j] = '2';
 					maxMur++;
 				}
+				else if (finPlacementMur && maxMur == 50 && vie == 3) {
+					nbrMur = 0;
+					finPlacementMur = false;
+				}
+				if (testAleatoire == 1 && maxMur < murDetruit && vie < 3) {
+					finPlacementMur = true;
+					matrice[i][j] = '2';
+					maxMur++;
+				}
+				else if (finPlacementMur && maxMur == murDetruit && vie < 3) {
+					nbrMur = 0;
+					finPlacementMur = false;
+				}
+
+				
 			}
 
 			//Affichage des mur destructible.
@@ -143,6 +163,7 @@ void Niveau::dessinerNiveau() {
 
 				if (die) {
 					PlacerBonus = false;
+					murDetruit = nbrMur;
 				}
 
 				if (!PlacerBonus) {
