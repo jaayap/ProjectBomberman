@@ -16,6 +16,7 @@ float coordBomb[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f,
 float vitesseDeplacement;
 
 int rotation;
+int tailleTab;
 
 bool GameOver = false;
 bool die = false;
@@ -250,20 +251,18 @@ void Bomberman::dessiner() {
 		}
 		retour();
 		vie--;
-		if (size(ennemisTab) > 1) {
-			cout << size(ennemisTab) << endl;
-			for (int i = 0; i < size(ennemisTab); i++) {
+		tailleTab = size(ennemisTab);
+		if (tailleTab > 1) {
+			for (int i = 1; i < tailleTab; i++) {
 				ennemisTab[i]->vivant = false;
-				ennemisTab.erase(ennemisTab.begin() + i);
 			}
-			cout << size(ennemisTab) << endl;
+			ennemisTab.erase(ennemisTab.begin() + 1, ennemisTab.begin() + tailleTab);
 			ennemisTab.push_back(&ennemi1);
 			ennemisTab.push_back(&ennemi2);
 			ennemisTab.push_back(&ennemi3);
-			for (int i = 0; i < size(ennemisTab); i++) {
+			for (int i = 1; i < size(ennemisTab); i++) {
 				ennemisTab[i]->vivant = true;
 			}
-			cout << size(ennemisTab) << endl;
 		}
 		maxMur = 0;
 		vitesseDeplacement = 0.10f;
