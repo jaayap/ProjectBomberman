@@ -91,7 +91,7 @@ void murAnimation(int x) {
 		break;
 	}
 
-	glutTimerFunc(125, murAnimation, 0);
+	glutTimerFunc(250, murAnimation, 0);
 }
 
 void BombermanAnimation(int x) {

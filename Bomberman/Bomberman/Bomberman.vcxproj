@@ -124,7 +124,6 @@
     <ClCompile Include="Bonus.cpp" />
     <ClCompile Include="EnnemiAleatoire.cpp" />
     <ClCompile Include="EnnemiAllerRetour.cpp" />
-    <ClCompile Include="Interfacage_arduino.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Niveau.cpp" />
     <ClCompile Include="Personnage.cpp" />

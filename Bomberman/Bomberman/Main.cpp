@@ -33,8 +33,12 @@ float position_cursor_x = 0.25;
 float position_cursor_y = 0.63;
 int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
 bool pause = false; //permet de mettre le jeu en pause
+<<<<<<< HEAD
 bool utiliserManette = true;
 bool explosionEnCours = false;
+=======
+bool utiliserManette = false;
+>>>>>>> origin/master
 
 vector<GLuint>	texture; // tableau qui contient nos textures
 vector<EnnemiAleatoire> TableEA;

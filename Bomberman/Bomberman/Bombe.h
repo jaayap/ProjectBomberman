@@ -40,6 +40,7 @@ public:
 	void dessinerExplosionBas();
 	void dessinerExplosionGauche();
 	void dessinerExplosionDroite();
+	void effacerBombes();
 	~Bombe();
 };
 
