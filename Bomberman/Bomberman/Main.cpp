@@ -125,7 +125,7 @@ void LabyAffichage() {
 		glDisable(GL_TEXTURE_2D);
 
 
-		glViewport(LARGEUR_FENETRE * position_cursor_x,-HAUTEUR_FENETRE * position_cursor_y, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glViewport(LARGEUR_FENETRE * position_cursor_x, -HAUTEUR_FENETRE * position_cursor_y, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 		glLoadIdentity();
 		// Texture du curseur
 		glEnable(GL_BLEND);
@@ -143,80 +143,80 @@ void LabyAffichage() {
 		glDisable(GL_BLEND);
 	}
 	else {
-	
-			niveau.dessinerNiveau();
 
-			//Test colision et bonus
-			bomberman.collisionEnnemi();
-			bomberman.ramasserBonus();
+		niveau.dessinerNiveau();
 
-			//Affichage des personnages
-			bomberman.dessiner();
-			if (size(ennemisTab) > 1) {
-				for (int i = 0; i < size(ennemisTab); i++) {
-					if (ennemisTab[i]->vivant) {
-						ennemisTab[i]->dessiner();
-					}
-					else {
-						ennemisTab.erase(ennemisTab.begin() + i);
-						score += 100;
-					}
+		//Test colision et bonus
+		bomberman.collisionEnnemi();
+		bomberman.ramasserBonus();
+
+		//Affichage des personnages
+		bomberman.dessiner();
+		if (size(ennemisTab) > 1) {
+			for (int i = 0; i < size(ennemisTab); i++) {
+				if (ennemisTab[i]->vivant) {
+					ennemisTab[i]->dessiner();
+				}
+				else {
+					ennemisTab.erase(ennemisTab.begin() + i);
+					score += 100;
 				}
 			}
-			else if (size(ennemisTab) == 1 && !victoire) {
-				victoire = true;
+		}
+		else if (size(ennemisTab) == 1 && !victoire) {
+			victoire = true;
+		}
+
+		for (int i = 0; i < size(bomberman.bombes); i++) {
+
+			if (bomberman.bombes[i].explosion) {
+				bomberman.bombes[i].dessinerExplosion();
 			}
+		}
 
-			for (int i = 0; i < size(bomberman.bombes); i++) {
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
 
-				if (bomberman.bombes[i].explosion) {
-					bomberman.bombes[i].dessinerExplosion();
-				}
-			}
+		// Texture score & vie
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[7]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 1);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 1);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
 
-			glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
-			glLoadIdentity();
+		// Affichage du score
+		string s = to_string(score);
+		int tailleScore = s.size();
 
-			// Texture score & vie
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, texture[7]);
-			glBegin(GL_QUADS);
-			glColor3d(1.0, 1.0, 1.0);
-			glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
-			glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
-			glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 1);
-			glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 1);
-			glEnd();
-			glDisable(GL_TEXTURE_2D);
+		glColor3f(1.0, 1.0, 1.0);
+		glRasterPos2f(5, 0.6f);
+		string scor = s;
+		for (int i = 0; i < tailleScore; ++i) {
+			glColor3d(1.0, 0.0, 0.0);
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, scor[i]);
+		}
 
-			// Affichage du score
-			string s = to_string(score);
-			int tailleScore = s.size();
+		// Affichage de la vie
+		string v = to_string(vie);
+		int tailleVie = v.size();
 
-			glColor3f(1.0, 1.0, 1.0);
-			glRasterPos2f(5, 0.6f);
-			string scor = s;
-			for (int i = 0; i < tailleScore; ++i) {
-				glColor3d(1.0, 0.0, 0.0);
-				glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, scor[i]);
-			}
+		glColor3f(1.0, 1.0, 1.0);
+		glRasterPos2f(0.7f, 0.6f);
+		string vi = v;
+		for (int i = 0; i < tailleVie; ++i) {
+			glColor3d(1.0, 0.0, 0.0);
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, vi[i]);
+		}
 
-			// Affichage de la vie
-			string v = to_string(vie);
-			int tailleVie = v.size();
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE - 60);
+		glLoadIdentity();
 
-			glColor3f(1.0, 1.0, 1.0);
-			glRasterPos2f(0.7f, 0.6f);
-			string vi = v;
-			for (int i = 0; i < tailleVie; ++i) {
-				glColor3d(1.0, 0.0, 0.0);
-				glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, vi[i]);
-			}
-
-			glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE - 60);
-			glLoadIdentity();
-		
-		if(pause) {
+		if (pause) {
 			//Affichage de l'ecran pause
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -251,7 +251,7 @@ void TraitementClavier(int key, int x, int y)
 {
 	glutPostRedisplay();
 
-	if (afficherMenu) {	
+	if (afficherMenu) {
 		//Bouge le curseur 
 		if (key == GLUT_KEY_UP) {
 			if (position_cursor_y > 0.63) {
@@ -267,11 +267,11 @@ void TraitementClavier(int key, int x, int y)
 			}
 		}
 
-	//	cout << position_cursor;
+		//	cout << position_cursor;
 	}
 	else {
 		if (!pause) {
-			
+
 			if (key == GLUT_KEY_UP) {
 				haut = true;
 			}
@@ -291,7 +291,7 @@ void TraitementClavier(int key, int x, int y)
 
 
 void TestDirection(int z) {
-	
+
 	float test = bomberman.getVitesseDeplacement() / 2.00;
 
 	if (haut) {
@@ -342,7 +342,7 @@ void TraitementAucuneTouche(int key, int x, int y) {
 
 	//TEST
 	if (key == GLUT_KEY_F1) {
-		
+
 	}
 }
 
@@ -367,12 +367,12 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 		}
 		//mettre en pause le jeu
 		if (key == 80 || key == 112) { // touche P
-			if (pause) pause = false; 
+			if (pause) pause = false;
 			else pause = true;
 		}
 
 	}
-	
+
 	if (key == 27) {// Escape key
 		glutDestroyWindow(1);
 		exit(0);
@@ -385,24 +385,24 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 void LabyTimerExplosion(int z) {
 
 	for (int i = 0; i < size(bomberman.bombes); i++) {
-		
+
 		if (bomberman.bombes[i].posee) {
 			explosionEnCours = true;
-			if(!pause) bomberman.bombes[i].Timer++;
+			if (!pause) bomberman.bombes[i].Timer++;
 			//Explosion au bout de 5 secondes
 			if (bomberman.bombes[i].Timer > 5 && !bomberman.bombes[i].explosion) {//creer explosion
 				bomberman.bombes[i].explosion = true;
-				bomberman.declancherExplosion(i);	
-				
+				bomberman.declancherExplosion(i);
+
 			}
 
 			//500 ms plus tard
 			if (bomberman.bombes[i].Timer > 6) {//effacer explosion		
-				// Efface la trace de l'explosion et réinitialise les booléens
+												// Efface la trace de l'explosion et réinitialise les booléens
 				bomberman.bombes[i].explosion = false;
-			
-				bomberman.eraseExplosion(i); 
-				
+
+				bomberman.eraseExplosion(i);
+
 				//on efface les murs détruits
 				for (int i = 0; i < 13; i++) {
 					for (int j = 0; j < 17; j++) {
@@ -419,7 +419,7 @@ void LabyTimerExplosion(int z) {
 		}
 	}
 
-	glutTimerFunc(500, LabyTimerExplosion, 0); 
+	glutTimerFunc(500, LabyTimerExplosion, 0);
 }
 
 void LabyTimerEnnemi(int z) {
@@ -578,11 +578,11 @@ void TraitementArduino(int z) {
 	{
 		readResult = SP->ReadData(incomingData, dataLength);//on lit les infos de l'arduino
 
-		if (readResult != -1) { 
+		if (readResult != -1) {
 			//BOUTONS
 			if (incomingData[0] == 'A') { //on appuie sur le bouton	
 				if (!pause && !afficherHistoire && !afficherMenu) { // touche B
-					//printf("\n BombeButton");
+																	//printf("\n BombeButton");
 					bomberman.lancerBombe();
 				}
 				else  if (afficherHistoire) {
@@ -633,7 +633,7 @@ void TraitementArduino(int z) {
 				bas = false;
 				enMouvement = false;
 			}
-		
+
 			//JOYSTICK	
 			if (afficherMenu) {
 				//Bouge le curseur 
@@ -686,14 +686,14 @@ void TraitementArduino(int z) {
 			SP->WriteData("v", 1);//allume la led 5 (verte)
 		}
 		else SP->WriteData("b", 1);//eteint la led 5 (verte)
-		//LED RGB
+								   //LED RGB
 		if (explosionEnCours) {
 			SP->WriteData("e", 1);
 		}
 		else {
 			SP->WriteData("d", 1);
 		}
-	
+
 
 	}
 	glFlush();
