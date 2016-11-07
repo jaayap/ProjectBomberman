@@ -50,9 +50,11 @@ void Bombe::exploser() {
 	//Centre de l'explosion  : 
 	//Test si il y a des mort
 	if (x == bomberman.getX() && y == bomberman.getY())	bomberman.setVivant(false);
-	for (int i = 0; i < size(ennemisTab); i++) {
-		if (ennemisTab[i]->getX() == x && ennemisTab[i]->getY() == y) {
-			ennemisTab[i]->setVivant(false);
+	if (size(ennemisTab) > 1) {
+		for (int i = 0; i < size(ennemisTab); i++) {
+			if (ennemisTab[i]->getX() == x && ennemisTab[i]->getY() == y) {
+				ennemisTab[i]->setVivant(false);
+			}
 		}
 	}
 
@@ -364,11 +366,13 @@ void Bombe::dessinerExplosionHaut() {
 		//Test si il y a des mort
 		if (x == bomberman.getX() && y - i == bomberman.getY() && (bomberman.offsetX == 0)) bomberman.setVivant(false);
 
-		for (int k = 0; k < size(ennemisTab); k++) {
-			if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y - i) {
-				ennemisTab[k]->setVivant(false);
+		if (size(ennemisTab) > 1) {
+			for (int k = 0; k < size(ennemisTab); k++) {
+				if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y - i) {
+					ennemisTab[k]->setVivant(false);
+				}
 			}
-		}
+		}		
 
 		//Test s'il y a une autre bombe
 		for (int k = 0; k < size(bomberman.bombes); k++) {
@@ -398,9 +402,11 @@ void Bombe::dessinerExplosionHaut() {
 		//Test si il y a des mort
 		if (x == bomberman.getX() && y - portee + 1 == bomberman.getY() && (bomberman.offsetX == 0)) bomberman.setVivant(false);
 
-		for (int k = 0; k < size(ennemisTab); k++) {
-			if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y - portee + 1) {
-				ennemisTab[k]->setVivant(false);
+		if (size(ennemisTab) > 1) {
+			for (int k = 0; k < size(ennemisTab); k++) {
+				if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y - portee + 1) {
+					ennemisTab[k]->setVivant(false);
+				}
 			}
 		}
 
@@ -435,11 +441,13 @@ void Bombe::dessinerExplosionBas() {
 		//Test si il y a des mort
 		if (x == bomberman.getX() && y + i == bomberman.getY() && bomberman.offsetX == 0) bomberman.setVivant(false);
 
-		for (int k = 0; k < size(ennemisTab); k++) {
-			if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y + i) {
-				ennemisTab[k]->setVivant(false);
+		if (size(ennemisTab) > 1) {
+			for (int k = 0; k < size(ennemisTab); k++) {
+				if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y + i) {
+					ennemisTab[k]->setVivant(false);
+				}
 			}
-		}
+		}		
 
 		//Test s'il y a une autre bombe
 		for (int k = 0; k < size(bomberman.bombes); k++) {
@@ -470,12 +478,13 @@ void Bombe::dessinerExplosionBas() {
 		//Test si il y a des mort
 		if (x == bomberman.getX() && y + portee - 1 == bomberman.getY() && bomberman.offsetX == 0) bomberman.setVivant(false);
 
-		for (int k = 0; k < size(ennemisTab); k++) {
-			if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y + portee - 1) {
-				ennemisTab[k]->setVivant(false);
+		if (size(ennemisTab) > 1) {
+			for (int k = 0; k < size(ennemisTab); k++) {
+				if (ennemisTab[k]->getX() == x && ennemisTab[k]->getY() == y + portee - 1) {
+					ennemisTab[k]->setVivant(false);
+				}
 			}
 		}
-
 
 		//Test s'il y a une autre bombe
 		for (int k = 0; k < size(bomberman.bombes); k++) {
@@ -508,11 +517,13 @@ void Bombe::dessinerExplosionGauche() {
 		//Test si il y a des mort
 		if ((x - i) == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
 	
-		for (int k = 0; k < size(ennemisTab); k++) {
-			if (ennemisTab[k]->getX() == (x - i) && ennemisTab[k]->getY() == y) {
-				ennemisTab[k]->setVivant(false);
+		if (size(ennemisTab) > 1) {
+			for (int k = 0; k < size(ennemisTab); k++) {
+				if (ennemisTab[k]->getX() == (x - i) && ennemisTab[k]->getY() == y) {
+					ennemisTab[k]->setVivant(false);
+				}
 			}
-		}
+		}		
 
 		//Test s'il y a une autre bombe
 		for (int k = 0; k < size(bomberman.bombes); k++) {
@@ -543,11 +554,13 @@ void Bombe::dessinerExplosionGauche() {
 		//Test si il y a des mort
 		if (x - portee + 1 == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
 
-		for (int k = 0; k < size(ennemisTab); k++) {
-			if (ennemisTab[k]->getX() == x - portee + 1 && ennemisTab[k]->getY() == y) {
-				ennemisTab[k]->setVivant(false);
+		if (size(ennemisTab) > 1) {
+			for (int k = 0; k < size(ennemisTab); k++) {
+				if (ennemisTab[k]->getX() == x - portee + 1 && ennemisTab[k]->getY() == y) {
+					ennemisTab[k]->setVivant(false);
+				}
 			}
-		}
+		}		
 
 		//Test s'il y a une autre bombe
 		for (int k = 0; k < size(bomberman.bombes); k++) {
@@ -580,11 +593,13 @@ void Bombe::dessinerExplosionDroite() {
 		//Test si il y a des mort
 		if (x + i == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
 
-		for (int k = 0; k < size(ennemisTab); k++) {
-			if (ennemisTab[k]->getX() == x + i && ennemisTab[k]->getY() == y ) {
-				ennemisTab[k]->setVivant(false);
+		if (size(ennemisTab) > 1) {
+			for (int k = 0; k < size(ennemisTab); k++) {
+				if (ennemisTab[k]->getX() == x + i && ennemisTab[k]->getY() == y) {
+					ennemisTab[k]->setVivant(false);
+				}
 			}
-		}
+		}		
 
 		//Test s'il y a une autre bombe
 		for (int k = 0; k < size(bomberman.bombes); k++) {
@@ -614,11 +629,14 @@ void Bombe::dessinerExplosionDroite() {
 		//Test si il y a des mort
 		if (x + portee - 1 == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
 
-		for (int k = 0; k < size(ennemisTab); k++) {
-			if (ennemisTab[k]->getX() == x + portee - 1 && ennemisTab[k]->getY() == y) {
-				ennemisTab[k]->setVivant(false);
+		if (size(ennemisTab) > 1) {
+			for (int k = 0; k < size(ennemisTab); k++) {
+				if (ennemisTab[k]->getX() == x + portee - 1 && ennemisTab[k]->getY() == y) {
+					ennemisTab[k]->setVivant(false);
+				}
 			}
 		}
+		
 		//Test s'il y a une autre bombe
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x + portee - 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {

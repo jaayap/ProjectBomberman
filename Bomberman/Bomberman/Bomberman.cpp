@@ -117,11 +117,14 @@ void Bomberman::eraseExplosion(int nb) {
 
 void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi
 
-	for (int i = 0; i < size(ennemisTab); i++) {
-		if (ennemisTab[i]->getX() == x && ennemisTab[i]->getY() == y) {
-			vivant = false;
+	if (size(ennemisTab) > 1) {
+		for (int i = 0; i < size(ennemisTab); i++) {
+			if (ennemisTab[i]->getX() == x && ennemisTab[i]->getY() == y && ennemisTab[i]->vivant) {
+				vivant = false;
+			}
 		}
 	}
+	
 }
 
 void Bomberman::ramasserBonus() {

@@ -68,7 +68,7 @@ void Bonus::ramasser()
 		score += 50;
 		break;
 	case 3:
-		if (bomberman.getVitesseDeplacement() <= 0.45) bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() * 1.5f); //A tester
+		if (bomberman.getVitesseDeplacement() <= 0.125f) bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() + 0.025f);
 		score += 50;
 		break;
 	}

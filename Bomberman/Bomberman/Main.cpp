@@ -44,6 +44,7 @@ Bomberman bomberman(3, 1);
 
 vector<Personnage*> ennemisTab;
 
+EnnemiAleatoire ennemiTest(99, 99);
 EnnemiAleatoire ennemi1(5, 9);
 EnnemiAllerRetour ennemi2(5, 3, 1, false);
 EnnemiAllerRetour ennemi3(8, 5, 4, false);
@@ -134,10 +135,19 @@ void LabyAffichage() {
 
 			//Affichage des personnages
 			bomberman.dessiner();
-			for (int i = 0; i < size(ennemisTab); i++) {
-				if (ennemisTab[i]->vivant) {
-					ennemisTab[i]->dessiner();
+			if (size(ennemisTab) > 1) {
+				for (int i = 0; i < size(ennemisTab); i++) {
+					if (ennemisTab[i]->vivant) {
+						ennemisTab[i]->dessiner();
+					}
+					else {
+						ennemisTab.erase(ennemisTab.begin() + i);
+						score += 100;
+					}
 				}
+			}
+			else if (size(ennemisTab) == 1 && !victoire) {
+				victoire = true;
 			}
 
 			for (int i = 0; i < size(bomberman.bombes); i++) {
@@ -392,11 +402,9 @@ void LabyTimerExplosion(int z) {
 }
 
 void LabyTimerEnnemi(int z) {
-	if (!pause) {
+	if (!pause && size(ennemisTab) > 0) {
 		for (int i = 0; i < size(ennemisTab); i++) {
-
 			ennemisTab[i]->calculDeplacement();
-			ennemisTab[i]->dessiner();
 		}
 	}
 	glutTimerFunc(30, LabyTimerEnnemi, 0);
@@ -430,22 +438,10 @@ void tableEnnemis() {
 	TableEAR.push_back(ennemi2);
 	TableEAR.push_back(ennemi3);
 
+	ennemisTab.push_back(&ennemiTest);
 	ennemisTab.push_back(&ennemi1);
 	ennemisTab.push_back(&ennemi2);
 	ennemisTab.push_back(&ennemi3);
-}
-
-void detecteEnnemis(int z) {
-	if (size(TableEA) == 0 && size(TableEAR) == 0) {
-		victoire = true;
-		return;
-	}
-
-	else {
-		// ENNEMIS MORTS
-
-		glutTimerFunc(100, detecteEnnemis, 0);
-	}
 }
 
 void PlayMusic(int z) {
@@ -575,7 +571,6 @@ void main() {
 	glutTimerFunc(50, TestDirection, 0);
 	glutTimerFunc(1000, LabyTimerExplosion, 0);
 	glutTimerFunc(500, LabyTimerEnnemi, 0);
-	glutTimerFunc(100, detecteEnnemis, 0);
 	glutTimerFunc(100, transitionHistoire, 0);
 
 	// Gestion des textures

@@ -57,14 +57,14 @@ void Niveau::dessinerNiveau() {
 		for (int j = 0; j < 17; j++) {
 
 			// destruction des murs
-			if (victoire && matrice[i][j] == '2') {
+			/*if (victoire && matrice[i][j] == '2') {
 				matrice[i][j] = '0';
 			}
 
 			// destruction des murs
 			if (die && matrice[i][j] == '2') {
 				matrice[i][j] = '0';
-			}
+			}*/
 
 			//Affichage des mur indestructible.
 			if (matrice[i][j] == '1') {
