@@ -34,7 +34,7 @@ float position_cursor_x = 0.25;
 float position_cursor_y = 0.63;
 int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
 bool pause = false; //permet de mettre le jeu en pause
-bool utiliserManette = false;
+bool utiliserManette = true;
 
 vector<GLuint>	texture; // tableau qui contient nos textures
 vector<EnnemiAleatoire> TableEA;
@@ -572,46 +572,24 @@ void TraitementArduino(int z) {
 	{
 		readResult = SP->ReadData(incomingData, dataLength);//on lit les infos de l'arduino
 
-		if (readResult != -1) { //on lit les données
-								/*	if (incomingData[0] == '0'){
-								printf("\n bouclier");
-								SP->WriteData("b", 0);
-								Sleep(150);
-								}
-								else if (incomingData[0] == '1'){ //on appuie sur le bouton
-								printf("\n Laser");
-								SP->WriteData("l", 1);
-								Sleep(150);
-								}*/
-
-			if (incomingData[0] == 'A') { //on appuie sur le bouton
-		
+		if (readResult != -1) { 
+			//BOUTONS
+			if (incomingData[0] == 'A') { //on appuie sur le bouton	
 				if (!pause && !afficherHistoire && !afficherMenu) { // touche B
 					//printf("\n BombeButton");
 					bomberman.lancerBombe();
 				}
-				//SP->WriteData("a", 1); 
-				//Sleep(150);
 			}
 			else if (incomingData[0] == 'B') { //on appuie sur le bouton
 				printf("\n BonusButton");
-				//SP->WriteData("b", 1);
-
-				//Sleep(150);
 			}
 			else if (incomingData[0] == 'C') { //on appuie sur le bouton
 				if (pause) {
-					printf("\n Play");
 					pause = false;
 				}
 				else {
-					printf("\n Pause");
 					pause = true;
 				}
-
-				//SP->WriteData("B", 1);
-
-				//Sleep(150);
 			}
 
 			if (incomingData[0] == 'R') {
@@ -623,7 +601,6 @@ void TraitementArduino(int z) {
 			}
 
 			//JOYSTICK	
-
 			if (afficherMenu) {
 				//Bouge le curseur 
 				if (incomingData[0] == 'H') {
@@ -639,8 +616,6 @@ void TraitementArduino(int z) {
 						position_cursor += 1;
 					}
 				}
-
-				//	cout << position_cursor;
 			}
 			else {
 				if (!pause) {
@@ -660,6 +635,7 @@ void TraitementArduino(int z) {
 			}
 		}
 
+		//LED
 		//on envoit des données
 		if (!bomberman.vivant) {
 			SP->WriteData("a", 1);//allume la led 5
