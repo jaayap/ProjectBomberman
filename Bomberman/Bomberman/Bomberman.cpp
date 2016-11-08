@@ -310,6 +310,7 @@ void Bomberman::dessiner() {
 			afficherMenu = true;
 			finDestruction = false;
 			gameOver = false;
+			numNiveau = 1;
 			return;
 		}
 		// PERTE VIE
