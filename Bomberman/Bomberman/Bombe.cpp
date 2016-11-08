@@ -16,7 +16,6 @@ extern Bomberman bomberman;
 extern vector<Personnage*> ennemisTab;
 extern vector<GLuint> texture;
 extern int valueExplo;
-extern int nbrMur;
 extern bool spawn;
 
 float coordExplo[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
@@ -92,8 +91,7 @@ void Bombe::explosionHaut() {
 		if (niveau.caseLibreBombe(y - i, x) && !arretExplosionHaut) { //En haut
 
 			if (niveau.caseMurDestructible(y - i, x)) {
-				niveau.modifierCase(y - i, x, '3');
-				nbrMur++;		
+				niveau.modifierCase(y - i, x, '3');	
 				arretExplosionHaut = true;
 			}
 			else {
@@ -125,7 +123,6 @@ void Bombe::explosionHaut() {
 		}
 		else {
 			niveau.modifierCase(y - portee + 1, x, '3');
-			nbrMur++;	
 		}
 		//Test s'il on detruit un bonus 
 		for (int k = 0; k < size(niveau.bonusTab); k++) {
@@ -149,7 +146,6 @@ void Bombe::explosionBas() {
 		if (niveau.caseLibreBombe(y + i, x) && !arretExplosionBas) { //En bas
 			if (niveau.caseMurDestructible(y + i, x)) {
 				niveau.modifierCase(y + i, x, '3');
-				nbrMur++;
 				arretExplosionBas = true;
 			}
 			else {
@@ -180,7 +176,6 @@ void Bombe::explosionBas() {
 		}
 		else {
 			niveau.modifierCase(y + portee - 1, x, '3');
-			nbrMur++;
 		}
 
 		//Test s'il on detruit un bonus 
@@ -205,7 +200,6 @@ void Bombe::explosionGauche() {
 
 			if (niveau.caseMurDestructible(y, x - i)) {
 				niveau.modifierCase(y, x - i, '3');
-				nbrMur++;
 				arretExplosionGauche = true;
 			}
 			else {
@@ -237,7 +231,6 @@ void Bombe::explosionGauche() {
 		}
 		else {
 			niveau.modifierCase(y, x - portee + 1, '3');
-			nbrMur++;
 		}
 
 		//Test s'il on detruit un bonus 
@@ -263,7 +256,6 @@ void Bombe::explosionDroite() {
 
 			if (niveau.caseMurDestructible(y, x + i)) {
 				niveau.modifierCase(y, x + i, '3');
-				nbrMur++;
 				arretExplosionDroite = true;
 			}
 			else {
@@ -292,7 +284,6 @@ void Bombe::explosionDroite() {
 		}
 		else {
 			niveau.modifierCase(y, x + portee - 1, '3');
-			nbrMur++;
 		}
 		
 		//Test s'il on detruit un bonus 

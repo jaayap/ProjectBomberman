@@ -1,2 +1,11 @@
-﻿  Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.exe
+﻿  Bomberman.cpp
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bomberman.cpp(93): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bomberman.cpp(128): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bomberman.cpp(138): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bomberman.cpp(192): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bomberman.cpp(254): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bomberman.cpp(265): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bomberman.cpp(297): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\bomberman.cpp(307): warning C4018: '<' : incompatibilité signed/unsigned
+  Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.exe
   Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.pdb (Partial PDB)

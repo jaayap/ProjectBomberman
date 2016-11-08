@@ -15,12 +15,10 @@ using namespace std;
 float coord[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 int testAleatoire;
 int maxMur = 0;
-int nbrMur = 0;
-int murDetruit = 0;
 float numeroNiveau = 0;
 
 bool PlacerBonus;
-bool finPlacementMur = true;
+bool finDestruction = true;
 
 extern vector<GLuint> texture;
 
@@ -28,7 +26,7 @@ extern int valueBombe, valueExplo, valueMur, valueSortie;
 extern int vie;
 
 extern bool victoire;
-extern bool GameOver;
+extern bool gameOver;
 extern bool die;
 
 
@@ -61,14 +59,32 @@ void Niveau::dessinerNiveau() {
 		for (int j = 0; j < 17; j++) {
 
 			// destruction des murs
-			/*if (victoire && matrice[i][j] == '2') {
-				matrice[i][j] = '0';
-			}
+			//if (victoire && matrice[i][j] == '2') {
+			//	matrice[i][j] = '0';
+			//}
 
 			// destruction des murs
-			if (die && matrice[i][j] == '2') {
-				matrice[i][j] = '0';
-			}*/
+			for (int i = 0; i < 13; i++) {
+				for (int j = 0; j < 17; j++) {
+					if (die && matrice[i][j] == '2') {
+						matrice[i][j] = '0';
+						maxMur = 0;
+					}
+				}
+			}
+
+			// destruction des bonus
+			if (!finDestruction && size(bonusTab) > 0) {
+				cout << "BOUCLE" << endl;
+				cout << size(bonusTab) << endl;
+				for (int k = 0; k < size(bonusTab); k++) {
+					bonusTab[k].setVisible(false);
+					bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				}
+				bonusTab.erase(bonusTab.begin(), bonusTab.begin() + size(bonusTab));
+				PlacerBonus = false;
+				finDestruction = true;
+			}
 
 			//Affichage des mur indestructible.
 			if (matrice[i][j] == '1') {
@@ -126,25 +142,10 @@ void Niveau::dessinerNiveau() {
 
 				// apparition aléatoire de murs destructibles
 				testAleatoire = (rand() % 2 + 1);
-				if (testAleatoire == 1 && maxMur < 60 && vie == 3 && !GameOver) {
-					finPlacementMur = true;
+				if (testAleatoire == 1 && maxMur < 60) {
 					matrice[i][j] = '2';
 					maxMur++;
 				}
-				else if (finPlacementMur && maxMur == 60 && vie == 3 && !GameOver) {
-					nbrMur = 0;
-					finPlacementMur = false;
-				}
-				if (testAleatoire == 1 && maxMur < murDetruit && vie < 3) {
-					finPlacementMur = true;
-					matrice[i][j] = '2';
-					maxMur++;
-				}
-				else if (finPlacementMur && maxMur == murDetruit && vie < 3) {
-					nbrMur = 0;
-					finPlacementMur = false;
-				}
-
 				
 			}
 
@@ -161,15 +162,9 @@ void Niveau::dessinerNiveau() {
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 
-				if (die) {
-					murDetruit = nbrMur;
-				}
-				if (die && GameOver) {
-					PlacerBonus = false;
-				}
-
 				if (!PlacerBonus) {
 					definirBonus(i, j); //on place les bonus derriere les mur destructible
+					cout << size(bonusTab) << endl;
 				}
 			}
 
@@ -219,7 +214,7 @@ void Niveau::dessinerNiveau() {
 			}
 
 			// Affichage du Game Over
-			if (GameOver) {
+			if (gameOver) {
 				//cout << "gameover" << endl;
 			}
 

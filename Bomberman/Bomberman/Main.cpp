@@ -37,6 +37,8 @@ bool pause = false; //permet de mettre le jeu en pause
 bool utiliserManette = false;
 bool explosionEnCours = false;
 
+bool gameOver = false;
+
 
 
 vector<GLuint>	texture; // tableau qui contient nos textures
@@ -267,7 +269,6 @@ void TraitementClavier(int key, int x, int y)
 			}
 		}
 
-		//	cout << position_cursor;
 	}
 	else {
 		if (!pause) {
@@ -352,6 +353,7 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 		if (key == 10 || key == 13) { // Touche entree
 			afficherHistoire = false;
 			afficherMenu = true;
+			gameOver = false;
 		}
 	}
 	else if (afficherMenu && !afficherHistoire) {
@@ -476,6 +478,7 @@ void PlayMusic(int z) {
 				}
 				else {
 					cout << "Musique Intro" << endl;
+					musicIntro.setVolume(volume);
 					musicIntro.play();
 					musicIntro.setLoop(true);
 				}
@@ -491,6 +494,8 @@ void PlayMusic(int z) {
 				}
 				else {
 					cout << "Musique Menu" << endl;
+					volume = 100;
+					musicMenu.setVolume(volume);
 					musicMenu.play();
 					musicMenu.setLoop(true);
 				}
@@ -513,6 +518,7 @@ void PlayMusic(int z) {
 				}
 				else {
 					cout << "Musique Zone 1" << endl;
+					musicZone1.setVolume(volume);
 					musicZone1.play();
 					musicZone1.setLoop(true);
 				}
@@ -559,7 +565,6 @@ void transitionHistoire(int z) {
 				else {
 					alphaImg -= 0.01f;
 					if (volume > 0) {
-						cout << volume << endl;
 						volume--;
 						musicIntro.setVolume(volume);
 					}

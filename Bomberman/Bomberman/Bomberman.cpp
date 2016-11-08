@@ -18,7 +18,6 @@ float vitesseDeplacement;
 int rotation;
 int tailleTab;
 
-bool GameOver = false;
 bool die = false;
 bool life = true;
 bool spawn = false;
@@ -27,8 +26,8 @@ extern int valueBomberman;
 extern int spriteBomberdeath;
 extern int direction;
 extern int vie;
+extern int score;
 extern int maxMur;
-extern int nbrMur;
 
 extern float valueBomberdeath;
 extern float numeroNiveau;
@@ -36,6 +35,8 @@ extern float numeroNiveau;
 extern bool victoire;
 extern bool PlacerBonus;
 extern bool afficherMenu;
+extern bool gameOver;
+extern bool finDestruction;
 
 extern vector<GLuint> texture;
 extern Niveau niveau;
@@ -174,16 +175,12 @@ void Bomberman::dessiner() {
 	}
 
 	if (vivant == false && life) {
-		if (vie == 0 && !GameOver && life && !die) {
-			GameOver = true;
+		if (vie == 0 && !gameOver && life && !die) {
+			gameOver = true;
 			life = false;
 			nb_bombes = 1;
 			portee_bombe = 3;
 			spriteBomberdeath = 0;
-			for (int k = 0; k < size(niveau.bonusTab); k++) {
-				niveau.bonusTab[k].setVisible(false);
-				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise	
-			}
 			vivant = true;
 			glutTimerFunc(600, AnimDeath, 0);
 		}
@@ -236,8 +233,11 @@ void Bomberman::dessiner() {
 	}
 
 	if (die) {
-		if (GameOver && vie == 0) {
+		// GAMEOVER
+		if (gameOver && vie == 0) {
 			vie = 3;
+			score = 0;
+			cout << score << endl;
 			retour();
 			// Respawn ennemis
 			tailleTab = size(ennemisTab);
@@ -276,8 +276,10 @@ void Bomberman::dessiner() {
 				}
 			}
 			afficherMenu = true;
+			finDestruction = false;
 			return;
 		}
+		// PERTE VIE
 		retour();
 		vie--;
 		// Respawn ennemis
@@ -315,6 +317,7 @@ void Bomberman::dessiner() {
 				}
 			}
 		}
+		finDestruction = false;
 		return;
 	}
 	

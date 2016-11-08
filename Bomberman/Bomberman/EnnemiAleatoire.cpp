@@ -212,5 +212,4 @@ void EnnemiAleatoire::calculDeplacement() {//1 : A gauche, 2 : A droite, 3 : En 
 void EnnemiAleatoire::retour() {
 	x = xDep;
 	y = yDep;
-	cout << xDep << yDep << endl;
 }

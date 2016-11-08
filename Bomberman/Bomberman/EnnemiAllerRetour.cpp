@@ -213,5 +213,4 @@ void EnnemiAllerRetour::deplacementBas()
 void EnnemiAllerRetour::retour() {
 	x = xDep;
 	y = yDep;
-	cout << xDep << yDep << endl;
 }
