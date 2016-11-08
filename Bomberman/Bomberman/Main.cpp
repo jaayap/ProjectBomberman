@@ -347,7 +347,15 @@ void TraitementAucuneTouche(int key, int x, int y) {
 
 	//TEST
 	if (key == GLUT_KEY_F1) {
-
+		numNiveau = 1;
+	}
+	//TEST
+	if (key == GLUT_KEY_F2) {
+		numNiveau = 2;
+	}
+	//TEST
+	if (key == GLUT_KEY_F3) {
+		numNiveau = 3;
 	}
 }
 
