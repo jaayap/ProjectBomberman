@@ -312,7 +312,7 @@ void TraitementClavier(int key, int x, int y)
 {
 	glutPostRedisplay();
 
-	if (afficherMenu) {
+	if (afficherMenu || afficherOption) {
 		//Bouge le curseur 
 		if (key == GLUT_KEY_UP) {
 			if (position_cursor_y > 0.63) {
@@ -437,34 +437,41 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 	}
 	else if (afficherOption) {
 		if (position_cursor == 1) { // volume
-			
+			volume += 5;
 		}
 		else if (position_cursor == 2) { //Commande
+			volume -= 5;
+		}
+		else if (position_cursor == 3) { //Commande
 			afficherOption = false;
-			afficherCommande = true;			
+			afficherCommande = true;
 		}
 	}
-	else {
-		if (afficherCommande) { //retour
-			afficherCommande = false;
-			afficherOption = true;
-		}
-		else {
+	else if( !afficherMenu && ! afficherOption && !afficherCommande){
 			if ((key == 66 || key == 98) && !pause) { // touche B
 				bomberman.lancerBombe();
 			}
+
 			//mettre en pause le jeu
 			if (key == 80 || key == 112) { // touche P
 				if (pause) pause = false;
 				else pause = true;
 			}
-		}
-
 	}
 
 	if (key == 27) {// Escape key
-		glutDestroyWindow(1);
-		exit(0);
+		if (afficherCommande) { //retour
+			afficherCommande = false;
+			afficherOption = true;
+		}
+		else if (afficherOption) { //retour
+			afficherOption = false;
+			afficherMenu = true;		
+		}
+		else {
+			glutDestroyWindow(1);
+			exit(0);
+		}
 	}
 
 	glFlush();
@@ -581,7 +588,7 @@ void PlayMusic(int z) {
 				}
 				else {
 					cout << "Musique Menu" << endl;
-					volume = 100;
+				//	volume = 100;
 					musicMenu.setVolume(volume);
 					musicMenu.play();
 					musicMenu.setLoop(true);
@@ -673,8 +680,8 @@ void TraitementArduino(int z) {
 		if (readResult != -1) {
 			//BOUTONS
 			if (incomingData[0] == 'A') { //on appuie sur le bouton	
-				if (!pause && !afficherHistoire && !afficherMenu) { // touche B
-																	//printf("\n BombeButton");
+				if (!pause && !afficherHistoire && !afficherMenu && !afficherOption && !afficherCommande) { // touche B
+					//printf("\n BombeButton");
 					bomberman.lancerBombe();
 				}
 				else  if (afficherHistoire) {
@@ -682,14 +689,27 @@ void TraitementArduino(int z) {
 					afficherMenu = true;
 				}
 				else if (afficherMenu && !afficherHistoire) {
-					if (position_cursor == 1) { //avanture
+					if (position_cursor == 1) { //aventure
 						afficherMenu = false;
 					}
 					else if (position_cursor == 2) { //versus
 
 					}
 					else if (position_cursor == 3) {//option
-
+						afficherMenu = false;
+						afficherOption = true;
+					}
+				}
+				else if (afficherOption) {
+					if (position_cursor == 1) { // volume
+						volume += 5;
+					}
+					else if (position_cursor == 2) { //Commande
+						volume -= 5;
+					}
+					else if (position_cursor == 3) { //Commande
+						afficherOption = false;
+						afficherCommande = true;
 					}
 				}
 			}
@@ -726,6 +746,10 @@ void TraitementArduino(int z) {
 					afficherCommande = false;
 					afficherOption = true;
 				}
+				else if (afficherOption) { //retour
+					afficherMenu = true;
+					afficherOption = false;
+				}
 			}
 
 			if (incomingData[0] == 'R') {
@@ -737,7 +761,7 @@ void TraitementArduino(int z) {
 			}
 
 			//JOYSTICK	
-			if (afficherMenu) {
+			if (afficherMenu || afficherOption) {
 				//Bouge le curseur 
 				if (incomingData[0] == 'H') {
 					if (position_cursor_y > 0.63) {
@@ -853,7 +877,7 @@ void main() {
 	/* 19 */ LoadGLTextures("images/Background1.png");
 	/* 20 */ LoadGLTextures("images/Background2.png");
 	/* 21 */ LoadGLTextures("images/Background3.png");
-	/* 22 */ LoadGLTextures("images/Menu_Option.png");
+	/* 22 */ LoadGLTextures("images/Options.png");
 	/* 23 */ LoadGLTextures("images/Commandes.png");
 
 	// Gestion des sons
