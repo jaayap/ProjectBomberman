@@ -44,8 +44,10 @@ extern Niveau niveau;
 extern Bomberman bomberman;
 
 extern EnnemiAleatoire ennemi1;
+extern EnnemiAleatoire ennemi4;
 extern EnnemiAllerRetour ennemi2;
 extern EnnemiAllerRetour ennemi3;
+extern EnnemiAllerRetour ennemi5;
 
 //pour gerer les collisions :
 extern vector<Personnage*> ennemisTab;
@@ -180,9 +182,18 @@ void Bomberman::dessiner() {
 		ennemi1.retour();
 		ennemi2.retour();
 		ennemi3.retour();
+		if (numNiveau == 2) {
+			ennemisTab.push_back(&ennemi4);
+			ennemi5.retour();
+		}
+		else if (numNiveau == 3) {
+			ennemisTab.push_back(&ennemi4);
+			ennemi4.retour();
+			ennemisTab.push_back(&ennemi5);
+			ennemi5.retour();
+		}
 		for (int i = 1; i < size(ennemisTab); i++) {
 			ennemisTab[i]->vivant = true;
-			//ennemisTab[i].retour();
 		}
 		// Forcer les bombes à se détruire
 		for (int i = 0; i < size(bomberman.bombes); i++) {

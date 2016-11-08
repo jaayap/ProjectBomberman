@@ -16,7 +16,6 @@ float coord[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0
 int testAleatoire;
 int maxMur = 0;
 int textBombe = 2;
-int textNiveau = 22;
 
 float nbrNiveau = 0;
 
@@ -58,18 +57,6 @@ void Niveau::initialiserMatrice() {
 }
 
 void Niveau::dessinerNiveau() {
-	// Texture Background
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture[18 + numNiveau]);
-	glBegin(GL_QUADS);
-	glColor3d(1.0, 1.0, 1.0);
-	glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
-	glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
-	glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
-
 	for (int i = 0; i < 13; i++) {
 		for (int j = 0; j < 17; j++) {
 
@@ -103,23 +90,19 @@ void Niveau::dessinerNiveau() {
 			// TEXTURES SELON NIVEAU
 			if (numNiveau == 1) {
 				nbrNiveau = 0.0f;
-				textNiveau = 22;
 				textBombe = 2;
 			}
 			else if (numNiveau == 2) {
 				nbrNiveau = 0.25f;
-				textNiveau = 23;
-				textBombe = 26;
+				textBombe = 19;
 			}
 			else if (numNiveau == 3) {
 				nbrNiveau = 0.5f;
-				textNiveau = 24;
-				textBombe = 27;
+				textBombe = 20;
 			}
 			else if (numNiveau == 5) {
 				nbrNiveau = 0.75f;
-				textNiveau = 25;
-				textBombe = 28;
+				textBombe = 21;
 			}
 
 			//Affichage des mur indestructible.
@@ -152,18 +135,18 @@ void Niveau::dessinerNiveau() {
 
 			if (matrice[i][j] == '3') {
 				glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, texture[1]);
+				glBindTexture(GL_TEXTURE_2D, texture[24]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(coord[2 + valueMur], 0.0f); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(coord[2 + valueMur], 0.25f); glVertex2d(j + 1, i);
-				glTexCoord2f(coord[0 + valueMur], 0.25f); glVertex2d(j, i);
-				glTexCoord2f(coord[0 + valueMur], 0.0f); glVertex2d(j, i + 1);
+				glTexCoord2f(coord[2 + valueMur], 0.75f - nbrNiveau); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(coord[2 + valueMur], 1.0f - nbrNiveau); glVertex2d(j + 1, i);
+				glTexCoord2f(coord[0 + valueMur], 1.0f - nbrNiveau); glVertex2d(j, i);
+				glTexCoord2f(coord[0 + valueMur], 0.75f - nbrNiveau); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			}
 
-			//Affichage de l'herbe.
+			//Affichage du sol.
 			if (matrice[i][j] == '0') {
 				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D, texture[1]);
@@ -181,7 +164,20 @@ void Niveau::dessinerNiveau() {
 					matrice[i][j] = '2';
 					maxMur++;
 				}
-				
+			}
+
+			//Affichage du spawn
+			if (matrice[i][j] == '4') {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, texture[1]);
+				glBegin(GL_QUADS);
+				glColor3d(1.0, 1.0, 1.0);
+				glTexCoord2f(0.25f, 0.75f - nbrNiveau); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(0.25f, 1.0f - nbrNiveau); glVertex2d(j + 1, i);
+				glTexCoord2f(0.0f, 1.0f - nbrNiveau); glVertex2d(j, i);
+				glTexCoord2f(0.0f, 0.75f - nbrNiveau); glVertex2d(j, i + 1);
+				glEnd();
+				glDisable(GL_TEXTURE_2D);
 			}
 
 			//Affichage des mur destructible.

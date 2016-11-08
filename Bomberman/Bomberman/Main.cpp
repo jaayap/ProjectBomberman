@@ -69,8 +69,10 @@ vector<Personnage*> ennemisTab;
 
 EnnemiAleatoire ennemiTest(99, 99);
 EnnemiAleatoire ennemi1(5, 9);
+EnnemiAleatoire ennemi4(5, 5);
 EnnemiAllerRetour ennemi2(5, 3, 1, false);
 EnnemiAllerRetour ennemi3(8, 5, 4, false);
+EnnemiAllerRetour ennemi5(8, 10, 4, false);
 
 // Sons
 vector<sf::Music*> tableMusic;
@@ -153,6 +155,7 @@ void LabyAffichage() {
 		glDisable(GL_BLEND);
 
 		score = 0;
+		numNiveau = 1;
 	}
 	else if (afficherOption) {
 		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
@@ -410,6 +413,10 @@ void TraitementAucuneTouche(int key, int x, int y) {
 	//TEST
 	if (key == GLUT_KEY_F3) {
 		numNiveau = 3;
+	}
+	//TEST
+	if (key == GLUT_KEY_F4) {
+		numNiveau = 5;
 	}
 }
 
@@ -874,11 +881,12 @@ void main() {
 	/* 16 */ LoadGLTextures("images/Intro4.png");
 	/* 17 */ LoadGLTextures("images/Intro5.png");
 	/* 18 */ LoadGLTextures("images/Intro6.png");
-	/* 19 */ LoadGLTextures("images/Background1.png");
-	/* 20 */ LoadGLTextures("images/Background2.png");
-	/* 21 */ LoadGLTextures("images/Background3.png");
+	/* 19 */ LoadGLTextures("images/Bombes&Bonus2.png");
+	/* 20 */ LoadGLTextures("images/Bombes&Bonus3.png");
+	/* 21 */ LoadGLTextures("images/Bombes&Bonus4.png");
 	/* 22 */ LoadGLTextures("images/Options.png");
 	/* 23 */ LoadGLTextures("images/Commandes.png");
+	/* 24 */ LoadGLTextures("images/MurExplo.png");
 
 	// Gestion des sons
 	musicIntro.openFromFile("Musiques/intro.wav");
