@@ -444,10 +444,10 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 	}
 	else if (afficherOption) {
 		if (position_cursor == 1) { // volume
-			volume += 5;
+			if(volume < 100) volume += 5;
 		}
 		else if (position_cursor == 2) { //Commande
-			volume -= 5;
+			if (volume > 0) volume -= 5;
 		}
 		else if (position_cursor == 3) { //Commande
 			afficherOption = false;
@@ -579,24 +579,22 @@ void PlayMusic(int z) {
 				}
 				else {
 					cout << "Musique Intro" << endl;
-					musicIntro.setVolume(volume);
 					musicIntro.play();
 					musicIntro.setLoop(true);
 				}
 			}
 		}
 	}
-	else if (afficherMenu && !afficherHistoire) {
+	else if (afficherMenu && !afficherHistoire || afficherOption || afficherCommande) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicMenu) {
 				if (musicMenu.getStatus() == sf::Sound::Status::Playing) {
 					glutTimerFunc(50, PlayMusic, 0);
+					musicMenu.setVolume(volume);
 					return;
 				}
 				else {
 					cout << "Musique Menu" << endl;
-				//	volume = 100;
-					musicMenu.setVolume(volume);
 					musicMenu.play();
 					musicMenu.setLoop(true);
 				}
@@ -615,11 +613,11 @@ void PlayMusic(int z) {
 			if (tableMusic[i] == &musicZone1) {
 				if (musicZone1.getStatus() == sf::Sound::Status::Playing) {
 					glutTimerFunc(50, PlayMusic, 0);
+					musicZone1.setVolume(volume);
 					return;
 				}
 				else {
 					cout << "Musique Zone 1" << endl;
-					musicZone1.setVolume(volume);
 					musicZone1.play();
 					musicZone1.setLoop(true);
 				}
