@@ -71,7 +71,6 @@ void Niveau::dessinerNiveau() {
 					if (!finDestruction && matrice[i][j] == '2') {
 						matrice[i][j] = '0';
 						maxMur = 0;
-						cout << "MUR" << endl;
 					}
 				}
 			}

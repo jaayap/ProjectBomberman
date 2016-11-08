@@ -46,13 +46,11 @@ int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
 bool afficherOption = false;
 bool afficherCommande = false;
 
-
 bool pause = false; //permet de mettre le jeu en pause
 
 bool explosionEnCours = false;
 
 bool gameOver = false;
-
 
 vector<GLuint>	texture; // tableau qui contient nos textures
 vector<EnnemiAleatoire> TableEA;
@@ -79,6 +77,9 @@ vector<sf::Music*> tableMusic;
 sf::Music musicIntro;
 sf::Music musicMenu;
 sf::Music musicZone1;
+sf::Music musicZone2;
+sf::Music musicZone3;
+sf::Music musicDuel;
 int volume = 100;
 
 
@@ -569,7 +570,7 @@ void tableEnnemis() {
 }
 
 void PlayMusic(int z) {
-
+	// Musique Intro
 	if (afficherHistoire) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicIntro) {
@@ -585,6 +586,7 @@ void PlayMusic(int z) {
 			}
 		}
 	}
+	// Musique Menu
 	else if (afficherMenu && !afficherHistoire || afficherOption || afficherCommande) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicMenu) {
@@ -600,15 +602,13 @@ void PlayMusic(int z) {
 				}
 			}
 			else {
-				musicZone1.stop();
-				musicZone1.setLoop(false);
-				musicIntro.stop();
-				musicIntro.setLoop(false);
-				// utiliser le tableau pour stopper TOUTES les autres musiques
+				tableMusic[i]->stop();
+				tableMusic[i]->setLoop(false);
 			}
 		}
 	}
-	else if (!afficherMenu && !afficherHistoire) {
+	// Musique Zone 1
+	else if (!afficherMenu && !afficherHistoire && numNiveau == 1) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicZone1) {
 				if (musicZone1.getStatus() == sf::Sound::Status::Playing) {
@@ -623,9 +623,71 @@ void PlayMusic(int z) {
 				}
 			}
 			else {
-				musicMenu.stop();
-				musicMenu.setLoop(false);
-				// utiliser le tableau pour stopper TOUTES les autres musiques
+				tableMusic[i]->stop();
+				tableMusic[i]->setLoop(false);
+			}
+		}
+	}
+	// Musique Zone 2
+	else if (!afficherMenu && !afficherHistoire && numNiveau == 2) {
+		for (int i = 0; i < size(tableMusic); i++) {
+			if (tableMusic[i] == &musicZone2) {
+				if (musicZone2.getStatus() == sf::Sound::Status::Playing) {
+					glutTimerFunc(50, PlayMusic, 0);
+					musicZone2.setVolume(volume);
+					return;
+				}
+				else {
+					cout << "Musique Zone 2" << endl;
+					musicZone2.play();
+					musicZone2.setLoop(true);
+				}
+			}
+			else {
+				tableMusic[i]->stop();
+				tableMusic[i]->setLoop(false);
+			}
+		}
+	}
+	// Musique Zone 3
+	else if (!afficherMenu && !afficherHistoire && numNiveau == 3) {
+		for (int i = 0; i < size(tableMusic); i++) {
+			if (tableMusic[i] == &musicZone3) {
+				if (musicZone3.getStatus() == sf::Sound::Status::Playing) {
+					glutTimerFunc(50, PlayMusic, 0);
+					musicZone3.setVolume(volume);
+					return;
+				}
+				else {
+					cout << "Musique Zone 3" << endl;
+					musicZone3.play();
+					musicZone3.setLoop(true);
+				}
+			}
+			else {
+				tableMusic[i]->stop();
+				tableMusic[i]->setLoop(false);
+			}
+		}
+	}
+	// Musique Duel
+	else if (!afficherMenu && !afficherHistoire && numNiveau == 5) {
+		for (int i = 0; i < size(tableMusic); i++) {
+			if (tableMusic[i] == &musicDuel) {
+				if (musicDuel.getStatus() == sf::Sound::Status::Playing) {
+					glutTimerFunc(50, PlayMusic, 0);
+					musicDuel.setVolume(volume);
+					return;
+				}
+				else {
+					cout << "Musique Duel" << endl;
+					musicDuel.play();
+					musicDuel.setLoop(true);
+				}
+			}
+			else {
+				tableMusic[i]->stop();
+				tableMusic[i]->setLoop(false);
 			}
 		}
 	}
@@ -890,11 +952,17 @@ void main() {
 	musicIntro.openFromFile("Musiques/intro.wav");
 	musicMenu.openFromFile("Musiques/menu.wav");
 	musicZone1.openFromFile("Musiques/zone1.wav");
+	musicZone2.openFromFile("Musiques/zone2.wav");
+	musicZone3.openFromFile("Musiques/zone3.wav");
+	musicDuel.openFromFile("Musiques/duel.wav");
 
 	// Intégration des musiques dans un tableau
 	tableMusic.push_back(&musicIntro);
 	tableMusic.push_back(&musicMenu);
 	tableMusic.push_back(&musicZone1);
+	tableMusic.push_back(&musicZone2);
+	tableMusic.push_back(&musicZone3);
+	tableMusic.push_back(&musicDuel);
 
 	glutTimerFunc(50, PlayMusic, 0);
 
