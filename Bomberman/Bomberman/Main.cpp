@@ -24,6 +24,7 @@ int LARGEUR_FENETRE = 900;
 
 int score = 0;
 int vie = 3;
+int numNiveau = 1;
 
 bool enMouvement = false;
 bool haut = false, bas = false, gauche = false, droite = false;
@@ -192,6 +193,9 @@ void LabyAffichage() {
 		glDisable(GL_TEXTURE_2D);
 
 		// Affichage du score
+		if (gameOver) {
+			score = 0;
+		}
 		string s = to_string(score);
 		int tailleScore = s.size();
 
@@ -353,7 +357,6 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 		if (key == 10 || key == 13) { // Touche entree
 			afficherHistoire = false;
 			afficherMenu = true;
-			gameOver = false;
 		}
 	}
 	else if (afficherMenu && !afficherHistoire) {

@@ -27,10 +27,10 @@ extern int spriteBomberdeath;
 extern int direction;
 extern int vie;
 extern int score;
+extern int numNiveau;
 extern int maxMur;
 
 extern float valueBomberdeath;
-extern float numeroNiveau;
 
 extern bool victoire;
 extern bool PlacerBonus;
@@ -167,11 +167,45 @@ void Bomberman::dessiner() {
 		break;
 	}
 
+	// CHANGER NIVEAU
 	if (victoire && x == 8 && y == 6) {
-		numeroNiveau = 0.25f;
 		retour();
 		maxMur = 0;
+		numNiveau++;
 		victoire = false;
+		// Respawn ennemis
+		ennemisTab.push_back(&ennemi1);
+		ennemisTab.push_back(&ennemi2);
+		ennemisTab.push_back(&ennemi3);
+		ennemi1.retour();
+		ennemi2.retour();
+		ennemi3.retour();
+		for (int i = 1; i < size(ennemisTab); i++) {
+			ennemisTab[i]->vivant = true;
+			//ennemisTab[i].retour();
+		}
+		// Forcer les bombes à se détruire
+		for (int i = 0; i < size(bomberman.bombes); i++) {
+			bomberman.bombes[i].effacerBombes();
+			bomberman.eraseExplosion(i);
+			//on efface les murs détruits
+			for (int i = 0; i < 13; i++) {
+				for (int j = 0; j < 17; j++) {
+					if (niveau.getCase(i, j) == '3') {
+						niveau.modifierCase(i, j, '0');
+					}
+				}
+			}
+		}
+		finDestruction = false;
+		if (numNiveau > 3) {
+			numNiveau = 1;
+			nb_bombes = 1;
+			portee_bombe = 3;
+			vie = 3;
+			vitesseDeplacement = 0.10f;
+			afficherMenu = true;
+		}
 	}
 
 	if (vivant == false && life) {
@@ -236,8 +270,6 @@ void Bomberman::dessiner() {
 		// GAMEOVER
 		if (gameOver && vie == 0) {
 			vie = 3;
-			score = 0;
-			cout << score << endl;
 			retour();
 			// Respawn ennemis
 			tailleTab = size(ennemisTab);
@@ -277,6 +309,7 @@ void Bomberman::dessiner() {
 			}
 			afficherMenu = true;
 			finDestruction = false;
+			gameOver = false;
 			return;
 		}
 		// PERTE VIE

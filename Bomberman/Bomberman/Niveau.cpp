@@ -15,7 +15,7 @@ using namespace std;
 float coord[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 int testAleatoire;
 int maxMur = 0;
-float numeroNiveau = 0;
+float nbrNiveau = 0;
 
 bool PlacerBonus;
 bool finDestruction = true;
@@ -24,6 +24,7 @@ extern vector<GLuint> texture;
 
 extern int valueBombe, valueExplo, valueMur, valueSortie;
 extern int vie;
+extern int numNiveau;
 
 extern bool victoire;
 extern bool gameOver;
@@ -66,17 +67,16 @@ void Niveau::dessinerNiveau() {
 			// destruction des murs
 			for (int i = 0; i < 13; i++) {
 				for (int j = 0; j < 17; j++) {
-					if (die && matrice[i][j] == '2') {
+					if (!finDestruction && matrice[i][j] == '2') {
 						matrice[i][j] = '0';
 						maxMur = 0;
+						cout << "MUR" << endl;
 					}
 				}
 			}
 
 			// destruction des bonus
 			if (!finDestruction && size(bonusTab) > 0) {
-				cout << "BOUCLE" << endl;
-				cout << size(bonusTab) << endl;
 				for (int k = 0; k < size(bonusTab); k++) {
 					bonusTab[k].setVisible(false);
 					bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
@@ -86,16 +86,27 @@ void Niveau::dessinerNiveau() {
 				finDestruction = true;
 			}
 
+			// TEXTURES SELON NIVEAU
+			if (numNiveau == 1) {
+				nbrNiveau = 0.0f;
+			}
+			else if (numNiveau == 2) {
+				nbrNiveau = 0.25f;
+			}
+			else if (numNiveau == 3) {
+				nbrNiveau = 0.5f;
+			}
+
 			//Affichage des mur indestructible.
 			if (matrice[i][j] == '1') {
 				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D, texture[1]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.75f, 0.75f - numeroNiveau); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(0.75f, 1.0f - numeroNiveau); glVertex2d(j + 1, i);
-				glTexCoord2f(0.5f, 1.0f - numeroNiveau); glVertex2d(j, i);
-				glTexCoord2f(0.5f, 0.75f - numeroNiveau); glVertex2d(j, i + 1);
+				glTexCoord2f(0.75f, 0.75f - nbrNiveau); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(0.75f, 1.0f - nbrNiveau); glVertex2d(j + 1, i);
+				glTexCoord2f(0.5f, 1.0f - nbrNiveau); glVertex2d(j, i);
+				glTexCoord2f(0.5f, 0.75f - nbrNiveau); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			}
@@ -106,10 +117,10 @@ void Niveau::dessinerNiveau() {
 				glBindTexture(GL_TEXTURE_2D, texture[1]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(1.0f, 0.75f - numeroNiveau); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(1.0f, 1.0f - numeroNiveau); glVertex2d(j + 1, i);
-				glTexCoord2f(0.75f, 1.0f - numeroNiveau); glVertex2d(j, i);
-				glTexCoord2f(0.75f, 0.75f - numeroNiveau); glVertex2d(j, i + 1);
+				glTexCoord2f(1.0f, 0.75f - nbrNiveau); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(1.0f, 1.0f - nbrNiveau); glVertex2d(j + 1, i);
+				glTexCoord2f(0.75f, 1.0f - nbrNiveau); glVertex2d(j, i);
+				glTexCoord2f(0.75f, 0.75f - nbrNiveau); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			}
@@ -133,10 +144,10 @@ void Niveau::dessinerNiveau() {
 				glBindTexture(GL_TEXTURE_2D, texture[1]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.25f, 0.75f - numeroNiveau); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(0.25f, 1.0f - numeroNiveau); glVertex2d(j + 1, i);
-				glTexCoord2f(0.0f, 1.0f - numeroNiveau); glVertex2d(j, i);
-				glTexCoord2f(0.0f, 0.75f - numeroNiveau); glVertex2d(j, i + 1);
+				glTexCoord2f(0.25f, 0.75f - nbrNiveau); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(0.25f, 1.0f - nbrNiveau); glVertex2d(j + 1, i);
+				glTexCoord2f(0.0f, 1.0f - nbrNiveau); glVertex2d(j, i);
+				glTexCoord2f(0.0f, 0.75f - nbrNiveau); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 
@@ -155,16 +166,15 @@ void Niveau::dessinerNiveau() {
 				glBindTexture(GL_TEXTURE_2D, texture[1]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.5f, 0.75f - numeroNiveau); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(0.5f, 1.0f - numeroNiveau); glVertex2d(j + 1, i);
-				glTexCoord2f(0.25f, 1.0f - numeroNiveau); glVertex2d(j, i);
-				glTexCoord2f(0.25f, 0.75f - numeroNiveau); glVertex2d(j, i + 1);
+				glTexCoord2f(0.5f, 0.75f - nbrNiveau); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(0.5f, 1.0f - nbrNiveau); glVertex2d(j + 1, i);
+				glTexCoord2f(0.25f, 1.0f - nbrNiveau); glVertex2d(j, i);
+				glTexCoord2f(0.25f, 0.75f - nbrNiveau); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 
 				if (!PlacerBonus) {
 					definirBonus(i, j); //on place les bonus derriere les mur destructible
-					cout << size(bonusTab) << endl;
 				}
 			}
 
@@ -174,10 +184,10 @@ void Niveau::dessinerNiveau() {
 				glBindTexture(GL_TEXTURE_2D, texture[1]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
-				glTexCoord2f(0.25f, 0.75f - numeroNiveau); glVertex2d(j + 1, i + 1);
-				glTexCoord2f(0.25f, 1.0f - numeroNiveau); glVertex2d(j + 1, i);
-				glTexCoord2f(0.0f, 1.0f - numeroNiveau); glVertex2d(j, i);
-				glTexCoord2f(0.0f, 0.75f - numeroNiveau); glVertex2d(j, i + 1);
+				glTexCoord2f(0.25f, 0.75f - nbrNiveau); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(0.25f, 1.0f - nbrNiveau); glVertex2d(j + 1, i);
+				glTexCoord2f(0.0f, 1.0f - nbrNiveau); glVertex2d(j, i);
+				glTexCoord2f(0.0f, 0.75f - nbrNiveau); glVertex2d(j, i + 1);
 				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			}
