@@ -144,9 +144,10 @@ void LabyAffichage() {
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
+
+		score = 0;
 	}
 	else {
-
 		niveau.dessinerNiveau();
 
 		//Test colision et bonus
@@ -759,6 +760,9 @@ void main() {
 	/* 16 */ LoadGLTextures("images/Intro4.png");
 	/* 17 */ LoadGLTextures("images/Intro5.png");
 	/* 18 */ LoadGLTextures("images/Intro6.png");
+	/* 19 */ LoadGLTextures("images/Background1.png");
+	/* 20 */ LoadGLTextures("images/Background2.png");
+	/* 21 */ LoadGLTextures("images/Background3.png");
 
 	// Gestion des sons
 	musicIntro.openFromFile("Musiques/intro.wav");

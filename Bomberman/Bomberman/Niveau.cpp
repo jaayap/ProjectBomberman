@@ -55,6 +55,17 @@ void Niveau::initialiserMatrice() {
 }
 
 void Niveau::dessinerNiveau() {
+	// Texture Background
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture[18 + numNiveau]);
+	glBegin(GL_QUADS);
+	glColor3d(1.0, 1.0, 1.0);
+	glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+	glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+	glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+	glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
 
 	for (int i = 0; i < 13; i++) {
 		for (int j = 0; j < 17; j++) {
