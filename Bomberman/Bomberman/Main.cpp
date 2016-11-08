@@ -29,17 +29,29 @@ int numNiveau = 1;
 bool enMouvement = false;
 bool haut = false, bas = false, gauche = false, droite = false;
 bool victoire = false;
+
+// Intro
+bool afficherHistoire = true;
+bool incrAlpha = true;
+float alphaImg = 1.0f;
+int numImage = 13;
+
+//Menu
 bool afficherMenu = false;
 float position_cursor_x = 0.25;
 float position_cursor_y = 0.63;
 int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
+
+//Menu option 
+bool afficherOption = false;
+bool afficherCommande = false;
+
+
 bool pause = false; //permet de mettre le jeu en pause
 
-bool utiliserManette = false;
 bool explosionEnCours = false;
 
 bool gameOver = false;
-
 
 
 vector<GLuint>	texture; // tableau qui contient nos textures
@@ -67,19 +79,15 @@ sf::Music musicMenu;
 sf::Music musicZone1;
 int volume = 100;
 
-// Intro
-bool afficherHistoire = true;
-bool incrAlpha = true;
-float alphaImg = 1.0f;
-int numImage = 13;
 
 
 //Arduino
+bool utiliserManette = false;
 Serial* SP = new Serial("COM3");    // adjust as needed - port com
 char incomingData[256] = "";		// don't forget to pre-allocate memory
 int dataLength = 256;
 int readResult = 0;
-
+bool allumerLedVerte = false;
 
 // Déclarations de fonctions
 void LabyAffichage();
@@ -146,6 +154,54 @@ void LabyAffichage() {
 		glDisable(GL_BLEND);
 
 		score = 0;
+	}
+	else if (afficherOption) {
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		// Texture Background Menu Option
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[8]); //changer la texture avec celle des options
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+
+
+		glViewport(LARGEUR_FENETRE * position_cursor_x, -HAUTEUR_FENETRE * position_cursor_y, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		// Texture du curseur
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[9]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(1, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(1, 1);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 1);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+	}
+	else if (afficherCommande) {
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		// Texture Manette avec differentes touches
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[8]); //changer la texture avec celle de la manette
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
 	}
 	else {
 		niveau.dessinerNiveau();
@@ -373,16 +429,38 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 			if (position_cursor == 1) { // on lance le niveau
 				afficherMenu = false;
 			}
+			else if (position_cursor == 2) {
+
+			}
+			else if (position_cursor == 3) {
+				afficherMenu = false;
+				afficherOption = true;
+			}
+		}
+	}
+	else if (afficherOption) {
+		if (position_cursor == 1) { // volume
+			
+		}
+		else if (position_cursor == 2) { //Commande
+			afficherOption = false;
+			afficherCommande = true;			
 		}
 	}
 	else {
-		if ((key == 66 || key == 98) && !pause) { // touche B
-			bomberman.lancerBombe();
+		if (afficherCommande) { //retour
+			afficherCommande = false;
+			afficherOption = true;
 		}
-		//mettre en pause le jeu
-		if (key == 80 || key == 112) { // touche P
-			if (pause) pause = false;
-			else pause = true;
+		else {
+			if ((key == 66 || key == 98) && !pause) { // touche B
+				bomberman.lancerBombe();
+			}
+			//mettre en pause le jeu
+			if (key == 80 || key == 112) { // touche P
+				if (pause) pause = false;
+				else pause = true;
+			}
 		}
 
 	}
@@ -618,28 +696,38 @@ void TraitementArduino(int z) {
 					}
 				}
 			}
-			else if (incomingData[0] == 'B') { //on appuie sur le bouton
-				printf("\n BonusButton");
-			}
+			//else if (incomingData[0] == 'B') { //on appuie sur le bouton
+			//	printf("\n BonusButton");
+			//}
 			else if (incomingData[0] == 'C') { //on appuie sur le bouton
-				if (pause) {
-					pause = false;
+				if (!afficherMenu && !afficherHistoire && !afficherMenu && !afficherOption && !afficherCommande) {
+					if (pause) {
+						pause = false;
+					}
+					else {
+						pause = true;
+						glEnable(GL_BLEND);
+						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+						glEnable(GL_TEXTURE_2D);
+						glBindTexture(GL_TEXTURE_2D, texture[12]);
+						glBegin(GL_QUADS);
+						glColor3d(1.0, 1.0, 1.0);
+						glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+						glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+						glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+						glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+						glEnd();
+						glDisable(GL_TEXTURE_2D);
+						glDisable(GL_BLEND);
+					}
 				}
-				else {
-					pause = true;
-					glEnable(GL_BLEND);
-					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-					glEnable(GL_TEXTURE_2D);
-					glBindTexture(GL_TEXTURE_2D, texture[12]);
-					glBegin(GL_QUADS);
-					glColor3d(1.0, 1.0, 1.0);
-					glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
-					glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
-					glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
-					glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
-					glEnd();
-					glDisable(GL_TEXTURE_2D);
-					glDisable(GL_BLEND);
+				else if (afficherMenu) {
+					glutDestroyWindow(1);
+					exit(0);
+				}
+				else if (afficherCommande) { //retour
+					afficherCommande = false;
+					afficherOption = true;
 				}
 			}
 
@@ -700,10 +788,17 @@ void TraitementArduino(int z) {
 
 		//LED VERTE
 		if (!afficherMenu && !afficherHistoire) {
+			allumerLedVerte = true;
+		}
+		else allumerLedVerte = false;
+		
+		if (allumerLedVerte) {
 			SP->WriteData("v", 1);//allume la led 5 (verte)
 		}
-		else SP->WriteData("b", 1);//eteint la led 5 (verte)
-								   //LED RGB
+		else {
+			SP->WriteData("b", 1);//eteint la led 5 (verte)
+		}
+		//LED RGB
 		if (explosionEnCours) {
 			SP->WriteData("e", 1);
 		}
@@ -711,6 +806,7 @@ void TraitementArduino(int z) {
 			SP->WriteData("d", 1);
 		}
 
+		
 
 	}
 	glFlush();
