@@ -15,6 +15,9 @@ using namespace std;
 float coord[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 int testAleatoire;
 int maxMur = 0;
+int textBombe = 2;
+int textNiveau = 22;
+
 float nbrNiveau = 0;
 
 bool PlacerBonus;
@@ -100,12 +103,23 @@ void Niveau::dessinerNiveau() {
 			// TEXTURES SELON NIVEAU
 			if (numNiveau == 1) {
 				nbrNiveau = 0.0f;
+				textNiveau = 22;
+				textBombe = 2;
 			}
 			else if (numNiveau == 2) {
 				nbrNiveau = 0.25f;
+				textNiveau = 23;
+				textBombe = 26;
 			}
 			else if (numNiveau == 3) {
 				nbrNiveau = 0.5f;
+				textNiveau = 24;
+				textBombe = 27;
+			}
+			else if (numNiveau == 5) {
+				nbrNiveau = 0.75f;
+				textNiveau = 25;
+				textBombe = 28;
 			}
 
 			//Affichage des mur indestructible.
@@ -151,6 +165,16 @@ void Niveau::dessinerNiveau() {
 
 			//Affichage de l'herbe.
 			if (matrice[i][j] == '0') {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, texture[1]);
+				glBegin(GL_QUADS);
+				glColor3d(1.0, 1.0, 1.0);
+				glTexCoord2f(0.25f, 0.75f - nbrNiveau); glVertex2d(j + 1, i + 1);
+				glTexCoord2f(0.25f, 1.0f - nbrNiveau); glVertex2d(j + 1, i);
+				glTexCoord2f(0.0f, 1.0f - nbrNiveau); glVertex2d(j, i);
+				glTexCoord2f(0.0f, 0.75f - nbrNiveau); glVertex2d(j, i + 1);
+				glEnd();
+				glDisable(GL_TEXTURE_2D);
 				// apparition aléatoire de murs destructibles
 				testAleatoire = (rand() % 2 + 1);
 				if (testAleatoire == 1 && maxMur < 60) {
@@ -181,7 +205,7 @@ void Niveau::dessinerNiveau() {
 			//Affichage des bombes.
 			if (matrice[i][j] == '8') {
 				glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, texture[2]);
+				glBindTexture(GL_TEXTURE_2D, texture[textBombe]);
 				glBegin(GL_QUADS);
 				glColor3d(1.0, 1.0, 1.0);
 				glTexCoord2f(coord[2 + valueBombe], coord[7]); glVertex2d(j + 1, i + 1);
