@@ -99,6 +99,13 @@ int dataLength = 256;
 int readResult = 0;
 bool allumerLedVerte = false;
 
+// Deplacement
+extern float vitesseDeplacement;
+
+// Affichage écrans victoire / défaite
+bool victoireJ2 = false;
+bool afficherJ2 = false;
+
 // Déclarations de fonctions
 void LabyAffichage();
 void LabyRedim(int width, int height);
@@ -106,6 +113,10 @@ void TraitementClavier(int key, int x, int y);
 void TraitementClavierASCII(unsigned char key, int x, int y);
 void TraitementArduino(int z);
 int  LoadGLTextures(string name);
+
+void affichageVictoire(int z) {
+	
+}
 
 void LabyAffichage() {
 	glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -129,6 +140,20 @@ void LabyAffichage() {
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
+	}
+	else if (afficherJ2) {
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[26]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
 	}
 	else if (afficherMenu) {
 		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
@@ -227,20 +252,59 @@ void LabyAffichage() {
 			duel = false;
 			afficherMenu = true;
 			numNiveau = 1;
-			score = 0;
-			vie = 3;
+			bomberman2.vitesseDeplacement = 0.10f;
+			bomberman.retour(1);
+			bomberman2.retour(2);
+			bomberman.vivant = true;
+			bomberman2.vivant = true;
+			for (int i = 0; i < size(bomberman2.bombes); i++) {
+				bomberman2.bombes[i].effacerBombes();
+				bomberman2.eraseExplosion(i);
+				//on efface les murs détruits
+				for (int i = 0; i < 13; i++) {
+					for (int j = 0; j < 17; j++) {
+						if (niveau.getCase(i, j) == '3') {
+							niveau.modifierCase(i, j, '0');
+						}
+					}
+				}
+			}
 			cout << "DRAW" << endl;
 		}
 		else if (!bomberman.vivant) {
-			duel = false;
-			afficherMenu = true;
+			//duel = false;
+			//afficherMenu = true;
+			if (victoireJ2) {
+				afficherJ2 = true;
+			}
+			afficherJ2 = true;
 			numNiveau = 1;
+			bomberman2.vitesseDeplacement = 0.10f;
+			bomberman.retour(1);
+			bomberman2.retour(2);
+			bomberman.vivant = true;
 			cout << "J2 WIN" << endl;
 		}
 		else if (!bomberman2.vivant) {
 			duel = false;
 			afficherMenu = true;
 			numNiveau = 1;
+			bomberman2.vitesseDeplacement = 0.10f;
+			bomberman.retour(1);
+			bomberman2.retour(2);
+			bomberman2.vivant = true;
+			for (int i = 0; i < size(bomberman2.bombes); i++) {
+				bomberman2.bombes[i].effacerBombes();
+				bomberman2.eraseExplosion(i);
+				//on efface les murs détruits
+				for (int i = 0; i < 13; i++) {
+					for (int j = 0; j < 17; j++) {
+						if (niveau.getCase(i, j) == '3') {
+							niveau.modifierCase(i, j, '0');
+						}
+					}
+				}
+			}
 			cout << "J1 WIN" << endl;
 		}
 
@@ -601,22 +665,24 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 }
 
 void TraitementAucuneToucheASCII(unsigned char key, int x, int y) {
-	if (key == 90 || key == 122) { // touche Z
-		haut2 = false;
-		enMouvement2 = false;
-	}
-	if (key == 83 || key == 115) { // touche S
-		bas2 = false;
-		enMouvement2 = false;
-	}
-	if (key == 81 || key == 113) { // touche Q
-		gauche2 = false;
-		enMouvement2 = false;
-	}
-	if (key == 68 || key == 100) { // touche D
-		droite2 = false;
-		enMouvement2 = false;
-	}
+	if (duel) {
+		if (key == 90 || key == 122) { // touche Z
+			haut2 = false;
+			enMouvement2 = false;
+		}
+		if (key == 83 || key == 115) { // touche S
+			bas2 = false;
+			enMouvement2 = false;
+		}
+		if (key == 81 || key == 113) { // touche Q
+			gauche2 = false;
+			enMouvement2 = false;
+		}
+		if (key == 68 || key == 100) { // touche D
+			droite2 = false;
+			enMouvement2 = false;
+		}
+	}	
 }
 
 
@@ -1114,6 +1180,10 @@ void main() {
 	/* 23 */ LoadGLTextures("images/Commandes.png");
 	/* 24 */ LoadGLTextures("images/MurExplo.png");
 	/* 25 */ LoadGLTextures("images/Bomberman2.png");
+	/* 26 */ LoadGLTextures("images/VictoireJ2.png");
+	/* 27 */ LoadGLTextures("images/VictoireJ2.png");
+	/* 28 */ LoadGLTextures("images/VictoireJ2.png");
+	/* 29 */ LoadGLTextures("images/VictoireJ2.png");
 
 	// Gestion des sons
 	musicIntro.openFromFile("Musiques/intro.wav");

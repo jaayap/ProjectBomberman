@@ -41,6 +41,7 @@ extern bool PlacerBonus;
 extern bool afficherMenu;
 extern bool gameOver;
 extern bool finDestruction;
+extern bool duel;
 
 extern vector<GLuint> texture;
 extern Niveau niveau;
@@ -149,9 +150,16 @@ void Bomberman::ramasserBonus(int joueur) {
 }
 
 // Retour à la case départ après la perte d'une vie
-void Bomberman::retour() {
-	x = 2;
-	y = 1;
+void Bomberman::retour(int joueur) {
+	if (joueur == 1) {
+		x = 2;
+		y = 1;
+	}
+	else if (joueur == 2) {
+		x = 14;
+		y = 11;
+	}
+	
 }
 
 
@@ -174,7 +182,7 @@ void Bomberman::dessiner() {
 
 	// CHANGER NIVEAU
 	if (victoire && x == 8 && y == 6) {
-		retour();
+		retour(1);
 		maxMur = 0;
 		numNiveau++;
 		victoire = false;
@@ -284,7 +292,7 @@ void Bomberman::dessiner() {
 		// GAMEOVER
 		if (gameOver && vie == 0) {
 			vie = 3;
-			retour();
+			retour(1);
 			// Respawn ennemis
 			tailleTab = size(ennemisTab);
 			if (tailleTab > 1) {
@@ -328,8 +336,11 @@ void Bomberman::dessiner() {
 			return;
 		}
 		// PERTE VIE
-		retour();
-		vie--;
+		retour(1);
+		if(!duel) {
+			vie--;
+			cout << "BITE" << endl;
+		}
 		// Respawn ennemis
 		tailleTab = size(ennemisTab);
 		if (tailleTab > 1) {
@@ -450,7 +461,7 @@ void Bomberman::dessiner2() {
 		// GAMEOVER
 		if (gameOver && vie == 0) {
 			vie = 3;
-			retour();
+			retour(2);
 			afficherMenu = true;
 			finDestruction = false;
 			gameOver = false;
@@ -458,8 +469,7 @@ void Bomberman::dessiner2() {
 			return;
 		}
 		// PERTE VIE
-		retour();
-		vie--;
+		retour(2);
 		maxMur = 0;
 		vitesseDeplacement = 0.10f;
 		bomberman.vivant = true;

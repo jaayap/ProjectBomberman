@@ -66,21 +66,21 @@ void Bonus::ramasser(int joueur)
 	case 1:
 		if(bomberman.getNbBombe() <= 8 && joueur == 1) {
 			bomberman.setNbBombe(bomberman.getNbBombe() + 1);
-			score += 50;
+			if(!duel) score += 50;
 		}
 		if(bomberman2.getNbBombe() <= 8 && duel && joueur == 2) bomberman2.setNbBombe(bomberman2.getNbBombe() + 1);
 		break;
 	case 2:
 		if (bomberman.getPorteeBombe() <= 8 && joueur == 1) {
 			bomberman.setPorteeBombe(bomberman.getPorteeBombe() + 1);
-			score += 50;
+			if(!duel) score += 50;
 		}
 		if (bomberman2.getPorteeBombe() <= 8 && duel && joueur == 2) bomberman2.setPorteeBombe(bomberman2.getPorteeBombe() + 1);
 		break;
 	case 3:
 		if (bomberman.getVitesseDeplacement() <= 0.125f && joueur == 1) {
 			bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() + 0.025f);
-			score += 50;
+			if(!duel) score += 50;
 		}
 		if (bomberman2.getVitesseDeplacement() <= 0.125f && duel && joueur == 2) bomberman2.setVitesseDeplacement(bomberman2.getVitesseDeplacement() + 0.025f);
 		break;

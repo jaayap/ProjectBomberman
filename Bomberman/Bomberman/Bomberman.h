@@ -24,7 +24,7 @@ public:
 	void eraseExplosion(int);
 	void collisionEnnemi();
 	void ramasserBonus(int);
-	void retour();
+	void retour(int);
 	void dessiner();
 	void dessiner2();
 
