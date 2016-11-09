@@ -16,6 +16,7 @@ float coordBomb[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f,
 float vitesseDeplacement;
 
 int rotation;
+int rotation2;
 int tailleTab;
 
 bool die = false;
@@ -23,7 +24,9 @@ bool life = true;
 bool spawn = false;
 
 extern int valueBomberman;
+extern int valueBomberman2;
 extern int spriteBomberdeath;
+extern int spriteBomberdeath2;
 extern int direction;
 extern int vie;
 extern int score;
@@ -31,6 +34,7 @@ extern int numNiveau;
 extern int maxMur;
 
 extern float valueBomberdeath;
+extern float valueBomberdeath2;
 
 extern bool victoire;
 extern bool PlacerBonus;
@@ -125,7 +129,6 @@ void Bomberman::eraseExplosion(int nb) {
 }
 
 void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi
-
 	if (size(ennemisTab) > 1) {
 		for (int i = 0; i < size(ennemisTab); i++) {
 			if (ennemisTab[i]->getX() == x && ennemisTab[i]->getY() == y && ennemisTab[i]->vivant) {
@@ -136,11 +139,11 @@ void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un e
 	
 }
 
-void Bomberman::ramasserBonus() {
+void Bomberman::ramasserBonus(int joueur) {
 	for (int i = 0; i < size(niveau.bonusTab); i++) {
 		//on test si l'on est sur la case d'un bonus et qu'il est actif
 		if (x == niveau.bonusTab[i].getX() && y == niveau.bonusTab[i].getY() && niveau.bonusTab[i].getVisible()) {
-			niveau.bonusTab[i].ramasser();
+			niveau.bonusTab[i].ramasser(joueur);
 		}
 	}
 }
@@ -366,4 +369,104 @@ void Bomberman::dessiner() {
 		return;
 	}
 	
+}
+
+void Bomberman::dessiner2() {
+	switch (direction)
+	{
+	case(1):
+		rotation2 = 2;
+		break;
+	case(2):
+		rotation2 = 6;
+		break;
+	case(3):
+		rotation2 = 4;
+		break;
+	case(4):
+		rotation2 = 0;
+		break;
+	}
+
+	if (vivant == false && life) {
+		if (vie == 0 && !gameOver && life && !die) {
+			gameOver = true;
+			life = false;
+			nb_bombes = 1;
+			portee_bombe = 3;
+			spriteBomberdeath2 = 0;
+			vivant = true;
+			glutTimerFunc(600, AnimDeath, 0);
+		}
+		else if (life && !die && !afficherMenu) {
+			life = false;
+			nb_bombes = 1;
+			portee_bombe = 3;
+			spriteBomberdeath2 = 0;
+			for (int k = 0; k < size(niveau.bonusTab); k++) {
+				niveau.bonusTab[k].setVisible(false);
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+			}
+			vivant = true;
+			glutTimerFunc(600, AnimDeath, 0);
+		}
+	}
+
+
+	if (life) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[25]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(coordBomb[0 + valueBomberman2], coordBomb[6 - rotation2]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
+		glTexCoord2f(coordBomb[1 + valueBomberman2], coordBomb[6 - rotation2]); glVertex2d(x + offsetX, y + offsetY + 1);
+		glTexCoord2f(coordBomb[1 + valueBomberman2], coordBomb[8 - rotation2]); glVertex2d(x + offsetX, y + offsetY - 0.5);
+		glTexCoord2f(coordBomb[0 + valueBomberman2], coordBomb[8 - rotation2]); glVertex2d(x + offsetX + 1, y + offsetY - 0.5);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+	}
+	else if (!life) {
+		vitesseDeplacement = 0.0f;
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[10]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(valueBomberdeath2, coordBomb[0]); glVertex2d(x + offsetX + 1, y + offsetY + 1);
+		glTexCoord2f(valueBomberdeath2 + 0.16666667, coordBomb[0]); glVertex2d(x + offsetX, y + offsetY + 1);
+		glTexCoord2f(valueBomberdeath2 + 0.16666667, coordBomb[8]); glVertex2d(x + offsetX, y + offsetY - 0.5);
+		glTexCoord2f(valueBomberdeath2, coordBomb[8]); glVertex2d(x + offsetX + 1, y + offsetY - 0.5);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+	}
+
+	if (die) {
+		// GAMEOVER
+		if (gameOver && vie == 0) {
+			vie = 3;
+			retour();
+			afficherMenu = true;
+			finDestruction = false;
+			gameOver = false;
+			numNiveau = 1;
+			return;
+		}
+		// PERTE VIE
+		retour();
+		vie--;
+		maxMur = 0;
+		vitesseDeplacement = 0.10f;
+		bomberman.vivant = true;
+		life = true;
+		die = false;
+		finDestruction = false;
+		return;
+	}
+
 }

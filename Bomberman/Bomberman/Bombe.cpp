@@ -13,10 +13,12 @@ using namespace std;
 
 extern Niveau niveau;
 extern Bomberman bomberman;
+extern Bomberman bomberman2;
 extern vector<Personnage*> ennemisTab;
 extern vector<GLuint> texture;
 extern int valueExplo;
 extern bool spawn;
+extern bool duel;
 
 float coordExplo[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 
@@ -50,6 +52,7 @@ void Bombe::exploser() {
 	//Centre de l'explosion  : 
 	//Test si il y a des mort
 	if (x == bomberman.getX() && y == bomberman.getY())	bomberman.setVivant(false);
+	if (x == bomberman2.getX() && y == bomberman2.getY() && duel) bomberman2.setVivant(false);
 	if (size(ennemisTab) > 1) {
 		for (int i = 0; i < size(ennemisTab); i++) {
 			if (ennemisTab[i]->getX() == x && ennemisTab[i]->getY() == y) {
@@ -67,6 +70,15 @@ void Bombe::exploser() {
 	}
 
 	//Test s'il y a une autre bombe - au cas ou
+	if (duel) {
+		for (int l = 0; l < size(bomberman2.bombes); l++) {
+			if (x == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
+				bomberman2.bombes[l].explosion = true;
+				bomberman2.bombes[l].Timer = 12;
+				bomberman2.declancherExplosion(l);
+			}
+		}
+	}
 	for (int k = 0; k < size(bomberman.bombes); k++) {
 		if (x == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 			bomberman.bombes[k].explosion = true;
@@ -106,6 +118,13 @@ void Bombe::explosionHaut() {
 				}
 			}
 			//Test s'il y a une autre bombe
+			if (duel) {
+				for (int l = 0; l < size(bomberman2.bombes); l++) {
+					if (x == bomberman2.bombes[l].getX() && y - i == bomberman2.bombes[l].getY()) {
+						arretExplosionHaut = true;
+					}
+				}
+			}
 			for (int k = 0; k < size(bomberman.bombes); k++) {
 				if (x == bomberman.bombes[k].getX() && y - i == bomberman.bombes[k].getY()) {
 					arretExplosionHaut = true;
@@ -133,6 +152,13 @@ void Bombe::explosionHaut() {
 		}
 
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x == bomberman2.bombes[l].getX() && y - portee + 1 == bomberman2.bombes[l].getY()) {
+					afficherExtremHaut = false;
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y - portee + 1 == bomberman.bombes[k].getY()) {
 				afficherExtremHaut = false;
@@ -161,6 +187,13 @@ void Bombe::explosionBas() {
 			}
 
 			//Test s'il y a une autre bombe
+			if (duel) {
+				for (int l = 0; l < size(bomberman2.bombes); l++) {
+					if (x == bomberman2.bombes[l].getX() && y + i == bomberman2.bombes[l].getY()) {
+						arretExplosionBas = true;
+					}
+				}
+			}
 			for (int k = 0; k < size(bomberman.bombes); k++) {
 				if (x == bomberman.bombes[k].getX() && y + i == bomberman.bombes[k].getY()) {
 					arretExplosionBas = true;
@@ -186,6 +219,13 @@ void Bombe::explosionBas() {
 			}
 		}
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x == bomberman2.bombes[l].getX() && y + portee - 1 == bomberman2.bombes[l].getY()) {
+					afficherExtremBas = false;
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y + portee - 1 == bomberman.bombes[k].getY()) {
 				afficherExtremBas = false;
@@ -215,6 +255,13 @@ void Bombe::explosionGauche() {
 			}
 
 			//Test s'il y a une autre bombe
+			if (duel) {
+				for (int l = 0; l < size(bomberman2.bombes); l++) {
+					if (x - i == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY()) {
+						arretExplosionGauche = true;
+					}
+				}
+			}
 			for (int k = 0; k < size(bomberman.bombes); k++) {
 				if (x - i == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY()) {
 					arretExplosionGauche = true;
@@ -241,6 +288,13 @@ void Bombe::explosionGauche() {
 			}
 		}
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x - portee + 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY()) {
+					afficherExtremGauche = false;
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x - portee + 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY()) {
 				afficherExtremGauche = false;
@@ -269,6 +323,13 @@ void Bombe::explosionDroite() {
 				}
 			}
 			//Test s'il y a une autre bombe
+			if (duel) {
+				for (int l = 0; l < size(bomberman2.bombes); l++) {
+					if (x + i == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY()) {
+						arretExplosionDroite = true;
+					}
+				}
+			}
 			for (int k = 0; k < size(bomberman.bombes); k++) {
 				if (x + i == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY()) {
 					arretExplosionDroite = true;
@@ -295,6 +356,13 @@ void Bombe::explosionDroite() {
 		}
 
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x + portee - 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY()) {
+					afficherExtremDroite = false;
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x + portee - 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY()) {
 				afficherExtremDroite = false;
@@ -365,6 +433,7 @@ void Bombe::dessinerExplosionHaut() {
 		//on laisse les tests dans cette fonction car on souhaite vérifier pendant toute la duree de l'explosion
 		//Test si il y a des mort
 		if (x == bomberman.getX() && y - i == bomberman.getY() && (bomberman.offsetX == 0)) bomberman.setVivant(false);
+		if (x == bomberman2.getX() && y - i == bomberman2.getY() && (bomberman2.offsetX == 0) && duel) bomberman2.setVivant(false);
 
 		if (size(ennemisTab) > 1) {
 			for (int k = 0; k < size(ennemisTab); k++) {
@@ -375,6 +444,15 @@ void Bombe::dessinerExplosionHaut() {
 		}		
 
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x == bomberman2.bombes[l].getX() && y - i == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 12;
+					bomberman2.declancherExplosion(l);
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y - i == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
@@ -401,6 +479,7 @@ void Bombe::dessinerExplosionHaut() {
 		
 		//Test si il y a des mort
 		if (x == bomberman.getX() && y - portee + 1 == bomberman.getY() && (bomberman.offsetX == 0)) bomberman.setVivant(false);
+		if (x == bomberman2.getX() && y - portee + 1 == bomberman2.getY() && (bomberman2.offsetX == 0) && duel) bomberman2.setVivant(false);
 
 		if (size(ennemisTab) > 1) {
 			for (int k = 0; k < size(ennemisTab); k++) {
@@ -411,6 +490,15 @@ void Bombe::dessinerExplosionHaut() {
 		}
 
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x == bomberman2.bombes[l].getX() && y - portee + 1 == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 12;
+					bomberman2.declancherExplosion(l);
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y - portee + 1 == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
@@ -440,6 +528,7 @@ void Bombe::dessinerExplosionBas() {
 
 		//Test si il y a des mort
 		if (x == bomberman.getX() && y + i == bomberman.getY() && bomberman.offsetX == 0) bomberman.setVivant(false);
+		if (x == bomberman2.getX() && y + i == bomberman2.getY() && bomberman2.offsetX == 0 && duel) bomberman2.setVivant(false);
 
 		if (size(ennemisTab) > 1) {
 			for (int k = 0; k < size(ennemisTab); k++) {
@@ -450,6 +539,15 @@ void Bombe::dessinerExplosionBas() {
 		}		
 
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x == bomberman2.bombes[l].getX() && y + i == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 12;
+					bomberman2.declancherExplosion(l);
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y + i == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
@@ -477,6 +575,7 @@ void Bombe::dessinerExplosionBas() {
 
 		//Test si il y a des mort
 		if (x == bomberman.getX() && y + portee - 1 == bomberman.getY() && bomberman.offsetX == 0) bomberman.setVivant(false);
+		if (x == bomberman2.getX() && y + portee - 1 == bomberman2.getY() && bomberman2.offsetX == 0 && duel) bomberman2.setVivant(false);
 
 		if (size(ennemisTab) > 1) {
 			for (int k = 0; k < size(ennemisTab); k++) {
@@ -487,6 +586,15 @@ void Bombe::dessinerExplosionBas() {
 		}
 
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x == bomberman2.bombes[l].getX() && y + portee - 1 == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 12;
+					bomberman2.declancherExplosion(l);
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y + portee - 1 == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
@@ -516,6 +624,7 @@ void Bombe::dessinerExplosionGauche() {
 
 		//Test si il y a des mort
 		if ((x - i) == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
+		if ((x - i) == bomberman2.getX() && y == bomberman2.getY() && bomberman2.offsetY == 0 && duel) bomberman2.setVivant(false);
 	
 		if (size(ennemisTab) > 1) {
 			for (int k = 0; k < size(ennemisTab); k++) {
@@ -526,11 +635,20 @@ void Bombe::dessinerExplosionGauche() {
 		}		
 
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x - i == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 12;
+					bomberman2.declancherExplosion(l);
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x - i == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
-				bomberman.declancherExplosion(k);
 				bomberman.bombes[k].Timer = 12;
+				bomberman.declancherExplosion(k);
 			}
 		}
 	}
@@ -553,6 +671,7 @@ void Bombe::dessinerExplosionGauche() {
 
 		//Test si il y a des mort
 		if (x - portee + 1 == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
+		if (x - portee + 1 == bomberman2.getX() && y == bomberman2.getY() && bomberman2.offsetY == 0 && duel) bomberman2.setVivant(false);
 
 		if (size(ennemisTab) > 1) {
 			for (int k = 0; k < size(ennemisTab); k++) {
@@ -563,10 +682,19 @@ void Bombe::dessinerExplosionGauche() {
 		}		
 
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x - portee + 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 12;
+					bomberman2.declancherExplosion(l);
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x - portee + 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
-				bomberman.bombes[k].Timer = 11;
+				bomberman.bombes[k].Timer = 12;
 				bomberman.declancherExplosion(k);
 			}
 		}
@@ -592,6 +720,7 @@ void Bombe::dessinerExplosionDroite() {
 
 		//Test si il y a des mort
 		if (x + i == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
+		if (x + i == bomberman2.getX() && y == bomberman2.getY() && duel) bomberman2.setVivant(false);
 
 		if (size(ennemisTab) > 1) {
 			for (int k = 0; k < size(ennemisTab); k++) {
@@ -602,6 +731,15 @@ void Bombe::dessinerExplosionDroite() {
 		}		
 
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x + i == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 12;
+					bomberman2.declancherExplosion(l);
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x + i == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
@@ -628,6 +766,7 @@ void Bombe::dessinerExplosionDroite() {
 
 		//Test si il y a des mort
 		if (x + portee - 1 == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
+		if (x + portee - 1 == bomberman2.getX() && y == bomberman2.getY() && bomberman2.offsetY == 0 && duel) bomberman2.setVivant(false);
 
 		if (size(ennemisTab) > 1) {
 			for (int k = 0; k < size(ennemisTab); k++) {
@@ -638,6 +777,15 @@ void Bombe::dessinerExplosionDroite() {
 		}
 		
 		//Test s'il y a une autre bombe
+		if (duel) {
+			for (int l = 0; l < size(bomberman2.bombes); l++) {
+				if (x + portee - 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 12;
+					bomberman2.declancherExplosion(l);
+				}
+			}
+		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x + portee - 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
@@ -645,7 +793,7 @@ void Bombe::dessinerExplosionDroite() {
 				bomberman.declancherExplosion(k);
 			}
 		}
-	} 
+	}
 }
 
 void Bombe::effacerBombes() {

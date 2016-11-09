@@ -14,7 +14,7 @@ public:
 	bool getUtiliser();
 	void setVisible(bool);
 	void setUtiliser(bool utiliser);
-	void ramasser();
+	void ramasser(int);
 	void dessiner();
 };
 

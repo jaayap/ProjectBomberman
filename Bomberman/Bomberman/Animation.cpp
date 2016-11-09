@@ -11,14 +11,18 @@ int spriteBombe = 0, valueBombe = 0;
 int spriteExplo = 0, valueExplo = 0;
 int spriteMur = 0, valueMur = 0;
 int spriteBomberman = 0, valueBomberman = 0;
+int spriteBomberman2 = 0, valueBomberman2 = 0;
 int spriteBomberdeath = 0;
 float valueBomberdeath = 0;
+int spriteBomberdeath2 = 0;
+float valueBomberdeath2 = 0;
 int spriteEnnemi1 = 0, valueEnnemi1 = 0;
 int spriteEnnemi2 = 0, valueEnnemi2 = 0;
 int spriteBonus = 0, valueBonus = 0;
 int spriteSortie = 0, valueSortie = 0;
 
 extern bool enMouvement;
+extern bool enMouvement2;
 extern bool pause;
 
 void bombeAnimation(int x) {
@@ -140,6 +144,52 @@ void BombermanAnimation(int x) {
 	glutTimerFunc(100, BombermanAnimation, 0);
 }
 
+void BombermanAnimation2(int x) {
+	if (!enMouvement2) {
+		spriteBomberman2 = 0;
+		valueBomberman2 = 0;
+	}
+	else if (enMouvement2) {
+		switch (spriteBomberman2)
+		{
+		case(0):
+			spriteBomberman2 = 1;
+			valueBomberman2 = 0;
+			break;
+		case(1):
+			spriteBomberman2 = 2;
+			valueBomberman2 = 1;
+			break;
+		case(2):
+			spriteBomberman2 = 3;
+			valueBomberman2 = 2;
+			break;
+		case(3):
+			spriteBomberman2 = 4;
+			valueBomberman2 = 3;
+			break;
+		case(4):
+			spriteBomberman2 = 5;
+			valueBomberman2 = 4;
+			break;
+		case(5):
+			spriteBomberman2 = 6;
+			valueBomberman2 = 5;
+			break;
+		case(6):
+			spriteBomberman2 = 7;
+			valueBomberman2 = 6;
+			break;
+		case(7):
+			spriteBomberman2 = 0;
+			valueBomberman2 = 7;
+			break;
+		}
+	}
+
+	glutTimerFunc(100, BombermanAnimation2, 0);
+}
+
 void BomberdeathAnimation(int x) {
 	switch (spriteBomberdeath)
 	{
@@ -170,6 +220,38 @@ void BomberdeathAnimation(int x) {
 	}
 
 	glutTimerFunc(100, BomberdeathAnimation, 0);
+}
+
+void BomberdeathAnimation2(int x) {
+	switch (spriteBomberdeath2)
+	{
+	case(0):
+		spriteBomberdeath2 = 1;
+		valueBomberdeath2 = 0;
+		break;
+	case(1):
+		spriteBomberdeath2 = 2;
+		valueBomberdeath2 = 0.16666667;
+		break;
+	case(2):
+		spriteBomberdeath2 = 3;
+		valueBomberdeath2 = 0.33333333;
+		break;
+	case(3):
+		spriteBomberdeath2 = 4;
+		valueBomberdeath2 = 0.5;
+		break;
+	case(4):
+		spriteBomberdeath2 = 5;
+		valueBomberdeath2 = 0.6666666;
+		break;
+	case(5):
+		spriteBomberdeath2 = 0;
+		valueBomberdeath2 = 0.8333333;
+		break;
+	}
+
+	glutTimerFunc(100, BomberdeathAnimation2, 0);
 }
 
 void ennemi1Animation(int x) {
@@ -342,7 +424,9 @@ Animation::Animation()
 	glutTimerFunc(100, exploAnimation, 0);
 	glutTimerFunc(125, murAnimation, 0);
 	glutTimerFunc(100, BombermanAnimation, 0);
+	glutTimerFunc(100, BombermanAnimation2, 0);
 	glutTimerFunc(100, BomberdeathAnimation, 0);
+	glutTimerFunc(100, BomberdeathAnimation2, 0);
 	glutTimerFunc(20, ennemi1Animation, 0);
 	glutTimerFunc(80, ennemi2Animation, 0);
 	glutTimerFunc(100, bonusAnimation, 0);

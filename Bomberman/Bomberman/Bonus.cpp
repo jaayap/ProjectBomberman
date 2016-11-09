@@ -9,8 +9,12 @@ using namespace std;
 
 extern vector<GLuint> texture;
 extern Bomberman bomberman;
+extern Bomberman bomberman2;
+
 extern int valueBonus;
 extern int score;
+
+extern bool duel;
 
 float coordBonus[5] = { 0.0f, 0.25f, 0.5f, 0.75f, 1.0f };
 
@@ -55,21 +59,30 @@ void Bonus::setUtiliser(bool utiliser)
 	this->utiliser = utiliser;
 }
 
-void Bonus::ramasser()
+void Bonus::ramasser(int joueur)
 {
 	switch (type) {
 		//type du bonus : 1 -> + bombes, 2 -> + portee, 3 -> + vitesse
 	case 1:
-		if(bomberman.getNbBombe() <= 8) bomberman.setNbBombe(bomberman.getNbBombe() + 1);
-		score += 50;
+		if(bomberman.getNbBombe() <= 8 && joueur == 1) {
+			bomberman.setNbBombe(bomberman.getNbBombe() + 1);
+			score += 50;
+		}
+		if(bomberman2.getNbBombe() <= 8 && duel && joueur == 2) bomberman2.setNbBombe(bomberman2.getNbBombe() + 1);
 		break;
 	case 2:
-		if (bomberman.getPorteeBombe() <= 8) bomberman.setPorteeBombe(bomberman.getPorteeBombe() + 1);
-		score += 50;
+		if (bomberman.getPorteeBombe() <= 8 && joueur == 1) {
+			bomberman.setPorteeBombe(bomberman.getPorteeBombe() + 1);
+			score += 50;
+		}
+		if (bomberman2.getPorteeBombe() <= 8 && duel && joueur == 2) bomberman2.setPorteeBombe(bomberman2.getPorteeBombe() + 1);
 		break;
 	case 3:
-		if (bomberman.getVitesseDeplacement() <= 0.125f) bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() + 0.025f);
-		score += 50;
+		if (bomberman.getVitesseDeplacement() <= 0.125f && joueur == 1) {
+			bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() + 0.025f);
+			score += 50;
+		}
+		if (bomberman2.getVitesseDeplacement() <= 0.125f && duel && joueur == 2) bomberman2.setVitesseDeplacement(bomberman2.getVitesseDeplacement() + 0.025f);
 		break;
 	}
 

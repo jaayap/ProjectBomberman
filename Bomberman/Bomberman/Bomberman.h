@@ -23,9 +23,10 @@ public:
 	void declancherExplosion(int);
 	void eraseExplosion(int);
 	void collisionEnnemi();
-	void ramasserBonus();
+	void ramasserBonus(int);
 	void retour();
 	void dessiner();
+	void dessiner2();
 
 };
 

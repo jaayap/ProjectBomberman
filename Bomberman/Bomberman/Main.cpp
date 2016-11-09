@@ -27,7 +27,9 @@ int vie = 3;
 int numNiveau = 1;
 
 bool enMouvement = false;
+bool enMouvement2 = false;
 bool haut = false, bas = false, gauche = false, droite = false;
+bool haut2 = false, bas2 = false, gauche2 = false, droite2 = false;
 bool victoire = false;
 
 // Intro
@@ -46,9 +48,12 @@ int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
 bool afficherOption = false;
 bool afficherCommande = false;
 
+bool duel = false;
+
 bool pause = false; //permet de mettre le jeu en pause
 
 bool explosionEnCours = false;
+bool explosionEnCours2 = false;
 
 bool gameOver = false;
 
@@ -58,8 +63,11 @@ vector<EnnemiAllerRetour> TableEAR;
 
 Niveau niveau;
 
-//Joueur
+//Joueurs
 Bomberman bomberman(3, 1);
+Bomberman bomberman2(14, 11);
+int textureJoueur1 = 3;
+int textureJoueur2 = 25;
 
 //Declaration des ennemis
 
@@ -205,12 +213,75 @@ void LabyAffichage() {
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 	}
+	else if (duel) {
+		numNiveau = 5;
+
+		bomberman.ramasserBonus(1);
+		bomberman2.ramasserBonus(2);
+
+		niveau.dessinerNiveau();
+		bomberman.dessiner();
+		bomberman2.dessiner2();
+
+		if (!bomberman.vivant && !bomberman2.vivant) {
+			duel = false;
+			afficherMenu = true;
+			numNiveau = 1;
+			score = 0;
+			vie = 3;
+			cout << "DRAW" << endl;
+		}
+		else if (!bomberman.vivant) {
+			duel = false;
+			afficherMenu = true;
+			numNiveau = 1;
+			cout << "J2 WIN" << endl;
+		}
+		else if (!bomberman2.vivant) {
+			duel = false;
+			afficherMenu = true;
+			numNiveau = 1;
+			cout << "J1 WIN" << endl;
+		}
+
+		for (int i = 0; i < size(bomberman.bombes); i++) {
+			if (bomberman.bombes[i].explosion) {
+				bomberman.bombes[i].dessinerExplosion();
+			}
+		}
+
+		for (int i = 0; i < size(bomberman2.bombes); i++) {
+			if (bomberman2.bombes[i].explosion) {
+				bomberman2.bombes[i].dessinerExplosion();
+			}
+		}
+
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+
+		if (pause) {
+			//Affichage de l'ecran pause
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, texture[12]);
+			glBegin(GL_QUADS);
+			glColor3d(1.0, 1.0, 1.0);
+			glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+			glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+			glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+			glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_BLEND);
+		}
+	}
 	else {
 		niveau.dessinerNiveau();
 
 		//Test colision et bonus
 		bomberman.collisionEnnemi();
-		bomberman.ramasserBonus();
+		bomberman.ramasserBonus(1);
 
 		//Affichage des personnages
 		bomberman.dessiner();
@@ -230,7 +301,6 @@ void LabyAffichage() {
 		}
 
 		for (int i = 0; i < size(bomberman.bombes); i++) {
-
 			if (bomberman.bombes[i].explosion) {
 				bomberman.bombes[i].dessinerExplosion();
 			}
@@ -316,6 +386,23 @@ void TraitementClavier(int key, int x, int y)
 {
 	glutPostRedisplay();
 
+	//TEST
+	if (key == GLUT_KEY_F1) {
+		numNiveau = 1;
+	}
+	//TEST
+	if (key == GLUT_KEY_F2) {
+		numNiveau = 2;
+	}
+	//TEST
+	if (key == GLUT_KEY_F3) {
+		numNiveau = 3;
+	}
+	//TEST
+	if (key == GLUT_KEY_F4) {
+		numNiveau = 5;
+	}
+
 	if (afficherMenu || afficherOption) {
 		//Bouge le curseur 
 		if (key == GLUT_KEY_UP) {
@@ -334,7 +421,6 @@ void TraitementClavier(int key, int x, int y)
 	}
 	else {
 		if (!pause) {
-
 			if (key == GLUT_KEY_UP) {
 				haut = true;
 			}
@@ -356,6 +442,7 @@ void TraitementClavier(int key, int x, int y)
 void TestDirection(int z) {
 
 	float test = bomberman.getVitesseDeplacement() / 2.00;
+	float test2 = bomberman2.getVitesseDeplacement() / 2.00;
 
 	if (haut) {
 		for (float i = 0.00; i < test; i += 0.1) {
@@ -381,6 +468,31 @@ void TestDirection(int z) {
 			bomberman.deplacementDroite();
 		}
 	}
+
+	if (haut2) {
+		for (float i = 0.00; i < test2; i += 0.1) {
+			enMouvement2 = true;
+			bomberman2.deplacementHaut();
+		}
+	}
+	else if (bas2) {
+		for (float i = 0.00; i < test2; i += 0.1) {
+			enMouvement2 = true;
+			bomberman2.deplacementBas();
+		}
+	}
+	else if (gauche2) {
+		for (float i = 0.00; i < test2; i += 0.1) {
+			enMouvement2 = true;
+			bomberman2.deplacementGauche();
+		}
+	}
+	else if (droite2) {
+		for (float i = 0.00; i < test2; i += 0.1) {
+			enMouvement2 = true;
+			bomberman2.deplacementDroite();
+		}
+	}
 	glutTimerFunc(25, TestDirection, 0);
 }
 
@@ -402,23 +514,6 @@ void TraitementAucuneTouche(int key, int x, int y) {
 		droite = false;
 		enMouvement = false;
 	}
-
-	//TEST
-	if (key == GLUT_KEY_F1) {
-		numNiveau = 1;
-	}
-	//TEST
-	if (key == GLUT_KEY_F2) {
-		numNiveau = 2;
-	}
-	//TEST
-	if (key == GLUT_KEY_F3) {
-		numNiveau = 3;
-	}
-	//TEST
-	if (key == GLUT_KEY_F4) {
-		numNiveau = 5;
-	}
 }
 
 void TraitementClavierASCII(unsigned char key, int x, int y) {
@@ -435,7 +530,8 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 				afficherMenu = false;
 			}
 			else if (position_cursor == 2) {
-
+				afficherMenu = false;
+				duel = true;
 			}
 			else if (position_cursor == 3) {
 				afficherMenu = false;
@@ -482,14 +578,51 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 		}
 	}
 
+	// DUEL
+	if (duel && !pause) {
+		if (key == 90 || key == 122) { // touche Z
+			haut2 = true;
+		}
+		if (key == 83 || key == 115) { // touche S
+			bas2 = true;
+		}
+		if (key == 81 || key == 113) { // touche Q
+			gauche2 = true;
+		}
+		if (key == 68 || key == 100) { // touche D
+			droite2 = true;
+		}
+		if ((key == 88 || key == 120) && !pause) { // touche X
+			bomberman2.lancerBombe();
+		}
+	}
+
 	glFlush();
+}
+
+void TraitementAucuneToucheASCII(unsigned char key, int x, int y) {
+	if (key == 90 || key == 122) { // touche Z
+		haut2 = false;
+		enMouvement2 = false;
+	}
+	if (key == 83 || key == 115) { // touche S
+		bas2 = false;
+		enMouvement2 = false;
+	}
+	if (key == 81 || key == 113) { // touche Q
+		gauche2 = false;
+		enMouvement2 = false;
+	}
+	if (key == 68 || key == 100) { // touche D
+		droite2 = false;
+		enMouvement2 = false;
+	}
 }
 
 
 void LabyTimerExplosion(int z) {
 
 	for (int i = 0; i < size(bomberman.bombes); i++) {
-
 		if (bomberman.bombes[i].posee) {
 			explosionEnCours = true;
 			if (!pause) bomberman.bombes[i].Timer++;
@@ -497,14 +630,12 @@ void LabyTimerExplosion(int z) {
 			if (bomberman.bombes[i].Timer > 5 && !bomberman.bombes[i].explosion) {//creer explosion
 				bomberman.bombes[i].explosion = true;
 				bomberman.declancherExplosion(i);
-
 			}
 
 			//500 ms plus tard
 			if (bomberman.bombes[i].Timer > 6) {//effacer explosion		
 												// Efface la trace de l'explosion et réinitialise les booléens
 				bomberman.bombes[i].explosion = false;
-
 				bomberman.eraseExplosion(i);
 
 				//on efface les murs détruits
@@ -515,11 +646,45 @@ void LabyTimerExplosion(int z) {
 						}
 					}
 				}
-
 				explosionEnCours = false;
-
 			}
 			glutPostRedisplay();//important !
+		}
+	}
+
+	if (duel) {
+		for (int i = 0; i < size(bomberman2.bombes); i++) {
+			if (bomberman2.bombes[i].posee) {
+				explosionEnCours2 = true;
+				if (!pause) bomberman2.bombes[i].Timer++;
+				//Explosion au bout de 5 secondes
+				if (bomberman2.bombes[i].Timer > 5 && !bomberman2.bombes[i].explosion) {//creer explosion
+					bomberman2.bombes[i].explosion = true;
+					bomberman2.declancherExplosion(i);
+
+				}
+
+				//500 ms plus tard
+				if (bomberman2.bombes[i].Timer > 6) {//effacer explosion		
+													 // Efface la trace de l'explosion et réinitialise les booléens
+					bomberman2.bombes[i].explosion = false;
+
+					bomberman2.eraseExplosion(i);
+
+					//on efface les murs détruits
+					for (int i = 0; i < 13; i++) {
+						for (int j = 0; j < 17; j++) {
+							if (niveau.getCase(i, j) == '3') {
+								niveau.modifierCase(i, j, '0');
+							}
+						}
+					}
+
+					explosionEnCours2 = false;
+
+				}
+				glutPostRedisplay();//important !
+			}
 		}
 	}
 
@@ -915,6 +1080,7 @@ void main() {
 	glutKeyboardFunc(TraitementClavierASCII);
 	glutSpecialFunc(TraitementClavier);
 	glutSpecialUpFunc(TraitementAucuneTouche);
+	glutKeyboardUpFunc(TraitementAucuneToucheASCII);
 	glutTimerFunc(50, TestDirection, 0);
 	glutTimerFunc(1000, LabyTimerExplosion, 0);
 	glutTimerFunc(500, LabyTimerEnnemi, 0);
@@ -947,6 +1113,7 @@ void main() {
 	/* 22 */ LoadGLTextures("images/Options.png");
 	/* 23 */ LoadGLTextures("images/Commandes.png");
 	/* 24 */ LoadGLTextures("images/MurExplo.png");
+	/* 25 */ LoadGLTextures("images/Bomberman2.png");
 
 	// Gestion des sons
 	musicIntro.openFromFile("Musiques/intro.wav");

@@ -23,7 +23,7 @@ public:
 	void deplacementBas();
 	void deplacementGauche();
 	void deplacementDroite();
-	virtual void dessiner() = 0; // methode virtuelle a redefinir obligatoirement dans les classes filles
+	virtual void dessiner(); // methode virtuelle a redefinir obligatoirement dans les classes filles
 	virtual void calculDeplacement();// methode virtuelle a redefinir si besoin, sinon on utilise celle-ci par defaut
 };
 

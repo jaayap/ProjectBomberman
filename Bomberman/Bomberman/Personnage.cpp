@@ -82,6 +82,10 @@ void Personnage::deplacementDroite()
 	direction = 2;
 }
 
+void Personnage::dessiner()
+{
+}
+
 void Personnage::calculDeplacement()
 {
 }
