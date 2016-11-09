@@ -34,8 +34,7 @@ void loop() {
       }
 
       if(valeurRetour == 101){ // code decimal de e minuscule
-        if(clignote) {
-          
+        if(clignote) {        
           analogWrite(RGBrouge, 70);  
           analogWrite(RGBvert , 255); 
           clignote = false;
@@ -56,6 +55,7 @@ void loop() {
      digitalWrite(RGBrouge, LOW);  
      digitalWrite(RGBbleu , LOW);  
      digitalWrite(RGBvert , LOW); 
+     //digitalWrite(ledVerte , LOW); 
    }
 
   int sensorValueA = digitalRead(2);//on recupere la valeur du bouton "poser bombe"
@@ -83,7 +83,8 @@ void loop() {
   }
 
   if(sensorValueJoystickY <= 5) {
-     Serial.println("G");//gauche
+   
+    Serial.println("G");//gauche
   }
   else if(sensorValueJoystickY >= 1020) {
      Serial.println("D");//droite
@@ -93,5 +94,5 @@ void loop() {
       Serial.println("R");//reinitialisation valeur
   }
   
-  delay(50);
+  delay(100);
 }
