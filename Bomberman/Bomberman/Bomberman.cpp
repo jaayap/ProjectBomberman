@@ -42,6 +42,11 @@ extern bool afficherMenu;
 extern bool gameOver;
 extern bool finDestruction;
 extern bool duel;
+extern bool sonB;
+extern bool sonBo;
+extern bool sonM;
+extern bool sonE;
+extern bool sonN;
 
 extern vector<GLuint> texture;
 extern Niveau niveau;
@@ -115,6 +120,8 @@ void Bomberman::lancerBombe() {
 
 			bombes.push_back(bombe);
 			nb_bombes--;
+
+			sonB = true;
 		}
 	}
 }
@@ -122,6 +129,7 @@ void Bomberman::lancerBombe() {
 void Bomberman::declancherExplosion(int nb) {
 	bombes[nb].exploser();
 	setNbBombe(nb_bombes + 1);
+	sonE = true;
 }
 
 void Bomberman::eraseExplosion(int nb) {
@@ -145,6 +153,7 @@ void Bomberman::ramasserBonus(int joueur) {
 		//on test si l'on est sur la case d'un bonus et qu'il est actif
 		if (x == niveau.bonusTab[i].getX() && y == niveau.bonusTab[i].getY() && niveau.bonusTab[i].getVisible()) {
 			niveau.bonusTab[i].ramasser(joueur);
+			sonBo = true;
 		}
 	}
 }
@@ -182,6 +191,7 @@ void Bomberman::dessiner() {
 
 	// CHANGER NIVEAU
 	if (victoire && x == 8 && y == 6) {
+		sonN = true;
 		retour(1);
 		maxMur = 0;
 		numNiveau++;
@@ -194,14 +204,11 @@ void Bomberman::dessiner() {
 		ennemi2.retour();
 		ennemi3.retour();
 		if (numNiveau == 2) {
-			ennemisTab.push_back(&ennemi4);
-			ennemi5.retour();
+			ennemisTab.push_back(&ennemi5);
 		}
 		else if (numNiveau == 3) {
 			ennemisTab.push_back(&ennemi4);
-			ennemi4.retour();
 			ennemisTab.push_back(&ennemi5);
-			ennemi5.retour();
 		}
 		for (int i = 1; i < size(ennemisTab); i++) {
 			ennemisTab[i]->vivant = true;
@@ -241,6 +248,7 @@ void Bomberman::dessiner() {
 			glutTimerFunc(600, AnimDeath, 0);
 		}
 		else if (life && !die && !afficherMenu) {
+			sonM = true;
 			life = false;
 			nb_bombes = 1;
 			portee_bombe = 3;
@@ -308,7 +316,6 @@ void Bomberman::dessiner() {
 				ennemi3.retour();
 				for (int i = 1; i < size(ennemisTab); i++) {
 					ennemisTab[i]->vivant = true;
-					//ennemisTab[i].retour();
 				}
 			}
 			maxMur = 0;
@@ -339,8 +346,9 @@ void Bomberman::dessiner() {
 		retour(1);
 		if(!duel) {
 			vie--;
-			cout << "BITE" << endl;
 		}
+		nb_bombes = 1;
+		portee_bombe = 3;
 		// Respawn ennemis
 		tailleTab = size(ennemisTab);
 		if (tailleTab > 1) {
@@ -354,6 +362,16 @@ void Bomberman::dessiner() {
 			ennemi1.retour();
 			ennemi2.retour();
 			ennemi3.retour();
+			if (numNiveau == 2) {
+				ennemisTab.push_back(&ennemi5);
+				ennemi5.retour();
+			}
+			else if (numNiveau == 3) {
+				ennemisTab.push_back(&ennemi4);
+				ennemi4.retour();
+				ennemisTab.push_back(&ennemi5);
+				ennemi5.retour();
+			}
 			for (int i = 1; i < size(ennemisTab); i++) {
 				ennemisTab[i]->vivant = true;
 			}

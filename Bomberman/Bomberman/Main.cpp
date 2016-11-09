@@ -88,6 +88,20 @@ sf::Music musicZone1;
 sf::Music musicZone2;
 sf::Music musicZone3;
 sf::Music musicDuel;
+sf::Music sonBombes;
+bool sonB = false;
+sf::Music sonExplo;
+bool sonE = false;
+sf::Music sonBonus;
+bool sonBo = false;
+sf::Music sonMort;
+bool sonM = false;
+sf::Music sonNiveau;
+bool sonN = false;
+sf::Music sonMonstre;
+bool sonMo = false;
+sf::Music sonMenu;
+bool sonMe = false;
 int volume = 100;
 
 
@@ -357,6 +371,7 @@ void LabyAffichage() {
 				else {
 					ennemisTab.erase(ennemisTab.begin() + i);
 					score += 100;
+					sonMo = true;
 				}
 			}
 		}
@@ -449,23 +464,6 @@ void LabyRedim(int width, int height)
 void TraitementClavier(int key, int x, int y)
 {
 	glutPostRedisplay();
-
-	//TEST
-	if (key == GLUT_KEY_F1) {
-		numNiveau = 1;
-	}
-	//TEST
-	if (key == GLUT_KEY_F2) {
-		numNiveau = 2;
-	}
-	//TEST
-	if (key == GLUT_KEY_F3) {
-		numNiveau = 3;
-	}
-	//TEST
-	if (key == GLUT_KEY_F4) {
-		numNiveau = 5;
-	}
 
 	if (afficherMenu || afficherOption) {
 		//Bouge le curseur 
@@ -592,25 +590,31 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 		if (key == 10 || key == 13) { // Touche entree
 			if (position_cursor == 1) { // on lance le niveau
 				afficherMenu = false;
+				sonMe = true;
 			}
 			else if (position_cursor == 2) {
 				afficherMenu = false;
 				duel = true;
+				sonMe = true;
 			}
 			else if (position_cursor == 3) {
 				afficherMenu = false;
 				afficherOption = true;
+				sonMe = true;
 			}
 		}
 	}
 	else if (afficherOption) {
 		if (position_cursor == 1) { // volume
+			sonMe = true;
 			if(volume < 100) volume += 5;
 		}
 		else if (position_cursor == 2) { //Commande
+			sonMe = true;
 			if (volume > 0) volume -= 5;
 		}
 		else if (position_cursor == 3) { //Commande
+			sonMe = true;
 			afficherOption = false;
 			afficherCommande = true;
 		}
@@ -801,6 +805,38 @@ void tableEnnemis() {
 }
 
 void PlayMusic(int z) {
+	//SONS
+	if (sonB) {
+		sonBombes.play();
+		sonB = false;
+	}
+	if (sonBo) {
+		sonBonus.play();
+		sonBo = false;
+	}
+	if (sonM) {
+		sonMort.play();
+		sonM = false;
+	}
+	if (sonE) {
+		sonExplo.play();
+		sonE = false;
+	}
+	if (sonMe) {
+		sonMenu.play();
+		sonMe = false;
+	}
+	if (sonMo) {
+		cout << "SONMONSTRE" << endl;
+		sonMonstre.play();
+		sonMo = false;
+	}
+	if (sonN) {
+		cout << "SONNIVEAU" << endl;
+		sonNiveau.play();
+		sonN = false;
+	}
+
 	// Musique Intro
 	if (afficherHistoire) {
 		for (int i = 0; i < size(tableMusic); i++) {
@@ -828,6 +864,7 @@ void PlayMusic(int z) {
 				}
 				else {
 					cout << "Musique Menu" << endl;
+					volume = 100;
 					musicMenu.play();
 					musicMenu.setLoop(true);
 				}
@@ -842,7 +879,7 @@ void PlayMusic(int z) {
 	else if (!afficherMenu && !afficherHistoire && numNiveau == 1) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicZone1) {
-				if (musicZone1.getStatus() == sf::Sound::Status::Playing) {
+				if (musicZone1.getStatus() == sf::Sound::Status::Playing && !pause) {
 					glutTimerFunc(50, PlayMusic, 0);
 					musicZone1.setVolume(volume);
 					return;
@@ -853,7 +890,7 @@ void PlayMusic(int z) {
 					musicZone1.setLoop(true);
 				}
 			}
-			else {
+			else if (!pause) {
 				tableMusic[i]->stop();
 				tableMusic[i]->setLoop(false);
 			}
@@ -863,7 +900,7 @@ void PlayMusic(int z) {
 	else if (!afficherMenu && !afficherHistoire && numNiveau == 2) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicZone2) {
-				if (musicZone2.getStatus() == sf::Sound::Status::Playing) {
+				if (musicZone2.getStatus() == sf::Sound::Status::Playing && !pause) {
 					glutTimerFunc(50, PlayMusic, 0);
 					musicZone2.setVolume(volume);
 					return;
@@ -874,7 +911,7 @@ void PlayMusic(int z) {
 					musicZone2.setLoop(true);
 				}
 			}
-			else {
+			else if (!pause) {
 				tableMusic[i]->stop();
 				tableMusic[i]->setLoop(false);
 			}
@@ -884,7 +921,7 @@ void PlayMusic(int z) {
 	else if (!afficherMenu && !afficherHistoire && numNiveau == 3) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicZone3) {
-				if (musicZone3.getStatus() == sf::Sound::Status::Playing) {
+				if (musicZone3.getStatus() == sf::Sound::Status::Playing && !pause) {
 					glutTimerFunc(50, PlayMusic, 0);
 					musicZone3.setVolume(volume);
 					return;
@@ -895,7 +932,7 @@ void PlayMusic(int z) {
 					musicZone3.setLoop(true);
 				}
 			}
-			else {
+			else if (!pause) {
 				tableMusic[i]->stop();
 				tableMusic[i]->setLoop(false);
 			}
@@ -905,12 +942,12 @@ void PlayMusic(int z) {
 	else if (!afficherMenu && !afficherHistoire && numNiveau == 5) {
 		for (int i = 0; i < size(tableMusic); i++) {
 			if (tableMusic[i] == &musicDuel) {
-				if (musicDuel.getStatus() == sf::Sound::Status::Playing) {
+				if (musicDuel.getStatus() == sf::Sound::Status::Playing && !pause) {
 					glutTimerFunc(50, PlayMusic, 0);
 					musicDuel.setVolume(volume);
 					return;
 				}
-				else {
+				else if (!pause) {
 					cout << "Musique Duel" << endl;
 					musicDuel.play();
 					musicDuel.setLoop(true);
@@ -924,6 +961,11 @@ void PlayMusic(int z) {
 	}
 
 	// PAUSE
+	if (pause) {
+		for (int i = 0; i < size(tableMusic); i++) {
+			tableMusic[i]->pause();
+		}
+	}
 	glutTimerFunc(50, PlayMusic, 0);
 
 }
@@ -1192,6 +1234,14 @@ void main() {
 	musicZone2.openFromFile("Musiques/zone2.wav");
 	musicZone3.openFromFile("Musiques/zone3.wav");
 	musicDuel.openFromFile("Musiques/duel.wav");
+	//
+	sonBombes.openFromFile("Musiques/bombe.wav");
+	sonExplo.openFromFile("Musiques/explo.wav");
+	sonBonus.openFromFile("Musiques/bonus.wav");
+	sonMort.openFromFile("Musiques/mort.wav");
+	sonMenu.openFromFile("Musiques/toucheMenu.wav");
+	sonMonstre.openFromFile("Musiques/monstre.wav");
+	sonNiveau.openFromFile("Musiques/changerNiveau.wav");
 
 	// Intégration des musiques dans un tableau
 	tableMusic.push_back(&musicIntro);
@@ -1200,6 +1250,14 @@ void main() {
 	tableMusic.push_back(&musicZone2);
 	tableMusic.push_back(&musicZone3);
 	tableMusic.push_back(&musicDuel);
+	//
+	tableMusic.push_back(&sonBombes);
+	tableMusic.push_back(&sonExplo);
+	tableMusic.push_back(&sonBonus);
+	tableMusic.push_back(&sonMort);
+	tableMusic.push_back(&sonMenu);
+	tableMusic.push_back(&sonMonstre);
+	tableMusic.push_back(&sonNiveau);
 
 	glutTimerFunc(50, PlayMusic, 0);
 
