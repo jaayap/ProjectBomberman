@@ -74,7 +74,7 @@ void Bombe::exploser() {
 		for (int l = 0; l < size(bomberman2.bombes); l++) {
 			if (x == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
 				bomberman2.bombes[l].explosion = true;
-				bomberman2.bombes[l].Timer = 12;
+				bomberman2.bombes[l].Timer = 5;
 				bomberman2.declancherExplosion(l);
 			}
 		}
@@ -82,7 +82,7 @@ void Bombe::exploser() {
 	for (int k = 0; k < size(bomberman.bombes); k++) {
 		if (x == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 			bomberman.bombes[k].explosion = true;
-			bomberman.bombes[k].Timer = 12;
+			bomberman.bombes[k].Timer = 5;
 			bomberman.declancherExplosion(k);
 		}
 	}
@@ -95,6 +95,8 @@ void Bombe::exploser() {
 	explosionGauche();
 	//Explosion vers la droite
 	explosionDroite();
+
+	
 
 }
 
@@ -155,6 +157,10 @@ void Bombe::explosionHaut() {
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y - portee + 1 == bomberman2.bombes[l].getY()) {
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 5;
+					bomberman2.declancherExplosion(l);
+					
 					afficherExtremHaut = false;
 				}
 			}
@@ -162,6 +168,11 @@ void Bombe::explosionHaut() {
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y - portee + 1 == bomberman.bombes[k].getY()) {
 				afficherExtremHaut = false;
+				if (!bomberman.bombes[k].explosion) {
+					bomberman.bombes[k].explosion = true;
+					bomberman.bombes[k].Timer = 5;
+					bomberman.declancherExplosion(k);
+				}
 			}
 		}
 	}
@@ -223,12 +234,21 @@ void Bombe::explosionBas() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y + portee - 1 == bomberman2.bombes[l].getY()) {
 					afficherExtremBas = false;
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 5;
+					bomberman2.declancherExplosion(l);
 				}
 			}
 		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y + portee - 1 == bomberman.bombes[k].getY()) {
 				afficherExtremBas = false;
+				if (!bomberman.bombes[k].explosion) {
+					bomberman.bombes[k].explosion = true;
+					bomberman.bombes[k].Timer = 5;
+					bomberman.declancherExplosion(k);
+			
+				}
 			}
 		}
 	}
@@ -292,12 +312,20 @@ void Bombe::explosionGauche() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x - portee + 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY()) {
 					afficherExtremGauche = false;
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 5;
+					bomberman2.declancherExplosion(l);
 				}
 			}
 		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x - portee + 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY()) {
 				afficherExtremGauche = false;
+				if (!bomberman.bombes[k].explosion) {
+					bomberman.bombes[k].explosion = true;
+					bomberman.bombes[k].Timer = 5;
+					bomberman.declancherExplosion(k);				
+				}
 			}
 		}
 
@@ -338,7 +366,7 @@ void Bombe::explosionDroite() {
 		}
 		else arretExplosionDroite = true;
 	}
-
+	//extremite
 	if (niveau.caseLibreBombe(y, x + portee - 1) && !arretExplosionDroite) { //A droite
 		if (!niveau.caseMurDestructible(y, x + portee - 1) && niveau.getCase(y, x + portee - 1) != '3') {
 			afficherExtremDroite = true;
@@ -360,12 +388,22 @@ void Bombe::explosionDroite() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x + portee - 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY()) {
 					afficherExtremDroite = false;
+					bomberman2.bombes[l].explosion = true;
+					bomberman2.bombes[l].Timer = 5;
+					bomberman2.declancherExplosion(l);
 				}
 			}
 		}
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x + portee - 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY()) {
 				afficherExtremDroite = false;
+				if (!bomberman.bombes[k].explosion) {
+
+					bomberman.bombes[k].explosion = true;
+					bomberman.bombes[k].Timer = 5;
+					bomberman.declancherExplosion(k);
+
+				}
 			}
 		}
 	}
@@ -448,7 +486,7 @@ void Bombe::dessinerExplosionHaut() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y - i == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
 					bomberman2.bombes[l].explosion = true;
-					bomberman2.bombes[l].Timer = 12;
+					bomberman2.bombes[l].Timer = 5;
 					bomberman2.declancherExplosion(l);
 				}
 			}
@@ -456,7 +494,7 @@ void Bombe::dessinerExplosionHaut() {
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y - i == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
-				bomberman.bombes[k].Timer = 12;
+				bomberman.bombes[k].Timer = 5;
 				bomberman.declancherExplosion(k);
 			}
 		}
@@ -494,7 +532,7 @@ void Bombe::dessinerExplosionHaut() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y - portee + 1 == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
 					bomberman2.bombes[l].explosion = true;
-					bomberman2.bombes[l].Timer = 12;
+					bomberman2.bombes[l].Timer = 5;
 					bomberman2.declancherExplosion(l);
 				}
 			}
@@ -502,7 +540,7 @@ void Bombe::dessinerExplosionHaut() {
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y - portee + 1 == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
-				bomberman.bombes[k].Timer = 12;
+				bomberman.bombes[k].Timer = 5;
 				bomberman.declancherExplosion(k);
 			}
 		}
@@ -543,7 +581,7 @@ void Bombe::dessinerExplosionBas() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y + i == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
 					bomberman2.bombes[l].explosion = true;
-					bomberman2.bombes[l].Timer = 12;
+					bomberman2.bombes[l].Timer = 5;
 					bomberman2.declancherExplosion(l);
 				}
 			}
@@ -551,7 +589,7 @@ void Bombe::dessinerExplosionBas() {
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y + i == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
-				bomberman.bombes[k].Timer = 12;
+				bomberman.bombes[k].Timer = 5;
 				bomberman.declancherExplosion(k);
 			}
 		}
@@ -590,7 +628,7 @@ void Bombe::dessinerExplosionBas() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y + portee - 1 == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
 					bomberman2.bombes[l].explosion = true;
-					bomberman2.bombes[l].Timer = 12;
+					bomberman2.bombes[l].Timer = 5;
 					bomberman2.declancherExplosion(l);
 				}
 			}
@@ -598,7 +636,7 @@ void Bombe::dessinerExplosionBas() {
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y + portee - 1 == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
-				bomberman.bombes[k].Timer = 12;
+				bomberman.bombes[k].Timer = 5;
 				bomberman.declancherExplosion(k);
 			}
 		}
@@ -639,7 +677,7 @@ void Bombe::dessinerExplosionGauche() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x - i == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
 					bomberman2.bombes[l].explosion = true;
-					bomberman2.bombes[l].Timer = 12;
+					bomberman2.bombes[l].Timer = 5;
 					bomberman2.declancherExplosion(l);
 				}
 			}
@@ -647,7 +685,7 @@ void Bombe::dessinerExplosionGauche() {
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x - i == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
-				bomberman.bombes[k].Timer = 12;
+				bomberman.bombes[k].Timer = 5;
 				bomberman.declancherExplosion(k);
 			}
 		}
@@ -686,7 +724,7 @@ void Bombe::dessinerExplosionGauche() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x - portee + 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
 					bomberman2.bombes[l].explosion = true;
-					bomberman2.bombes[l].Timer = 12;
+					bomberman2.bombes[l].Timer = 5;
 					bomberman2.declancherExplosion(l);
 				}
 			}
@@ -694,7 +732,7 @@ void Bombe::dessinerExplosionGauche() {
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x - portee + 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
-				bomberman.bombes[k].Timer = 12;
+				bomberman.bombes[k].Timer = 5;
 				bomberman.declancherExplosion(k);
 			}
 		}
@@ -735,7 +773,7 @@ void Bombe::dessinerExplosionDroite() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x + i == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
 					bomberman2.bombes[l].explosion = true;
-					bomberman2.bombes[l].Timer = 12;
+					bomberman2.bombes[l].Timer = 5;
 					bomberman2.declancherExplosion(l);
 				}
 			}
@@ -743,7 +781,7 @@ void Bombe::dessinerExplosionDroite() {
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x + i == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
-				bomberman.bombes[k].Timer = 12;
+				bomberman.bombes[k].Timer = 5;
 				bomberman.declancherExplosion(k);
 			}
 		}
@@ -781,7 +819,7 @@ void Bombe::dessinerExplosionDroite() {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x + portee - 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
 					bomberman2.bombes[l].explosion = true;
-					bomberman2.bombes[l].Timer = 12;
+					bomberman2.bombes[l].Timer = 5;
 					bomberman2.declancherExplosion(l);
 				}
 			}
@@ -789,7 +827,7 @@ void Bombe::dessinerExplosionDroite() {
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x + portee - 1 == bomberman.bombes[k].getX() && y == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
-				bomberman.bombes[k].Timer = 12;
+				bomberman.bombes[k].Timer = 5;
 				bomberman.declancherExplosion(k);
 			}
 		}
