@@ -1,19 +1,20 @@
 ﻿  Main.cpp
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(274): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(310): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(325): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(331): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(367): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(382): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(695): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(726): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(766): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(842): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(858): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(880): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(901): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(922): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(943): warning C4018: '<' : incompatibilité signed/unsigned
-c:\users\max\documents\github\projectbomberman\bomberman\bomberman\main.cpp(965): warning C4018: '<' : incompatibilité signed/unsigned
-  Bomberman.vcxproj -> C:\Users\Max\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.exe
-  Bomberman.vcxproj -> C:\Users\Max\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.pdb (Partial PDB)
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(351): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(384): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(400): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(406): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(442): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(462): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(779): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(810): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(850): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(924): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(940): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(948): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(970): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(991): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(1012): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(1033): warning C4018: '<' : incompatibilité signed/unsigned
+c:\users\maxime\documents\github\projectbomberman\bomberman\bomberman\main.cpp(1055): warning C4018: '<' : incompatibilité signed/unsigned
+  Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.exe
+  Bomberman.vcxproj -> C:\Users\Maxime\Documents\GitHub\ProjectBomberman\Bomberman\Debug\Bomberman.pdb (Partial PDB)

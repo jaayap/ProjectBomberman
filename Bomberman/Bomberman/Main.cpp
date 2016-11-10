@@ -104,7 +104,6 @@ sf::Music sonMenu;
 bool sonMe = false;
 int volume = 100;
 
-
 //Arduino
 bool utiliserManette = true;
 Serial* SP = new Serial("COM3");    // adjust as needed - port com
@@ -117,8 +116,11 @@ bool allumerLedVerte = false;
 extern float vitesseDeplacement;
 
 // Affichage écrans victoire / défaite
-bool victoireJ2 = false;
+bool afficherJ1 = false;
 bool afficherJ2 = false;
+bool afficherV = false;
+bool afficherGO = false;
+bool afficherEgalite = false;
 
 // Déclarations de fonctions
 void LabyAffichage();
@@ -128,8 +130,27 @@ void TraitementClavierASCII(unsigned char key, int x, int y);
 void TraitementArduino(int z);
 int  LoadGLTextures(string name);
 
-void affichageVictoire(int z) {
-	
+void affichageVictoireDefaite(int z) {
+	if (afficherJ1) {
+		afficherJ1 = false;
+		vie++;
+	}
+	if (afficherJ2) {
+		afficherJ2 = false;
+		vie++;
+	}
+	if (afficherEgalite) {
+		afficherEgalite = false;
+		vie++;
+	}
+	if (afficherV) {
+		afficherV = false;
+	}
+	if (afficherGO) {
+		afficherGO = false;
+	}
+
+	afficherMenu = true;
 }
 
 void LabyAffichage() {
@@ -155,11 +176,67 @@ void LabyAffichage() {
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 	}
-	else if (afficherJ2) {
+	else if (afficherJ1) {
 		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 		glLoadIdentity();
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texture[26]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+	}
+	else if (afficherJ2) {
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[27]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+	}
+	else if (afficherEgalite) {
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[29]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+	}
+	else if (afficherV) {
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[28]);
+		glBegin(GL_QUADS);
+		glColor3d(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex2d(17, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex2d(17, 13);
+		glTexCoord2f(0.0f, 0.0f); glVertex2d(0, 13);
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
+	}
+	else if (afficherGO) {
+		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+		glLoadIdentity();
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture[11]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
 		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
@@ -283,21 +360,18 @@ void LabyAffichage() {
 					}
 				}
 			}
-			cout << "DRAW" << endl;
+			afficherEgalite = true;
+			glutTimerFunc(3000, affichageVictoireDefaite, 0);
 		}
 		else if (!bomberman.vivant) {
-			//duel = false;
-			//afficherMenu = true;
-			if (victoireJ2) {
-				afficherJ2 = true;
-			}
-			afficherJ2 = true;
+			duel = false;
 			numNiveau = 1;
 			bomberman2.vitesseDeplacement = 0.10f;
 			bomberman.retour(1);
 			bomberman2.retour(2);
 			bomberman.vivant = true;
-			cout << "J2 WIN" << endl;
+			afficherJ2 = true;
+			glutTimerFunc(3000, affichageVictoireDefaite, 0);
 		}
 		else if (!bomberman2.vivant) {
 			duel = false;
@@ -319,7 +393,8 @@ void LabyAffichage() {
 					}
 				}
 			}
-			cout << "J1 WIN" << endl;
+			afficherJ1 = true;
+			glutTimerFunc(3000, affichageVictoireDefaite, 0);
 		}
 
 		for (int i = 0; i < size(bomberman.bombes); i++) {
@@ -375,6 +450,11 @@ void LabyAffichage() {
 				}
 			}
 		}
+		else if (size(ennemisTab) == 1 && !victoire && numNiveau == 3) {
+			victoire = true;
+			afficherV = true;
+			glutTimerFunc(3000, affichageVictoireDefaite, 0);
+		}
 		else if (size(ennemisTab) == 1 && !victoire) {
 			victoire = true;
 		}
@@ -401,6 +481,10 @@ void LabyAffichage() {
 		glDisable(GL_TEXTURE_2D);
 
 		// Affichage du score
+		if (gameOver && score != 0) {
+			afficherGO = true;
+			glutTimerFunc(3000, affichageVictoireDefaite, 0);
+		}
 		if (gameOver) {
 			score = 0;
 		}
@@ -827,12 +911,10 @@ void PlayMusic(int z) {
 		sonMe = false;
 	}
 	if (sonMo) {
-		cout << "SONMONSTRE" << endl;
 		sonMonstre.play();
 		sonMo = false;
 	}
 	if (sonN) {
-		cout << "SONNIVEAU" << endl;
 		sonNiveau.play();
 		sonN = false;
 	}
@@ -851,6 +933,13 @@ void PlayMusic(int z) {
 					musicIntro.setLoop(true);
 				}
 			}
+		}
+	}
+	// Stopper musique
+	else if (afficherJ1 || afficherJ2 || afficherV || afficherGO || afficherEgalite) {
+		for (int i = 0; i < size(tableMusic); i++) {
+			tableMusic[i]->stop();
+			tableMusic[i]->setLoop(false);
 		}
 	}
 	// Musique Menu
@@ -1222,10 +1311,10 @@ void main() {
 	/* 23 */ LoadGLTextures("images/Commandes.png");
 	/* 24 */ LoadGLTextures("images/MurExplo.png");
 	/* 25 */ LoadGLTextures("images/Bomberman2.png");
-	/* 26 */ LoadGLTextures("images/VictoireJ2.png");
+	/* 26 */ LoadGLTextures("images/VictoireJ1.png");
 	/* 27 */ LoadGLTextures("images/VictoireJ2.png");
-	/* 28 */ LoadGLTextures("images/VictoireJ2.png");
-	/* 29 */ LoadGLTextures("images/VictoireJ2.png");
+	/* 28 */ LoadGLTextures("images/Victoire.png");
+	/* 29 */ LoadGLTextures("images/Egalite.png");
 
 	// Gestion des sons
 	musicIntro.openFromFile("Musiques/intro.wav");
