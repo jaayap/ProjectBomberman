@@ -1,26 +1,32 @@
+//Point d'entree de l'application.
+
 #include "GL/glut.h"
-#include "SOIL/SOIL.h"
+#include "SOIL/SOIL.h" //utile pour les textures.
 #include <time.h>
 #include <vector>
 #include <chrono>
 #include <iostream>
 #include <String>
+#include <string>
+#include "SFML/Audio.hpp" // utile pour les sons.
+#include <stdio.h>
+#include <tchar.h>
+#include "SerialClass.h" // Librarie pour l'arduino.
 #include "Niveau.h"
 #include "Personnage.h"
 #include "Bomberman.h"
 #include "EnnemiAleatoire.h"
 #include "EnnemiAllerRetour.h"
 #include "Animation.h"
-#include "SFML/Audio.hpp"
-#include <stdio.h>
-#include <tchar.h>
-#include "SerialClass.h"	// Library described above
-#include <string>
 
 using namespace std;
 
+// ---------------------------------------------
+// Declarations des variables
+// ---------------------------------------------
 int HAUTEUR_FENETRE = 1046;
 int LARGEUR_FENETRE = 900;
+vector<GLuint>	texture; // tableau qui contient nos textures.
 
 int score = 0;
 int vie = 3;
@@ -42,26 +48,29 @@ int numImage = 13;
 bool afficherMenu = false;
 float position_cursor_x = 0.25;
 float position_cursor_y = 0.63;
-int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option
+int position_cursor = 1; // 1 : normal Game, 2 : Battle Game , 3 : Option.
+bool duel = false;
+
+bool pause = false; //permet de mettre le jeu en pause.
 
 //Menu option 
 bool afficherOption = false;
 bool afficherCommande = false;
 
-bool duel = false;
 
-bool pause = false; //permet de mettre le jeu en pause
-
+//Jeux
+Niveau niveau;
 bool explosionEnCours = false;
 bool explosionEnCours2 = false;
 
 bool gameOver = false;
 
-vector<GLuint>	texture; // tableau qui contient nos textures
-vector<EnnemiAleatoire> TableEA;
-vector<EnnemiAllerRetour> TableEAR;
-
-Niveau niveau;
+// Affichage écrans victoire / défaite
+bool afficherJ1 = false;
+bool afficherJ2 = false;
+bool afficherV = false;
+bool afficherGO = false;
+bool afficherEgalite = false;
 
 //Joueurs
 Bomberman bomberman(3, 1);
@@ -70,7 +79,6 @@ int textureJoueur1 = 3;
 int textureJoueur2 = 25;
 
 //Declaration des ennemis
-
 vector<Personnage*> ennemisTab;
 
 EnnemiAleatoire ennemiTest(99, 99);
@@ -79,6 +87,9 @@ EnnemiAleatoire ennemi4(5, 5);
 EnnemiAllerRetour ennemi2(5, 3, 1, false);
 EnnemiAllerRetour ennemi3(8, 5, 4, false);
 EnnemiAllerRetour ennemi5(8, 10, 4, false);
+
+// Deplacement
+extern float vitesseDeplacement;
 
 // Sons
 vector<sf::Music*> tableMusic;
@@ -106,32 +117,33 @@ int volume = 100;
 
 //Arduino
 bool utiliserManette = true;
-Serial* SP = new Serial("COM3");    // adjust as needed - port com
-char incomingData[256] = "";		// don't forget to pre-allocate memory
+Serial* SP = new Serial("COM3");    // adjust as needed - port com.
+char incomingData[256] = "";		// don't forget to pre-allocate memory.
 int dataLength = 256;
 int readResult = 0;
 bool allumerLedVerte = false;
 
-// Deplacement
-extern float vitesseDeplacement;
-
-// Affichage écrans victoire / défaite
-bool afficherJ1 = false;
-bool afficherJ2 = false;
-bool afficherV = false;
-bool afficherGO = false;
-bool afficherEgalite = false;
-
-//
-
-// Déclarations de fonctions
+// ---------------------------------------------
+// Declarations des fonctions
+// ---------------------------------------------
 void LabyAffichage();
 void LabyRedim(int width, int height);
+void LabyTimerExplosion(int z);
+void LabyTimerEnnemi(int z);
 void TraitementClavier(int key, int x, int y);
 void TraitementClavierASCII(unsigned char key, int x, int y);
+void TraitementAucuneTouche(int key, int x, int y);
 void TraitementArduino(int z);
+void transitionHistoire(int z);
 int  LoadGLTextures(string name);
+void affichageVictoireDefaite(int z);
+void PlayMusic(int z);
 
+// ---------------------------------------------
+// Definitions des fonctions
+// ---------------------------------------------
+
+//Affiche les ecrans de victoires et de defaites
 void affichageVictoireDefaite(int z) {
 	if (afficherJ1) {
 		afficherJ1 = false;
@@ -155,6 +167,7 @@ void affichageVictoireDefaite(int z) {
 	afficherMenu = true;
 }
 
+//fonction qui actualise l'affichage.
 void LabyAffichage() {
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -163,7 +176,7 @@ void LabyAffichage() {
 	if (afficherHistoire) {
 		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 		glLoadIdentity();
-		// Texture Background Histoire
+		// Texture Background Histoire.
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_TEXTURE_2D);
@@ -251,7 +264,7 @@ void LabyAffichage() {
 	else if (afficherMenu) {
 		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 		glLoadIdentity();
-		// Texture Background Menu
+		// Texture Background Menu.
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texture[8]);
 		glBegin(GL_QUADS);
@@ -266,7 +279,7 @@ void LabyAffichage() {
 
 		glViewport(LARGEUR_FENETRE * position_cursor_x, -HAUTEUR_FENETRE * position_cursor_y, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 		glLoadIdentity();
-		// Texture du curseur
+		// Texture du curseur.
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_TEXTURE_2D);
@@ -287,9 +300,9 @@ void LabyAffichage() {
 	else if (afficherOption) {
 		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 		glLoadIdentity();
-		// Texture Background Menu Option
+		// Texture Background Menu Option.
 		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[22]); //changer la texture avec celle des options
+		glBindTexture(GL_TEXTURE_2D, texture[22]);
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
 		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
@@ -301,7 +314,7 @@ void LabyAffichage() {
 
 		glViewport(LARGEUR_FENETRE * position_cursor_x, -HAUTEUR_FENETRE * position_cursor_y, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 		glLoadIdentity();
-		// Texture du curseur
+		// Texture du curseur.
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_TEXTURE_2D);
@@ -319,9 +332,9 @@ void LabyAffichage() {
 	else if (afficherCommande) {
 		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 		glLoadIdentity();
-		// Texture Manette avec differentes touches
+		// Texture des commandes.
 		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[23]); //changer la texture avec celle de la manette
+		glBindTexture(GL_TEXTURE_2D, texture[23]); 
 		glBegin(GL_QUADS);
 		glColor3d(1.0, 1.0, 1.0);
 		glTexCoord2f(0.0f, 1.0f); glVertex2d(0, 0);
@@ -333,10 +346,12 @@ void LabyAffichage() {
 	}
 	else if (duel) {
 		numNiveau = 5;
-
+		
+		//on verifie la collision avec un bonus.
 		bomberman.ramasserBonus(1);
 		bomberman2.ramasserBonus(2);
 
+		//on dessine le niveau et les personnages.
 		niveau.dessinerNiveau();
 		bomberman.dessiner();
 		bomberman2.dessiner2();
@@ -353,7 +368,7 @@ void LabyAffichage() {
 			for (int i = 0; i < size(bomberman2.bombes); i++) {
 				bomberman2.bombes[i].effacerBombes();
 				bomberman2.eraseExplosion(i);
-				//on efface les murs détruits
+				//on efface les murs detruits.
 				for (int i = 0; i < 13; i++) {
 					for (int j = 0; j < 17; j++) {
 						if (niveau.getCase(i, j) == '3') {
@@ -386,7 +401,7 @@ void LabyAffichage() {
 			for (int i = 0; i < size(bomberman2.bombes); i++) {
 				bomberman2.bombes[i].effacerBombes();
 				bomberman2.eraseExplosion(i);
-				//on efface les murs détruits
+				//on efface les murs detruits.
 				for (int i = 0; i < 13; i++) {
 					for (int j = 0; j < 17; j++) {
 						if (niveau.getCase(i, j) == '3') {
@@ -399,6 +414,7 @@ void LabyAffichage() {
 			glutTimerFunc(3000, affichageVictoireDefaite, 0);
 		}
 
+		//on dessine les explosions.
 		for (int i = 0; i < size(bomberman.bombes); i++) {
 			if (bomberman.bombes[i].explosion) {
 				bomberman.bombes[i].dessinerExplosion();
@@ -415,7 +431,7 @@ void LabyAffichage() {
 		glLoadIdentity();
 
 		if (pause) {
-			//Affichage de l'ecran pause
+			//Affichage de l'ecran pause.
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glEnable(GL_TEXTURE_2D);
@@ -432,13 +448,14 @@ void LabyAffichage() {
 		}
 	}
 	else {
+		//on dessine le niveau.
 		niveau.dessinerNiveau();
 
-		//Test colision et bonus
+		//Test colision ennemi et bonus.
 		bomberman.collisionEnnemi();
 		bomberman.ramasserBonus(1);
 
-		//Affichage des personnages
+		//Affichage des personnages.
 		bomberman.dessiner();
 		if (size(ennemisTab) > 1) {
 			for (int i = 0; i < size(ennemisTab); i++) {
@@ -470,7 +487,7 @@ void LabyAffichage() {
 		glViewport(0, 0, LARGEUR_FENETRE, HAUTEUR_FENETRE);
 		glLoadIdentity();
 
-		// Texture score & vie
+		// Texture score & vies.
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texture[7]);
 		glBegin(GL_QUADS);
@@ -482,7 +499,7 @@ void LabyAffichage() {
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 
-		// Affichage du score
+		// Affichage du score.
 		if (gameOver && score != 0) {
 			afficherGO = true;
 			glutTimerFunc(3000, affichageVictoireDefaite, 0);
@@ -501,7 +518,7 @@ void LabyAffichage() {
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, scor[i]);
 		}
 
-		// Affichage de la vie
+		// Affichage de la vie.
 		string v = to_string(vie);
 		int tailleVie = v.size();
 
@@ -517,7 +534,7 @@ void LabyAffichage() {
 		glLoadIdentity();
 
 		if (pause) {
-			//Affichage de l'ecran pause
+			//Affichage de l'ecran pause.
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glEnable(GL_TEXTURE_2D);
@@ -533,7 +550,6 @@ void LabyAffichage() {
 			glDisable(GL_BLEND);
 		}
 	}
-
 	glFlush();
 }
 
@@ -542,11 +558,12 @@ void LabyRedim(int width, int height)
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, (double)17, (double)13, 0.0); // nbColonnes /nbLignes
+	gluOrtho2D(0.0, (double)17, (double)13, 0.0); // nbColonnes , nbLignes
 	HAUTEUR_FENETRE = height;
 	LARGEUR_FENETRE = width;
 }
 
+//Traitement des touches haut et bas
 void TraitementClavier(int key, int x, int y)
 {
 	glutPostRedisplay();
@@ -569,6 +586,7 @@ void TraitementClavier(int key, int x, int y)
 	}
 	else {
 		if (!pause) {
+			//Deplacement
 			if (key == GLUT_KEY_UP) {
 				haut = true;
 			}
@@ -586,7 +604,7 @@ void TraitementClavier(int key, int x, int y)
 	glFlush();
 }
 
-
+//fonction utile pour l'annimation
 void TestDirection(int z) {
 
 	float test = bomberman.getVitesseDeplacement() / 2.00;
@@ -644,7 +662,7 @@ void TestDirection(int z) {
 	glutTimerFunc(25, TestDirection, 0);
 }
 
-
+//Remet les variables de mouvements a faux lorsque la touche est relachee.
 void TraitementAucuneTouche(int key, int x, int y) {
 	if (key == GLUT_KEY_UP) {
 		haut = false;
@@ -667,23 +685,23 @@ void TraitementAucuneTouche(int key, int x, int y) {
 void TraitementClavierASCII(unsigned char key, int x, int y) {
 	glutPostRedisplay();
 	if (afficherHistoire) {
-		if (key == 10 || key == 13) { // Touche entree
+		if (key == 10 || key == 13) { // Touche entree.
 			afficherHistoire = false;
 			afficherMenu = true;
 		}
 	}
 	else if (afficherMenu && !afficherHistoire) {
-		if (key == 10 || key == 13) { // Touche entree
-			if (position_cursor == 1) { // on lance le niveau
+		if (key == 10 || key == 13) { // Touche entree.
+			if (position_cursor == 1) { // on lance le niveau.
 				afficherMenu = false;
 				sonMe = true;
 			}
-			else if (position_cursor == 2) {
+			else if (position_cursor == 2) { // on lance le mode duel.
 				afficherMenu = false;
 				duel = true;
 				sonMe = true;
 			}
-			else if (position_cursor == 3) {
+			else if (position_cursor == 3) { // on ouvre le menu option.
 				afficherMenu = false;
 				afficherOption = true;
 				sonMe = true;
@@ -691,7 +709,7 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 		}
 	}
 	else if (afficherOption) {
-		if (key == 10 || key == 13) { // Touche entree
+		if (key == 10 || key == 13) { // Touche entree.
 			if (position_cursor == 1) { // volume +
 				sonMe = true;
 				if (volume < 100) volume += 5;
@@ -708,23 +726,23 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 		}
 	}
 	else if( !afficherMenu && ! afficherOption && !afficherCommande){
-			if ((key == 66 || key == 98) && !pause) { // touche B
+			if ((key == 66 || key == 98) && !pause) { // touche B.
 				bomberman.lancerBombe();
 			}
 
-			//mettre en pause le jeu
-			if (key == 80 || key == 112) { // touche P
+			//mettre en pause le jeu.
+			if (key == 80 || key == 112) { // touche P.
 				if (pause) pause = false;
 				else pause = true;
 			}
 	}
 
-	if (key == 27) {// Escape key
-		if (afficherCommande) { //retour
+	if (key == 27) {// touche Echap.
+		if (afficherCommande) { //retour.
 			afficherCommande = false;
 			afficherOption = true;
 		}
-		else if (afficherOption) { //retour
+		else if (afficherOption) { //retour.
 			afficherOption = false;
 			afficherMenu = true;		
 		}
@@ -734,69 +752,69 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 		}
 	}
 
-	// DUEL
+	// DUEL - touches pour le joueurs 2.
 	if (duel && !pause) {
-		if (key == 90 || key == 122) { // touche Z
+		if (key == 90 || key == 122) { // touche Z.
 			haut2 = true;
 		}
-		if (key == 83 || key == 115) { // touche S
+		if (key == 83 || key == 115) { // touche S.
 			bas2 = true;
 		}
-		if (key == 81 || key == 113) { // touche Q
+		if (key == 81 || key == 113) { // touche Q.
 			gauche2 = true;
 		}
-		if (key == 68 || key == 100) { // touche D
+		if (key == 68 || key == 100) { // touche D.
 			droite2 = true;
 		}
-		if ((key == 88 || key == 120) && !pause) { // touche X
+		if ((key == 88 || key == 120) && !pause) { // touche X.
 			bomberman2.lancerBombe();
 		}
 	}
-
 	glFlush();
 }
 
+//Remet les variables de mouvements du joueur 2 a faux lorsque la touche est relachee.
 void TraitementAucuneToucheASCII(unsigned char key, int x, int y) {
 	if (duel) {
-		if (key == 90 || key == 122) { // touche Z
+		if (key == 90 || key == 122) { // touche Z.
 			haut2 = false;
 			enMouvement2 = false;
 		}
-		if (key == 83 || key == 115) { // touche S
+		if (key == 83 || key == 115) { // touche S.
 			bas2 = false;
 			enMouvement2 = false;
 		}
-		if (key == 81 || key == 113) { // touche Q
+		if (key == 81 || key == 113) { // touche Q.
 			gauche2 = false;
 			enMouvement2 = false;
 		}
-		if (key == 68 || key == 100) { // touche D
+		if (key == 68 || key == 100) { // touche D.
 			droite2 = false;
 			enMouvement2 = false;
 		}
 	}	
 }
 
-
+//Gestion des explosions.
 void LabyTimerExplosion(int z) {
 
 	for (int i = 0; i < size(bomberman.bombes); i++) {
 		if (bomberman.bombes[i].posee) {
 			explosionEnCours = true;
 			if (!pause) bomberman.bombes[i].Timer++;
-			//Explosion au bout de 5 secondes
-			if (bomberman.bombes[i].Timer > 5 && !bomberman.bombes[i].explosion) {//creer explosion
+			//Explosion au bout de 2,5 secondes.
+			if (bomberman.bombes[i].Timer > 5 && !bomberman.bombes[i].explosion) {//creation de l'explosion.
 				bomberman.bombes[i].explosion = true;
 				bomberman.declancherExplosion(i);
 			}
 
-			//500 ms plus tard
-			if (bomberman.bombes[i].Timer > 6) {//effacer explosion		
-												// Efface la trace de l'explosion et réinitialise les booléens
+			//500 ms plus tard.
+			if (bomberman.bombes[i].Timer > 6) {// Suppression de l'explosion.
+												// Efface la trace de l'explosion et reinitialise les booleens.
 				bomberman.bombes[i].explosion = false;
 				bomberman.eraseExplosion(i);
 
-				//on efface les murs détruits
+				//on efface les murs detruits.
 				for (int i = 0; i < 13; i++) {
 					for (int j = 0; j < 17; j++) {
 						if (niveau.getCase(i, j) == '3') {
@@ -806,7 +824,7 @@ void LabyTimerExplosion(int z) {
 				}
 				explosionEnCours = false;
 			}
-			glutPostRedisplay();//important !
+			glutPostRedisplay();
 		}
 	}
 
@@ -815,21 +833,20 @@ void LabyTimerExplosion(int z) {
 			if (bomberman2.bombes[i].posee) {
 				explosionEnCours2 = true;
 				if (!pause) bomberman2.bombes[i].Timer++;
-				//Explosion au bout de 5 secondes
-				if (bomberman2.bombes[i].Timer > 5 && !bomberman2.bombes[i].explosion) {//creer explosion
+				//Explosion au bout de 2,5 secondes.
+				if (bomberman2.bombes[i].Timer > 5 && !bomberman2.bombes[i].explosion) {//creation de l'explosion.
 					bomberman2.bombes[i].explosion = true;
 					bomberman2.declancherExplosion(i);
 
 				}
 
-				//500 ms plus tard
-				if (bomberman2.bombes[i].Timer > 6) {//effacer explosion		
-													 // Efface la trace de l'explosion et réinitialise les booléens
+				//500 ms plus tard.
+				if (bomberman2.bombes[i].Timer > 6) {// Effacer explosion.	
+													 // Efface la trace de l'explosion et reinitialise les booleens.
 					bomberman2.bombes[i].explosion = false;
-
 					bomberman2.eraseExplosion(i);
 
-					//on efface les murs détruits
+					//on efface les murs detruits.
 					for (int i = 0; i < 13; i++) {
 						for (int j = 0; j < 17; j++) {
 							if (niveau.getCase(i, j) == '3') {
@@ -837,11 +854,10 @@ void LabyTimerExplosion(int z) {
 							}
 						}
 					}
-
 					explosionEnCours2 = false;
 
 				}
-				glutPostRedisplay();//important !
+				glutPostRedisplay();
 			}
 		}
 	}
@@ -849,6 +865,7 @@ void LabyTimerExplosion(int z) {
 	glutTimerFunc(500, LabyTimerExplosion, 0);
 }
 
+//Calcul le deplacement des ennemis en boucle.
 void LabyTimerEnnemi(int z) {
 	if (!pause && size(ennemisTab) > 0) {
 		for (int i = 0; i < size(ennemisTab); i++) {
@@ -859,8 +876,8 @@ void LabyTimerEnnemi(int z) {
 }
 
 
-// Chargement des textures
-int LoadGLTextures(string name) //Charge l'image et la convertit en texture
+// Chargement des textures.
+int LoadGLTextures(string name) //Charge l'image et la convertit en texture.
 {
 	GLuint essai = SOIL_load_OGL_texture
 	(
@@ -878,14 +895,11 @@ int LoadGLTextures(string name) //Charge l'image et la convertit en texture
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	return true;  // Return Success
+	return true;  // Return Success.
 }
 
+//Remplis le tableau d'ennemis.
 void tableEnnemis() {
-	TableEA.push_back(ennemi1);
-	TableEAR.push_back(ennemi2);
-	TableEAR.push_back(ennemi3);
-
 	ennemisTab.push_back(&ennemiTest);
 	ennemisTab.push_back(&ennemi1);
 	ennemisTab.push_back(&ennemi2);
@@ -1060,9 +1074,9 @@ void PlayMusic(int z) {
 		}
 	}
 	glutTimerFunc(50, PlayMusic, 0);
-
 }
 
+//Gestion des images de l'introduction
 void transitionHistoire(int z) {
 	if (afficherHistoire) {
 		if (numImage < 19) {
@@ -1098,23 +1112,21 @@ void transitionHistoire(int z) {
 				}
 			}
 		}
-
 		glutTimerFunc(50, transitionHistoire, 0);
 	}
 }
 
-
+//Communication avec l'arduino.
 void TraitementArduino(int z) {
 
 	if (SP->IsConnected() && utiliserManette)
 	{
-		readResult = SP->ReadData(incomingData, dataLength);//on lit les infos de l'arduino
+		readResult = SP->ReadData(incomingData, dataLength);//on lit les infos de l'arduino.
 
 		if (readResult != -1) {
 			//BOUTONS
-			if (incomingData[0] == 'A') { //on appuie sur le bouton	
-				if (!pause && !afficherHistoire && !afficherMenu && !afficherOption && !afficherCommande) { // touche B
-					//printf("\n BombeButton");
+			if (incomingData[0] == 'A') { //on appuie sur le bouton	 A.
+				if (!pause && !afficherHistoire && !afficherMenu && !afficherOption && !afficherCommande) { // touche B.
 					bomberman.lancerBombe();
 				}
 				else  if (afficherHistoire) {
@@ -1122,34 +1134,39 @@ void TraitementArduino(int z) {
 					afficherMenu = true;
 				}
 				else if (afficherMenu && !afficherHistoire) {
-					if (position_cursor == 1) { //aventure
+					if (position_cursor == 1) { //mode aventure.
 						afficherMenu = false;
+						sonMe = true;
 					}
-					else if (position_cursor == 2) { //versus
-
+					else if (position_cursor == 2) { //mode versus.
+						afficherMenu = false;
+						duel = true;
+						sonMe = true;
 					}
-					else if (position_cursor == 3) {//option
+					else if (position_cursor == 3) {//mode option.
 						afficherMenu = false;
 						afficherOption = true;
+						sonMe = true;
 					}
 				}
 				else if (afficherOption) {
-					if (position_cursor == 1) { // volume
-						volume += 5;
+					//Gestion dans le menu.
+					if (position_cursor == 1) { // volume +
+						sonMe = true;
+						if (volume < 100) volume += 5;
 					}
-					else if (position_cursor == 2) { //Commande
-						volume -= 5;
+					else if (position_cursor == 2) { //Volume -
+						sonMe = true;
+						if (volume > 0) volume -= 5;
 					}
-					else if (position_cursor == 3) { //Commande
+					else if (position_cursor == 3) { //Commandes
+						sonMe = true;
 						afficherOption = false;
 						afficherCommande = true;
 					}
 				}
 			}
-			//else if (incomingData[0] == 'B') { //on appuie sur le bouton
-			//	printf("\n BonusButton");
-			//}
-			else if (incomingData[0] == 'C') { //on appuie sur le bouton
+			else if (incomingData[0] == 'C') { //on appuie sur le bouton B.
 				if (!afficherMenu && !afficherHistoire && !afficherMenu && !afficherOption && !afficherCommande) {
 					if (pause) {
 						pause = false;
@@ -1185,7 +1202,8 @@ void TraitementArduino(int z) {
 				}
 			}
 
-			if (incomingData[0] == 'R') {
+			//JOYSTICK	
+			if (incomingData[0] == 'R') { // joystick qui n'est pas en mouvement.
 				gauche = false;
 				droite = false;
 				haut = false;
@@ -1193,17 +1211,16 @@ void TraitementArduino(int z) {
 				enMouvement = false;
 			}
 
-			//JOYSTICK	
 			if (afficherMenu || afficherOption) {
-				//Bouge le curseur 
-				if (incomingData[0] == 'H') {
+				//Bouge le curseur dans le menu.
+				if (incomingData[0] == 'H') { //joystick vers le haut
 					if (position_cursor_y > 0.63) {
 						position_cursor_y -= 0.07;
 						position_cursor -= 1;
 					}
 				}
 
-				if (incomingData[0] == 'X') {
+				if (incomingData[0] == 'X') { // joystick vers le bas
 					if (position_cursor_y < 0.7) {
 						position_cursor_y += 0.07;
 						position_cursor += 1;
@@ -1212,25 +1229,25 @@ void TraitementArduino(int z) {
 			}
 			else {
 				if (!pause) {
-					if (incomingData[0] == 'X') {
+					if (incomingData[0] == 'X') { //bas.
 						bas = true;
 						haut = false;
 						gauche = false;
 						droite = false;
 					}
-					else if (incomingData[0] == 'H') {
+					else if (incomingData[0] == 'H') { //haut.
 						haut = true;
 						bas = false;
 						gauche = false;
 						droite = false;
 					}
-					else if (incomingData[0] == 'G') {
+					else if (incomingData[0] == 'G') { //gauche.
 						gauche = true;
 						droite = false;
 						bas = false;
 						haut = false;
 					}
-					else if (incomingData[0] == 'D') {
+					else if (incomingData[0] == 'D') { // droite.
 						droite = true;
 						bas = false;
 						haut = false;
@@ -1240,19 +1257,19 @@ void TraitementArduino(int z) {
 			}
 		}
 
-		//LED VERTE
+		//LED VERTE.
 		if (!afficherMenu && !afficherHistoire) {
 			allumerLedVerte = true;
 		}
 		else allumerLedVerte = false;
 		
 		if (allumerLedVerte) {
-			SP->WriteData("v", 1);//allume la led 5 (verte)
+			SP->WriteData("v", 1);//allume la led 5 (verte).
 		}
 		else {
-			SP->WriteData("b", 1);//eteint la led 5 (verte)
+			SP->WriteData("b", 1);//eteint la led 5 (verte).
 		}
-		//LED RGB
+		//LED RGB.
 		if (explosionEnCours) {
 			SP->WriteData("e", 1);
 		}
@@ -1265,9 +1282,8 @@ void TraitementArduino(int z) {
 }
 
 void main() {
-	srand((unsigned)time(0));
-
-	tableEnnemis();
+	srand((unsigned)time(0)); //initialisation des nombres aleatoires.
+	tableEnnemis();//on remplit le tableau d'ennemis.
 
 	// Gestion de la fenêtre
 	glutInitWindowPosition(10, 10);
@@ -1289,16 +1305,16 @@ void main() {
 	glutTimerFunc(100, TraitementArduino, 0);
 
 	// Gestion des textures
-	/* 0 */ LoadGLTextures("images/Test.png");
-	/* 1 */ LoadGLTextures("images/Niveaux.png");
-	/* 2 */ LoadGLTextures("images/Bombes&Bonus.png");
-	/* 3 */ LoadGLTextures("images/Bomberman.png");
-	/* 4 */ LoadGLTextures("images/EnnemiAllerRetour.png");
-	/* 5 */ LoadGLTextures("images/EnnemiAleatoire.png");
-	/* 6 */ LoadGLTextures("images/Sortie.png");
-	/* 7 */ LoadGLTextures("images/Score&Vie.png");
-	/* 8 */ LoadGLTextures("images/Menu.png");
-	/* 9 */ LoadGLTextures("images/TeteMenu.png");
+	/* 0 */  LoadGLTextures("images/Test.png");
+	/* 1 */  LoadGLTextures("images/Niveaux.png");
+	/* 2 */  LoadGLTextures("images/Bombes&Bonus.png");
+	/* 3 */  LoadGLTextures("images/Bomberman.png");
+	/* 4 */  LoadGLTextures("images/EnnemiAllerRetour.png");
+	/* 5 */  LoadGLTextures("images/EnnemiAleatoire.png");
+	/* 6 */  LoadGLTextures("images/Sortie.png");
+	/* 7 */  LoadGLTextures("images/Score&Vie.png");
+	/* 8 */  LoadGLTextures("images/Menu.png");
+	/* 9 */  LoadGLTextures("images/TeteMenu.png");
 	/* 10 */ LoadGLTextures("images/Bomberdeath.png");
 	/* 11 */ LoadGLTextures("images/GameOver.png");
 	/* 12 */ LoadGLTextures("images/Pause.png");
@@ -1320,14 +1336,14 @@ void main() {
 	/* 28 */ LoadGLTextures("images/Victoire.png");
 	/* 29 */ LoadGLTextures("images/Egalite.png");
 
-	// Gestion des sons
+	// Gestion des musiques
 	musicIntro.openFromFile("Musiques/intro.wav");
 	musicMenu.openFromFile("Musiques/menu.wav");
 	musicZone1.openFromFile("Musiques/zone1.wav");
 	musicZone2.openFromFile("Musiques/zone2.wav");
 	musicZone3.openFromFile("Musiques/zone3.wav");
 	musicDuel.openFromFile("Musiques/duel.wav");
-	//
+	// Gestion des sons
 	sonBombes.openFromFile("Musiques/bombe.wav");
 	sonExplo.openFromFile("Musiques/explo.wav");
 	sonBonus.openFromFile("Musiques/bonus.wav");
@@ -1343,7 +1359,7 @@ void main() {
 	tableMusic.push_back(&musicZone2);
 	tableMusic.push_back(&musicZone3);
 	tableMusic.push_back(&musicDuel);
-	//
+	//Intégration des sons dans un tableau
 	tableMusic.push_back(&sonBombes);
 	tableMusic.push_back(&sonExplo);
 	tableMusic.push_back(&sonBonus);
