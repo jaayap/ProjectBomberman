@@ -7,6 +7,7 @@
 
 using namespace std;
 
+//sprites 
 int spriteBombe = 0, valueBombe = 0;
 int spriteExplo = 0, valueExplo = 0;
 int spriteMur = 0, valueMur = 0;
@@ -25,6 +26,9 @@ extern bool enMouvement;
 extern bool enMouvement2;
 extern bool pause;
 
+//--------------------------------
+//Fonctions qui gerent les animations.
+//--------------------------------
 void bombeAnimation(int x) {
 	if (!pause) {
 		switch (spriteBombe)
@@ -142,7 +146,6 @@ void BombermanAnimation(int x) {
 			break;
 		}
 	}
-
 	glutTimerFunc(100, BombermanAnimation, 0);
 }
 
@@ -188,7 +191,6 @@ void BombermanAnimation2(int x) {
 			break;
 		}
 	}
-
 	glutTimerFunc(100, BombermanAnimation2, 0);
 }
 
@@ -220,7 +222,6 @@ void BomberdeathAnimation(int x) {
 		valueBomberdeath = 0.8333333;
 		break;
 	}
-
 	glutTimerFunc(100, BomberdeathAnimation, 0);
 }
 
@@ -252,7 +253,6 @@ void BomberdeathAnimation2(int x) {
 		valueBomberdeath2 = 0.8333333;
 		break;
 	}
-
 	glutTimerFunc(100, BomberdeathAnimation2, 0);
 }
 

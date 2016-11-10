@@ -22,11 +22,11 @@ extern bool duel;
 
 float coordExplo[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 
-Bombe::Bombe()
+Bombe::Bombe() //constructeur par defaut.
 {
 }
 
-Bombe::Bombe(int x, int y, int portee) {
+Bombe::Bombe(int x, int y, int portee) { // constructeur.
 	this->x = x;
 	this->y = y;
 	this->portee = portee;
@@ -34,6 +34,12 @@ Bombe::Bombe(int x, int y, int portee) {
 	explosion = false;
 }
 
+//destructeur par defaut.
+Bombe::~Bombe()
+{
+}
+
+//GETTERS :
 int Bombe::getX()
 {
 	return x;
@@ -44,13 +50,10 @@ int Bombe::getY()
 	return y;
 }
 
-Bombe::~Bombe()
-{
-}
-
+//Gere l'explosion de la bombe.
 void Bombe::exploser() {
 	//Centre de l'explosion  : 
-	//Test si il y a des mort
+	//Test si il y a des mort.
 	if (x == bomberman.getX() && y == bomberman.getY())	bomberman.setVivant(false);
 	if (x == bomberman2.getX() && y == bomberman2.getY() && duel) bomberman2.setVivant(false);
 	if (size(ennemisTab) > 1) {
@@ -61,15 +64,15 @@ void Bombe::exploser() {
 		}
 	}
 
-	//Test s'il on detruit un bonus 
+	//Test s'il on detruit un bonus. 
 	for (int k = 0; k < size(niveau.bonusTab); k++) {
 		if (x == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY()) {
 			niveau.bonusTab[k].setVisible(false);
-			niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+			niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 		}
 	}
 
-	//Test s'il y a une autre bombe - au cas ou
+	//Test s'il y a une autre bombe - au cas ou.
 	if (duel) {
 		for (int l = 0; l < size(bomberman2.bombes); l++) {
 			if (x == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
@@ -87,17 +90,14 @@ void Bombe::exploser() {
 		}
 	}
 	
-	//Explosion vers le haut 
+	//Explosion vers le haut .
 	explosionHaut();
-	//Explosion vers le bas
+	//Explosion vers le bas.
 	explosionBas();
-	//Explosion vers la gauche
+	//Explosion vers la gauche.
 	explosionGauche();
-	//Explosion vers la droite
+	//Explosion vers la droite.
 	explosionDroite();
-
-	
-
 }
 
 void Bombe::explosionHaut() {
@@ -112,14 +112,14 @@ void Bombe::explosionHaut() {
 				nbCaseHaut++;
 			}		
 
-			//Test s'il on detruit un bonus 
+			//Test s'il on detruit un bonus.
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
 				if (x == niveau.bonusTab[k].getX() && y - i == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 					niveau.bonusTab[k].setVisible(false);
-					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 				}
 			}
-			//Test s'il y a une autre bombe
+			//Test s'il y a une autre bombe.
 			if (duel) {
 				for (int l = 0; l < size(bomberman2.bombes); l++) {
 					if (x == bomberman2.bombes[l].getX() && y - i == bomberman2.bombes[l].getY()) {
@@ -139,21 +139,21 @@ void Bombe::explosionHaut() {
 	if (niveau.caseLibreBombe(y - portee + 1, x) && !arretExplosionHaut) {
 
 		if (!niveau.caseMurDestructible(y - portee + 1, x) && niveau.getCase(y - portee + 1, x) != '3') {
-			//on affiche l'extremite de l'explosion si ce n'est pas un mur destructible
+			//on affiche l'extremite de l'explosion si ce n'est pas un mur destructible.
 			afficherExtremHaut = true;
 		}
 		else {
 			niveau.modifierCase(y - portee + 1, x, '3');
 		}
-		//Test s'il on detruit un bonus 
+		//Test s'il on detruit un bonus.
 		for (int k = 0; k < size(niveau.bonusTab); k++) {
 			if (x == niveau.bonusTab[k].getX() && y - portee + 1 == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 				niveau.bonusTab[k].setVisible(false);
-				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 			}
 		}
 
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y - portee + 1 == bomberman2.bombes[l].getY()) {
@@ -189,15 +189,15 @@ void Bombe::explosionBas() {
 				nbCaseBas++;
 			}
 
-			//Test s'il on detruit un bonus 
+			//Test s'il on detruit un bonus.
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
 				if (x == niveau.bonusTab[k].getX() && y + i == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 					niveau.bonusTab[k].setVisible(false);
-					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 				}
 			}
 
-			//Test s'il y a une autre bombe
+			//Test s'il y a une autre bombe.
 			if (duel) {
 				for (int l = 0; l < size(bomberman2.bombes); l++) {
 					if (x == bomberman2.bombes[l].getX() && y + i == bomberman2.bombes[l].getY()) {
@@ -222,14 +222,14 @@ void Bombe::explosionBas() {
 			niveau.modifierCase(y + portee - 1, x, '3');
 		}
 
-		//Test s'il on detruit un bonus 
+		//Test s'il on detruit un bonus.
 		for (int k = 0; k < size(niveau.bonusTab); k++) {
 			if (x == niveau.bonusTab[k].getX() && y + portee - 1 == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 				niveau.bonusTab[k].setVisible(false);
-				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 			}
 		}
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y + portee - 1 == bomberman2.bombes[l].getY()) {
@@ -266,15 +266,15 @@ void Bombe::explosionGauche() {
 				nbCaseGauche++;
 			}
 
-			//Test s'il on detruit un bonus 
+			//Test s'il on detruit un bonus.
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
 				if (x - i == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 					niveau.bonusTab[k].setVisible(false);
-					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 				}
 			}
 
-			//Test s'il y a une autre bombe
+			//Test s'il y a une autre bombe.
 			if (duel) {
 				for (int l = 0; l < size(bomberman2.bombes); l++) {
 					if (x - i == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY()) {
@@ -291,7 +291,7 @@ void Bombe::explosionGauche() {
 		else arretExplosionGauche = true;
 
 	}
-	//extremité de l'explosion
+	//extremite de l'explosion.
 	if (niveau.caseLibreBombe(y, x - portee + 1) && !arretExplosionGauche) { //A gauche
 		if (!niveau.caseMurDestructible(y, x - portee + 1) && niveau.getCase(y, x - portee + 1) != '3') {
 			afficherExtremGauche = true;
@@ -300,14 +300,14 @@ void Bombe::explosionGauche() {
 			niveau.modifierCase(y, x - portee + 1, '3');
 		}
 
-		//Test s'il on detruit un bonus 
+		//Test s'il on detruit un bonus .
 		for (int k = 0; k < size(niveau.bonusTab); k++) {
 			if (x - portee + 1 == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 				niveau.bonusTab[k].setVisible(false);
-				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 			}
 		}
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x - portee + 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY()) {
@@ -343,14 +343,14 @@ void Bombe::explosionDroite() {
 			else {
 				nbCaseDroite++;
 			}
-			//Test s'il on detruit un bonus 
+			//Test s'il on detruit un bonus.
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
 				if (x + i == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 					niveau.bonusTab[k].setVisible(false);
-					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+					niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 				}
 			}
-			//Test s'il y a une autre bombe
+			//Test s'il y a une autre bombe.
 			if (duel) {
 				for (int l = 0; l < size(bomberman2.bombes); l++) {
 					if (x + i == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY()) {
@@ -366,7 +366,7 @@ void Bombe::explosionDroite() {
 		}
 		else arretExplosionDroite = true;
 	}
-	//extremite
+	//extremite.
 	if (niveau.caseLibreBombe(y, x + portee - 1) && !arretExplosionDroite) { //A droite
 		if (!niveau.caseMurDestructible(y, x + portee - 1) && niveau.getCase(y, x + portee - 1) != '3') {
 			afficherExtremDroite = true;
@@ -375,15 +375,15 @@ void Bombe::explosionDroite() {
 			niveau.modifierCase(y, x + portee - 1, '3');
 		}
 		
-		//Test s'il on detruit un bonus 
+		//Test s'il on detruit un bonus.
 		for (int k = 0; k < size(niveau.bonusTab); k++) {
 			if (x + portee - 1 == niveau.bonusTab[k].getX() && y == niveau.bonusTab[k].getY() && niveau.bonusTab[k].getVisible()) {
 				niveau.bonusTab[k].setVisible(false);
-				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 			}
 		}
 
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x + portee - 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY()) {
@@ -430,7 +430,7 @@ void Bombe::effacerExplosion() {
 void Bombe::dessinerExplosion() {
 	effacerBombes();
 
-	//Centre de l'explosion
+	//Centre de l'explosion.
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_TEXTURE_2D);
@@ -444,8 +444,8 @@ void Bombe::dessinerExplosion() {
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
-
-
+	
+	//dessine les differentes "branches" de l'explosion.
 	dessinerExplosionHaut();
 	dessinerExplosionBas();
 	dessinerExplosionGauche();
@@ -468,8 +468,8 @@ void Bombe::dessinerExplosionHaut() {
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 
-		//on laisse les tests dans cette fonction car on souhaite vérifier pendant toute la duree de l'explosion
-		//Test si il y a des mort
+		//on laisse les tests dans cette fonction car on souhaite verifier pendant toute la duree de l'explosion.
+		//Test si il y a des mort.
 		if (x == bomberman.getX() && y - i == bomberman.getY() && (bomberman.offsetX == 0)) bomberman.setVivant(false);
 		if (x == bomberman2.getX() && y - i == bomberman2.getY() && (bomberman2.offsetX == 0) && duel) bomberman2.setVivant(false);
 
@@ -481,7 +481,7 @@ void Bombe::dessinerExplosionHaut() {
 			}
 		}		
 
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y - i == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
@@ -515,7 +515,7 @@ void Bombe::dessinerExplosionHaut() {
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 		
-		//Test si il y a des mort
+		//Test si il y a des mort.
 		if (x == bomberman.getX() && y - portee + 1 == bomberman.getY() && (bomberman.offsetX == 0)) bomberman.setVivant(false);
 		if (x == bomberman2.getX() && y - portee + 1 == bomberman2.getY() && (bomberman2.offsetX == 0) && duel) bomberman2.setVivant(false);
 
@@ -527,7 +527,7 @@ void Bombe::dessinerExplosionHaut() {
 			}
 		}
 
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y - portee + 1 == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
@@ -537,6 +537,7 @@ void Bombe::dessinerExplosionHaut() {
 				}
 			}
 		}
+
 		for (int k = 0; k < size(bomberman.bombes); k++) {
 			if (x == bomberman.bombes[k].getX() && y - portee + 1 == bomberman.bombes[k].getY() && !bomberman.bombes[k].explosion) {
 				bomberman.bombes[k].explosion = true;
@@ -564,7 +565,7 @@ void Bombe::dessinerExplosionBas() {
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 
-		//Test si il y a des mort
+		//Test si il y a des mort.
 		if (x == bomberman.getX() && y + i == bomberman.getY() && bomberman.offsetX == 0) bomberman.setVivant(false);
 		if (x == bomberman2.getX() && y + i == bomberman2.getY() && bomberman2.offsetX == 0 && duel) bomberman2.setVivant(false);
 
@@ -576,7 +577,7 @@ void Bombe::dessinerExplosionBas() {
 			}
 		}		
 
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y + i == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
@@ -611,7 +612,7 @@ void Bombe::dessinerExplosionBas() {
 		glDisable(GL_BLEND);
 
 
-		//Test si il y a des mort
+		//Test si il y a des mort.
 		if (x == bomberman.getX() && y + portee - 1 == bomberman.getY() && bomberman.offsetX == 0) bomberman.setVivant(false);
 		if (x == bomberman2.getX() && y + portee - 1 == bomberman2.getY() && bomberman2.offsetX == 0 && duel) bomberman2.setVivant(false);
 
@@ -623,7 +624,7 @@ void Bombe::dessinerExplosionBas() {
 			}
 		}
 
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x == bomberman2.bombes[l].getX() && y + portee - 1 == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
@@ -660,7 +661,7 @@ void Bombe::dessinerExplosionGauche() {
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 
-		//Test si il y a des mort
+		//Test si il y a des mort.
 		if ((x - i) == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
 		if ((x - i) == bomberman2.getX() && y == bomberman2.getY() && bomberman2.offsetY == 0 && duel) bomberman2.setVivant(false);
 	
@@ -672,7 +673,7 @@ void Bombe::dessinerExplosionGauche() {
 			}
 		}		
 
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x - i == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
@@ -691,7 +692,7 @@ void Bombe::dessinerExplosionGauche() {
 		}
 	}
 		
-	//extremité de l'explosion
+	//extremite de l'explosion.
 	if (afficherExtremGauche) {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -707,7 +708,7 @@ void Bombe::dessinerExplosionGauche() {
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 
-		//Test si il y a des mort
+		//Test si il y a des mort.
 		if (x - portee + 1 == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
 		if (x - portee + 1 == bomberman2.getX() && y == bomberman2.getY() && bomberman2.offsetY == 0 && duel) bomberman2.setVivant(false);
 
@@ -719,7 +720,7 @@ void Bombe::dessinerExplosionGauche() {
 			}
 		}		
 
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x - portee + 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
@@ -756,7 +757,7 @@ void Bombe::dessinerExplosionDroite() {
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 
-		//Test si il y a des mort
+		//Test si il y a des mort.
 		if (x + i == bomberman.getX() && y == bomberman.getY()) bomberman.setVivant(false);
 		if (x + i == bomberman2.getX() && y == bomberman2.getY() && duel) bomberman2.setVivant(false);
 
@@ -768,7 +769,7 @@ void Bombe::dessinerExplosionDroite() {
 			}
 		}		
 
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x + i == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
@@ -802,7 +803,7 @@ void Bombe::dessinerExplosionDroite() {
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 
-		//Test si il y a des mort
+		//Test si il y a des mort.
 		if (x + portee - 1 == bomberman.getX() && y == bomberman.getY() && bomberman.offsetY == 0) bomberman.setVivant(false);
 		if (x + portee - 1 == bomberman2.getX() && y == bomberman2.getY() && bomberman2.offsetY == 0 && duel) bomberman2.setVivant(false);
 
@@ -814,7 +815,7 @@ void Bombe::dessinerExplosionDroite() {
 			}
 		}
 		
-		//Test s'il y a une autre bombe
+		//Test s'il y a une autre bombe.
 		if (duel) {
 			for (int l = 0; l < size(bomberman2.bombes); l++) {
 				if (x + portee - 1 == bomberman2.bombes[l].getX() && y == bomberman2.bombes[l].getY() && !bomberman2.bombes[l].explosion) {
@@ -835,7 +836,7 @@ void Bombe::dessinerExplosionDroite() {
 }
 
 void Bombe::effacerBombes() {
-	// on efface la bombe
+	// on efface la bombe.
 	if (spawn) {
 		niveau.modifierCase(y, x, '4');
 	}
