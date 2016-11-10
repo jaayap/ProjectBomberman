@@ -51,50 +51,52 @@ void bombeAnimation(int x) {
 }
 
 void exploAnimation(int x) {
-	switch (spriteExplo)
-	{
-	case(0):
-		spriteExplo = 1;
-		valueExplo = 0;
-		break;
-	case(1):
-		spriteExplo = 2;
-		valueExplo = 1;
-		break;
-	case(2):
-		spriteExplo = 3;
-		valueExplo = 2;
-		break;
-	case(3):
-		spriteExplo = 0;
-		valueExplo = 1;
-		break;
+	if (!pause) {
+		switch (spriteExplo)
+		{
+		case(0):
+			spriteExplo = 1;
+			valueExplo = 0;
+			break;
+		case(1):
+			spriteExplo = 2;
+			valueExplo = 1;
+			break;
+		case(2):
+			spriteExplo = 3;
+			valueExplo = 2;
+			break;
+		case(3):
+			spriteExplo = 0;
+			valueExplo = 1;
+			break;
+		}
 	}
-
 	glutTimerFunc(110, exploAnimation, 0);
 }
 
 void murAnimation(int x) {
-	switch (spriteMur)
-	{
-	case(0):
-		spriteMur = 1;
-		valueMur = 0;
-		break;
-	case(1):
-		spriteMur = 2;
-		valueMur = 2;
-		break;
-	case(2):
-		spriteMur = 3;
-		valueMur = 4;
-		break;
-	case(3):
-		spriteMur = 0;
-		valueMur = 6;
-		break;
+	if (!pause) {
+		switch (spriteMur)
+		{
+		case(0):
+			spriteMur = 1;
+			valueMur = 0;
+			break;
+		case(1):
+			spriteMur = 2;
+			valueMur = 2;
+			break;
+		case(2):
+			spriteMur = 3;
+			valueMur = 4;
+			break;
+		case(3):
+			spriteMur = 0;
+			valueMur = 6;
+			break;
+		}
 	}
-
 	glutTimerFunc(250, murAnimation, 0);
 }
 
@@ -378,42 +380,43 @@ void bonusAnimation(int x) {
 }
 
 void sortieAnimation(int x) {
-	switch (spriteSortie)
-	{
-	case(0):
-		spriteSortie = 1;
-		valueSortie = 0;
-		break;
-	case(1):
-		spriteSortie = 2;
-		valueSortie = 1;
-		break;
-	case(2):
-		spriteSortie = 3;
-		valueSortie = 2;
-		break;
-	case(3):
-		spriteSortie = 4;
-		valueSortie = 3;
-		break;
-	case(4):
-		spriteSortie = 5;
-		valueSortie = 4;
-		break;
-	case(5):
-		spriteSortie = 6;
-		valueSortie = 5;
-		break;
-	case(6):
-		spriteSortie = 7;
-		valueSortie = 6;
-		break;
-	case(7):
-		spriteSortie = 0;
-		valueSortie = 7;
-		break;
+	if (!pause) {
+		switch (spriteSortie)
+		{
+		case(0):
+			spriteSortie = 1;
+			valueSortie = 0;
+			break;
+		case(1):
+			spriteSortie = 2;
+			valueSortie = 1;
+			break;
+		case(2):
+			spriteSortie = 3;
+			valueSortie = 2;
+			break;
+		case(3):
+			spriteSortie = 4;
+			valueSortie = 3;
+			break;
+		case(4):
+			spriteSortie = 5;
+			valueSortie = 4;
+			break;
+		case(5):
+			spriteSortie = 6;
+			valueSortie = 5;
+			break;
+		case(6):
+			spriteSortie = 7;
+			valueSortie = 6;
+			break;
+		case(7):
+			spriteSortie = 0;
+			valueSortie = 7;
+			break;
+		}
 	}
-
 	glutTimerFunc(100, sortieAnimation, 0);
 }
 

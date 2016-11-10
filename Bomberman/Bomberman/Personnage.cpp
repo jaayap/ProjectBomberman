@@ -42,7 +42,7 @@ void Personnage::setVitesseDeplacement(float vitesse) {
 
 void Personnage::deplacementGauche()
 {
-	if (offsetY < 0.35 && offsetY > -0.35) {
+	if (offsetY < 0.45 && offsetY > -0.45) {
 		if (niveau.caseLibre(this->y, this->x - 1) && !niveau.caseMurDestructible(this->y, this->x-1)) {	
 			offsetX -= 0.1f;		
 			offsetY = 0;
@@ -63,7 +63,7 @@ void Personnage::deplacementGauche()
 
 void Personnage::deplacementDroite()
 {
-	if (offsetY < 0.35 && offsetY > -0.35) {
+	if (offsetY < 0.45 && offsetY > -0.45) {
 		if (niveau.caseLibre(this->y, this->x + 1) && !niveau.caseMurDestructible(this->y, this->x + 1)) {
 			offsetX += 0.1f;
 			offsetY = 0;
@@ -82,17 +82,11 @@ void Personnage::deplacementDroite()
 	direction = 2;
 }
 
-void Personnage::dessiner()
-{
-}
 
-void Personnage::calculDeplacement()
-{
-}
 
 void Personnage::deplacementHaut()
 {
-	if (offsetX < 0.35 && offsetX > -0.35) {
+	if (offsetX < 0.45 && offsetX > -0.45) {
 		if (niveau.caseLibre(this->y - 1, this->x) && !niveau.caseMurDestructible(this->y - 1, this->x)) {
 			offsetY -= 0.1f;
 			offsetX = 0;
@@ -113,7 +107,7 @@ void Personnage::deplacementHaut()
 
 void Personnage::deplacementBas()
 {
-	if (offsetX < 0.35 && offsetX > -0.35) {
+	if (offsetX < 0.45 && offsetX > -0.45) {
 		if (niveau.caseLibre(this->y + 1, this->x) && !niveau.caseMurDestructible(this->y +1, this->x)) {
 			offsetY += 0.1f;
 			offsetX = 0;
@@ -130,4 +124,12 @@ void Personnage::deplacementBas()
 	}
 
 	direction = 4;
+}
+
+void Personnage::dessiner()
+{
+}
+
+void Personnage::calculDeplacement()
+{
 }
