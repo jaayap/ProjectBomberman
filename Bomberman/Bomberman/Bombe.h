@@ -3,26 +3,27 @@ class Bombe
 {
 	int x, y; // position de la bombe dans la matrice
 	int portee; // 3 par defaut
-	//int type;
+	//Variable pour l'affichage de l'explosion
+	int nbCaseHaut = 0;
+	int nbCaseBas = 0;
+	int nbCaseGauche = 0;
+	int nbCaseDroite = 0;
+
+	bool arretExplosionHaut = false;
+	bool arretExplosionBas = false;
+	bool arretExplosionGauche = false;
+	bool arretExplosionDroite = false;
+
+	bool afficherExtremHaut = false;
+	bool afficherExtremBas = false;
+	bool afficherExtremGauche = false;
+	bool afficherExtremDroite = false;
+
 public :bool posee; // true : la bombe est posée par terre, false : bomberman possede toujours la bombe 
 		bool explosion; // true : explosion en cours, false : non explose
 		double Timer=0;
 
-		//Variable pour l'affichage de l'explosion
-		int nbCaseHaut = 0;
-		int nbCaseBas = 0;
-		int nbCaseGauche = 0;
-		int nbCaseDroite = 0;
-
-		bool arretExplosionHaut = false;
-		bool arretExplosionBas = false;
-		bool arretExplosionGauche = false;
-		bool arretExplosionDroite = false;
-
-		bool afficherExtremHaut = false;
-		bool afficherExtremBas = false;
-		bool afficherExtremGauche = false;
-		bool afficherExtremDroite = false;
+		
 
 public:
 	Bombe();
