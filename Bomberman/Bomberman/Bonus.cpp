@@ -62,17 +62,17 @@ void Bonus::setUtiliser(bool utiliser)
 void Bonus::ramasser(int joueur)
 {
 	switch (type) {
-		//type du bonus : 1 -> + bombes, 2 -> + portee, 3 -> + vitesse
+		//type du bonus : 1 -> + bombes, 2 -> + portee, 3 -> + vitesse.
 	case 1:
 		if(bomberman.getNbBombe() <= 8 && joueur == 1) {
-			bomberman.setNbBombe(bomberman.getNbBombe() + 1);
+			bomberman.setNbBombe(bomberman.getNbBombe() + 1); // on augmente le nombre de bombes.
 			if(!duel) score += 50;
 		}
 		if(bomberman2.getNbBombe() <= 8 && duel && joueur == 2) bomberman2.setNbBombe(bomberman2.getNbBombe() + 1);
 		break;
 	case 2:
-		if (bomberman.getPorteeBombe() <= 8 && joueur == 1) {
-			bomberman.setPorteeBombe(bomberman.getPorteeBombe() + 1);
+		if (bomberman.getPorteeBombe() <= 8 && joueur == 1) { 
+			bomberman.setPorteeBombe(bomberman.getPorteeBombe() + 1);// on augmente la portee des bombes.
 			if(!duel) score += 50;
 		}
 		if (bomberman2.getPorteeBombe() <= 8 && duel && joueur == 2) bomberman2.setPorteeBombe(bomberman2.getPorteeBombe() + 1);
@@ -92,7 +92,7 @@ void Bonus::ramasser(int joueur)
 
 void Bonus::dessiner()
 {
-	switch (type) {//type du bonus : 1 -> + bombes, 2 -> + portee, 3 -> + vitesse
+	switch (type) {//type du bonus : 1 -> + bombes, 2 -> + portee, 3 -> + vitesse.
 	case 1 :
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -15,6 +15,7 @@ using namespace std;
 float coordBomb[9] = { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
 float vitesseDeplacement;
 
+//variables pour les animations.
 int rotation;
 int rotation2;
 int tailleTab;
@@ -28,20 +29,23 @@ extern int valueBomberman2;
 extern int spriteBomberdeath;
 extern int spriteBomberdeath2;
 extern int direction;
-extern int vie;
-extern int score;
-extern int numNiveau;
-extern int maxMur;
 
 extern float valueBomberdeath;
 extern float valueBomberdeath2;
 
+//autre variables.
+extern int vie;
+extern int score;
+extern int numNiveau;
+extern int maxMur;
 extern bool victoire;
 extern bool PlacerBonus;
 extern bool afficherMenu;
 extern bool gameOver;
 extern bool finDestruction;
 extern bool duel;
+
+//sons.
 extern bool sonB;
 extern bool sonBo;
 extern bool sonM;
@@ -62,12 +66,11 @@ extern EnnemiAllerRetour ennemi5;
 //pour gerer les collisions :
 extern vector<Personnage*> ennemisTab;
 
-
 void AnimDeath(int z) {
 	die = true;
 }
 
-Bomberman::Bomberman(int xDepart, int  yDepart) : Personnage(x, y)
+Bomberman::Bomberman(int xDepart, int  yDepart) : Personnage(x, y) // constructeur.
 {
 	this->x = xDepart;
 	this->y = yDepart;
@@ -76,7 +79,7 @@ Bomberman::Bomberman(int xDepart, int  yDepart) : Personnage(x, y)
 }
 
 
-Bomberman::~Bomberman()
+Bomberman::~Bomberman() // destructeur par defaut.
 {
 }
 int Bomberman::getNbBombe()
@@ -87,7 +90,7 @@ int Bomberman::getPorteeBombe()
 {
 	return portee_bombe;
 }
-//Setter
+//Setters.
 void Bomberman::setNbBombe(int nb) {
 	this->nb_bombes = nb;
 }
@@ -97,7 +100,7 @@ void Bomberman::setPorteeBombe(int portee)
 	this->portee_bombe = portee;
 }
 
-
+//fonction qui permet au bomberman de poser une bombe
 void Bomberman::lancerBombe() {
 	bool dejaBombe = false;
 
@@ -137,7 +140,7 @@ void Bomberman::eraseExplosion(int nb) {
 	bombes.erase(bombes.begin() + nb);
 }
 
-void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi
+void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un ennemi.
 	if (size(ennemisTab) > 1) {
 		for (int i = 0; i < size(ennemisTab); i++) {
 			if (ennemisTab[i]->getX() == x && ennemisTab[i]->getY() == y && ennemisTab[i]->vivant) {
@@ -147,10 +150,10 @@ void Bomberman::collisionEnnemi() { // test si l'on est sur la meme case qu'un e
 	}
 	
 }
-
+//Test si l'on peut rammasser un bonus.
 void Bomberman::ramasserBonus(int joueur) {
 	for (int i = 0; i < size(niveau.bonusTab); i++) {
-		//on test si l'on est sur la case d'un bonus et qu'il est actif
+		//on test si l'on est sur la case d'un bonus et qu'il est actif.
 		if (x == niveau.bonusTab[i].getX() && y == niveau.bonusTab[i].getY() && niveau.bonusTab[i].getVisible()) {
 			niveau.bonusTab[i].ramasser(joueur);
 			sonBo = true;
@@ -158,7 +161,7 @@ void Bomberman::ramasserBonus(int joueur) {
 	}
 }
 
-// Retour à la case départ après la perte d'une vie
+// Retour à la case depart apres la perte d'une vie.
 void Bomberman::retour(int joueur) {
 	if (joueur == 1) {
 		x = 2;
@@ -172,7 +175,7 @@ void Bomberman::retour(int joueur) {
 }
 
 
-void Bomberman::dessiner() {
+void Bomberman::dessiner() { // dessine le bomberman par defaut.
 	switch (direction)
 	{
 	case(1):
@@ -196,7 +199,7 @@ void Bomberman::dessiner() {
 		maxMur = 0;
 		numNiveau++;
 		victoire = false;
-		// Respawn ennemis
+		// Respawn ennemis.
 		ennemisTab.push_back(&ennemi1);
 		ennemisTab.push_back(&ennemi2);
 		ennemisTab.push_back(&ennemi3);
@@ -213,11 +216,11 @@ void Bomberman::dessiner() {
 		for (int i = 1; i < size(ennemisTab); i++) {
 			ennemisTab[i]->vivant = true;
 		}
-		// Forcer les bombes à se détruire
+		// Forcer les bombes à se detruire.
 		for (int i = 0; i < size(bomberman.bombes); i++) {
 			bomberman.bombes[i].effacerBombes();
 			bomberman.eraseExplosion(i);
-			//on efface les murs détruits
+			//on efface les murs detruits.
 			for (int i = 0; i < 13; i++) {
 				for (int j = 0; j < 17; j++) {
 					if (niveau.getCase(i, j) == '3') {
@@ -255,7 +258,7 @@ void Bomberman::dessiner() {
 			spriteBomberdeath = 0;
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
 				niveau.bonusTab[k].setVisible(false);
-				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 			}
 			vivant = true;
 			glutTimerFunc(600, AnimDeath, 0);
@@ -301,7 +304,7 @@ void Bomberman::dessiner() {
 		if (gameOver && vie == 0) {
 			vie = 3;
 			retour(1);
-			// Respawn ennemis
+			// Respawn ennemis.
 			tailleTab = size(ennemisTab);
 			if (tailleTab > 1) {
 				for (int i = 1; i < tailleTab; i++) {
@@ -323,11 +326,11 @@ void Bomberman::dessiner() {
 			bomberman.vivant = true;
 			life = true;
 			die = false;
-			// Forcer les bombes à se détruire
+			// Forcer les bombes à se detruire.
 			for (int i = 0; i < size(bomberman.bombes); i++) {
 				bomberman.bombes[i].effacerBombes();
 				bomberman.eraseExplosion(i);
-				//on efface les murs détruits
+				//on efface les murs detruits.
 				for (int i = 0; i < 13; i++) {
 					for (int j = 0; j < 17; j++) {
 						if (niveau.getCase(i, j) == '3') {
@@ -349,7 +352,7 @@ void Bomberman::dessiner() {
 		}
 		nb_bombes = 1;
 		portee_bombe = 3;
-		// Respawn ennemis
+		// Respawn ennemis.
 		tailleTab = size(ennemisTab);
 		if (tailleTab > 1) {
 			for (int i = 1; i < tailleTab; i++) {
@@ -381,11 +384,11 @@ void Bomberman::dessiner() {
 		bomberman.vivant = true;
 		life = true;
 		die = false;
-		// Forcer les bombes à se détruire
+		// Forcer les bombes à se detruire.
 		for (int i = 0; i < size(bomberman.bombes); i++) {
 			bomberman.bombes[i].effacerBombes();
 			bomberman.eraseExplosion(i);
-			//on efface les murs détruits
+			//on efface les murs detruits.
 			for (int i = 0; i < 13; i++) {
 				for (int j = 0; j < 17; j++) {
 					if (niveau.getCase(i, j) == '3') {
@@ -400,7 +403,7 @@ void Bomberman::dessiner() {
 	
 }
 
-void Bomberman::dessiner2() {
+void Bomberman::dessiner2() { // dessine le bomberman du joueur 2.
 	switch (direction)
 	{
 	case(1):
@@ -434,7 +437,7 @@ void Bomberman::dessiner2() {
 			spriteBomberdeath2 = 0;
 			for (int k = 0; k < size(niveau.bonusTab); k++) {
 				niveau.bonusTab[k].setVisible(false);
-				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise
+				niveau.bonusTab[k].setUtiliser(true); // l'objet agit comme s'il avait ete utilise.
 			}
 			vivant = true;
 			glutTimerFunc(600, AnimDeath, 0);
