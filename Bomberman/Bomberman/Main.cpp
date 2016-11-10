@@ -691,18 +691,20 @@ void TraitementClavierASCII(unsigned char key, int x, int y) {
 		}
 	}
 	else if (afficherOption) {
-		if (position_cursor == 1) { // volume
-			sonMe = true;
-			if(volume < 100) volume += 5;
-		}
-		else if (position_cursor == 2) { //Commande
-			sonMe = true;
-			if (volume > 0) volume -= 5;
-		}
-		else if (position_cursor == 3) { //Commande
-			sonMe = true;
-			afficherOption = false;
-			afficherCommande = true;
+		if (key == 10 || key == 13) { // Touche entree
+			if (position_cursor == 1) { // volume +
+				sonMe = true;
+				if (volume < 100) volume += 5;
+			}
+			else if (position_cursor == 2) { //Volume -
+				sonMe = true;
+				if (volume > 0) volume -= 5;
+			}
+			else if (position_cursor == 3) { //Commandes
+				sonMe = true;
+				afficherOption = false;
+				afficherCommande = true;
+			}
 		}
 	}
 	else if( !afficherMenu && ! afficherOption && !afficherCommande){
