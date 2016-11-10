@@ -79,10 +79,10 @@ void Bonus::ramasser(int joueur)
 		break;
 	case 3:
 		if (bomberman.getVitesseDeplacement() <= 0.125f && joueur == 1) {
-			bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() + 0.025f);
+			bomberman.setVitesseDeplacement(bomberman.getVitesseDeplacement() + 0.075f);
 			if(!duel) score += 50;
 		}
-		if (bomberman2.getVitesseDeplacement() <= 0.125f && duel && joueur == 2) bomberman2.setVitesseDeplacement(bomberman2.getVitesseDeplacement() + 0.025f);
+		if (bomberman2.getVitesseDeplacement() <= 0.125f && duel && joueur == 2) bomberman2.setVitesseDeplacement(bomberman2.getVitesseDeplacement() + 0.075f);
 		break;
 	}
 

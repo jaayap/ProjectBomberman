@@ -4,7 +4,7 @@
 #include "Bombe.h"
 #include "Personnage.h"
 
-
+//cette classe represente le joueur.
 class Bomberman : public Personnage
 {
 	int score;

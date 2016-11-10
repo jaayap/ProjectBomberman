@@ -1,9 +1,9 @@
 #pragma once
 class Bombe
 {
-	int x, y; // position de la bombe dans la matrice
-	int portee; // 3 par defaut
-	//Variable pour l'affichage de l'explosion
+	int x, y; // position de la bombe dans la matrice.
+	int portee; // 3 par defaut.
+	//Variable pour l'affichage de l'explosion.
 	int nbCaseHaut = 0;
 	int nbCaseBas = 0;
 	int nbCaseGauche = 0;
@@ -19,11 +19,9 @@ class Bombe
 	bool afficherExtremGauche = false;
 	bool afficherExtremDroite = false;
 
-public :bool posee; // true : la bombe est posée par terre, false : bomberman possede toujours la bombe 
-		bool explosion; // true : explosion en cours, false : non explose
-		double Timer=0;
-
-		
+public :bool posee; //true : la bombe est posee par terre, false : bomberman possede toujours la bombe.
+		bool explosion; //true : explosion en cours, false : non explose.
+		double Timer=0;//timer qui gére le temps avant et pendant l'explosion 
 
 public:
 	Bombe();

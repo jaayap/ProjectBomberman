@@ -1,12 +1,12 @@
 #pragma once
 class Personnage
 {
-public: int x, y; // coordonnées
+public: int x, y; // coordonnees.
 	float offsetX  = 0, offsetY = 0;
-	int direction; //1 : gauche; 2 : droite; 3 : haut; 4 : bas
+	int direction; //1 : gauche; 2 : droite; 3 : haut; 4 : bas.
 	float vitesseDeplacement = 1;
 	int nb_vies;
-	bool vivant; // true : vivant, false : mort
+	bool vivant; // true : vivant, false : mort.
 
 public:
 	Personnage(int x, int y);
@@ -23,7 +23,7 @@ public:
 	void deplacementBas();
 	void deplacementGauche();
 	void deplacementDroite();
-	virtual void dessiner(); // methode virtuelle a redefinir obligatoirement dans les classes filles
-	virtual void calculDeplacement();// methode virtuelle a redefinir si besoin, sinon on utilise celle-ci par defaut
+	virtual void dessiner(); // methode virtuelle a redefinir si besoin dans les classes filles. (utile pour les ennemis)
+	virtual void calculDeplacement();// methode virtuelle a redefinir si besoin, sinon on utilise celle-ci par defaut. (utile pour les ennemis)
 };
 

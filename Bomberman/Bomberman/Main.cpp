@@ -65,7 +65,7 @@ bool explosionEnCours2 = false;
 
 bool gameOver = false;
 
-// Affichage écrans victoire / défaite
+// Affichage ecrans victoire / defaite
 bool afficherJ1 = false;
 bool afficherJ2 = false;
 bool afficherV = false;
@@ -1291,7 +1291,7 @@ void main() {
 	glutInitDisplayMode(GLUT_RGBA | GLUT_SINGLE);
 	glutCreateWindow("Bomberman");
 
-	// Gestion des événements
+	// Gestion des evenements
 	glutDisplayFunc(LabyAffichage);
 	glutReshapeFunc(LabyRedim);
 	glutKeyboardFunc(TraitementClavierASCII);
@@ -1352,14 +1352,14 @@ void main() {
 	sonMonstre.openFromFile("Musiques/monstre.wav");
 	sonNiveau.openFromFile("Musiques/changerNiveau.wav");
 
-	// Intégration des musiques dans un tableau
+	// Integration des musiques dans un tableau
 	tableMusic.push_back(&musicIntro);
 	tableMusic.push_back(&musicMenu);
 	tableMusic.push_back(&musicZone1);
 	tableMusic.push_back(&musicZone2);
 	tableMusic.push_back(&musicZone3);
 	tableMusic.push_back(&musicDuel);
-	//Intégration des sons dans un tableau
+	//Integration des sons dans un tableau
 	tableMusic.push_back(&sonBombes);
 	tableMusic.push_back(&sonExplo);
 	tableMusic.push_back(&sonBonus);
