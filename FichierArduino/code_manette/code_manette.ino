@@ -35,13 +35,13 @@ void loop() {
 
       if(valeurRetour == 101){ // code decimal de e minuscule
         if(clignote) {        
-          analogWrite(RGBrouge, 70);  
-          analogWrite(RGBvert , 255); 
+         analogWrite(RGBrouge, 70);  
+         // analogWrite(RGBvert , 255);  
           clignote = false;
         }
         else {
           analogWrite(RGBrouge, 255);  
-          analogWrite(RGBvert , 255); 
+         // analogWrite(RGBvert , 255); 
           clignote = true;
         }
       }
@@ -57,9 +57,10 @@ void loop() {
      digitalWrite(RGBvert , LOW); 
      //digitalWrite(ledVerte , LOW); 
    }
+ 
 
   int sensorValueA = digitalRead(2);//on recupere la valeur du bouton "poser bombe"
- // int sensorValueB = digitalRead(3);//on recupere la valeur du bouton "utiliser bonus"
+ // int sensorValueB = digitalRead(3);//on recupere la valeur du bouton "utiliser bonus"   
   int sensorValueC = digitalRead(4);//on recupere la valeur du bouton "start/pause"
   int sensorValueJoystickX = analogRead(A0);//Valeur x du joystick - 0 = bas _ 1024 = haut
   int sensorValueJoystickY = analogRead(A1);//Valeur y du joystick - 0 = gauche _ 1024 = droite
@@ -75,18 +76,18 @@ void loop() {
     Serial.println("C");
   }
 
-  if(sensorValueJoystickX <= 5) {
+  if(sensorValueJoystickX <= 350) {
      Serial.println("X");//bas
   }
-  else if(sensorValueJoystickX >= 1020) {
+  else if(sensorValueJoystickX >= 650) {
      Serial.println("H");//haut
   }
 
-  if(sensorValueJoystickY <= 5) {
+  if(sensorValueJoystickY <= 350) {
    
     Serial.println("G");//gauche
   }
-  else if(sensorValueJoystickY >= 1020) {
+  else if(sensorValueJoystickY >= 650) {
      Serial.println("D");//droite
   }
 
